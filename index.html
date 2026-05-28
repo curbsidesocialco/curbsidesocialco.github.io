@@ -34,6 +34,7 @@
     <button class="tab-btn" data-tab="projects"><i class="ti ti-video"></i> Projects</button>
     <button class="tab-btn" data-tab="calendar"><i class="ti ti-calendar"></i> Content</button>
     <button class="tab-btn" data-tab="clients"><i class="ti ti-users"></i> Clients</button>
+    <button class="tab-btn" data-tab="settings"><i class="ti ti-settings"></i> Settings</button>
   </div>
 
   <div class="main">
@@ -92,15 +93,15 @@
           </div>
         </div>
         <div id="outreach-error" class="form-error" style="display:none;"></div>
-        <button class="gen-btn" onclick="generatePitch()"><i class="ti ti-copy"></i> Copy prompt to clipboard</button>
+        <button class="gen-btn" id="gen-btn" onclick="generatePitch()"><i class="ti ti-wand"></i> Generate messages</button>
         <div class="msg-grid">
           <div class="msg-box">
             <div class="msg-box-head"><span class="msg-box-label">First message</span><button class="copy-btn" onclick="copyMsg('pitch-text', this)"><i class="ti ti-copy"></i> Copy</button></div>
-            <div class="msg-text msg-placeholder" id="pitch-text">Fill in the form and click the button above. It copies a prompt — paste it into Claude and the message will appear here.</div>
+            <div class="msg-text msg-placeholder" id="pitch-text">Fill in the form and hit generate.</div>
           </div>
           <div class="msg-box">
             <div class="msg-box-head"><span class="msg-box-label">Follow-up (3–5 days later)</span><button class="copy-btn" onclick="copyMsg('followup-text', this)"><i class="ti ti-copy"></i> Copy</button></div>
-            <div class="msg-text msg-placeholder" id="followup-text">Your follow-up message will appear here after you paste it in from Claude.</div>
+            <div class="msg-text msg-placeholder" id="followup-text">Your follow-up will appear here.</div>
           </div>
         </div>
       </div>
@@ -208,10 +209,62 @@
       </div>
     </div>
 
+    <!-- SETTINGS -->
+    <div id="tab-settings" class="section">
+      <div class="card" style="max-width: 520px;">
+        <div class="card-title">API settings</div>
+        <div class="field" style="margin-bottom: 16px;">
+          <label>Anthropic API key</label>
+          <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off" />
+        </div>
+        <div id="settings-status" class="form-error" style="display:none;"></div>
+        <button class="gen-btn" style="margin-bottom:0;" onclick="saveApiKey()"><i class="ti ti-device-floppy"></i> Save key</button>
+        <p style="font-size:12px;color:var(--text-3);margin-top:12px;">Your key is stored only in your browser. It is never sent anywhere except directly to Anthropic.</p>
+      </div>
+      <div class="card" style="max-width: 520px;">
+        <div class="card-title">About</div>
+        <div class="row"><div class="row-name">Business</div><span style="font-size:13px;color:var(--text-2);">Curbside Social Co.</span></div>
+        <div class="row"><div class="row-name">Handle</div><span style="font-size:13px;color:var(--text-2);">@cssocialtx</span></div>
+        <div class="row"><div class="row-name">Owner</div><span style="font-size:13px;color:var(--text-2);">Rob Galvan</span></div>
+        <div class="row"><div class="row-name">Location</div><span style="font-size:13px;color:var(--text-2);">San Antonio, TX</span></div>
+      </div>
+    </div>
+
   </div>
 </div>
 <script src="js/tabs.js"></script>
 <script src="js/outreach.js"></script>
 <script src="js/projects.js"></script>
+<script>
+function saveApiKey() {
+  const key = document.getElementById('api-key-input').value.trim();
+  const statusEl = document.getElementById('settings-status');
+  if (!key.startsWith('sk-ant-')) {
+    statusEl.textContent = 'That does not look like a valid Anthropic API key. It should start with sk-ant-';
+    statusEl.style.background = 'var(--red-bg)';
+    statusEl.style.color = 'var(--red-text)';
+    statusEl.style.display = 'block';
+    return;
+  }
+  localStorage.setItem('css_api_key', key);
+  statusEl.textContent = 'Key saved. You are good to go — head to the Outreach tab.';
+  statusEl.style.background = 'var(--green-bg)';
+  statusEl.style.color = 'var(--green-text)';
+  statusEl.style.display = 'block';
+  document.getElementById('api-key-input').value = '';
+}
+
+// Show masked confirmation if key already saved
+window.addEventListener('load', () => {
+  const key = localStorage.getItem('css_api_key');
+  if (key) {
+    const statusEl = document.getElementById('settings-status');
+    statusEl.textContent = 'API key is saved and ready.';
+    statusEl.style.background = 'var(--green-bg)';
+    statusEl.style.color = 'var(--green-text)';
+    statusEl.style.display = 'block';
+  }
+});
+</script>
 </body>
 </html>
