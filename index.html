@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Curbside Social Co. — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-icon">CS</div>
+      <div>
+        <div class="brand-name">Curbside Social Co.</div>
+        <div class="brand-handle">@cssocialtx</div>
+      </div>
+    </div>
+    <div class="user-pill">
+      <span>Rob Galvan</span>
+      <div class="avatar">RG</div>
+    </div>
+  </div>
+
+  <div class="tabs-bar">
+    <button class="tab-btn" data-tab="overview"><i class="ti ti-layout-dashboard"></i> Overview</button>
+    <button class="tab-btn" data-tab="outreach"><i class="ti ti-send"></i> Outreach</button>
+    <button class="tab-btn" data-tab="leads"><i class="ti ti-target"></i> Leads</button>
+    <button class="tab-btn" data-tab="projects"><i class="ti ti-video"></i> Projects</button>
+    <button class="tab-btn" data-tab="calendar"><i class="ti ti-calendar"></i> Content</button>
+    <button class="tab-btn" data-tab="clients"><i class="ti ti-users"></i> Clients</button>
+  </div>
+
+  <div class="main">
+
+    <!-- OVERVIEW -->
+    <div id="tab-overview" class="section">
+      <div class="metrics">
+        <div class="metric"><div class="metric-label">Active leads</div><div class="metric-value">7</div><div class="metric-sub">+3 this week</div></div>
+        <div class="metric"><div class="metric-label">In progress</div><div class="metric-value">3</div><div class="metric-sub">2 due this week</div></div>
+        <div class="metric"><div class="metric-label">Revenue / month</div><div class="metric-value">$450</div><div class="metric-sub">3 bookings</div></div>
+        <div class="metric"><div class="metric-label">Reels delivered</div><div class="metric-value">11</div><div class="metric-sub">this month</div></div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Recent activity</div>
+          <div class="row"><div><div class="row-name">Battalion</div><div class="row-sub">Reel scheduled Friday noon</div></div><span class="badge badge-scheduled">Scheduled</span></div>
+          <div class="row"><div><div class="row-name">Tiki Spot</div><div class="row-sub">3 reels delivered</div></div><span class="badge badge-delivered">Delivered</span></div>
+          <div class="row"><div><div class="row-name">Kotka y Chucho</div><div class="row-sub">DM sent today</div></div><span class="badge badge-sent">Sent</span></div>
+          <div class="row"><div><div class="row-name">Local Yoke</div><div class="row-sub">Editing in progress</div></div><span class="badge badge-editing">Editing</span></div>
+        </div>
+        <div class="card">
+          <div class="card-title">This week</div>
+          <div class="row"><div><div class="row-name">Battalion reel goes live</div><div class="row-sub">Friday, 12:00 PM</div></div><i class="ti ti-calendar" style="color:var(--text-3);font-size:16px;"></i></div>
+          <div class="row"><div><div class="row-name">Follow up — 5 leads</div><div class="row-sub">No reply after 4+ days</div></div><i class="ti ti-send" style="color:var(--text-3);font-size:16px;"></i></div>
+          <div class="row"><div><div class="row-name">Deliver Local Yoke reels</div><div class="row-sub">Due Saturday</div></div><i class="ti ti-video" style="color:var(--text-3);font-size:16px;"></i></div>
+          <div class="row"><div><div class="row-name">Pitch 10 new spots</div><div class="row-sub">End of May goal</div></div><i class="ti ti-target" style="color:var(--text-3);font-size:16px;"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTREACH -->
+    <div id="tab-outreach" class="section">
+      <div class="card">
+        <div class="card-title">Generate outreach messages</div>
+        <div class="form-grid">
+          <div class="field"><label>Business name</label><input type="text" id="biz-name" placeholder="e.g. La Panadería" /></div>
+          <div class="field">
+            <label>Business type</label>
+            <select id="biz-type">
+              <option value="">Select type...</option>
+              <option>Restaurant</option><option>Taco shop</option><option>Bakery / cafe</option>
+              <option>Bar / cocktail bar</option><option>Food truck</option><option>Brunch spot</option>
+              <option>BBQ spot</option><option>Brewery / taproom</option><option>Event venue</option>
+              <option>Other local business</option>
+            </select>
+          </div>
+          <div class="field"><label>Neighborhood / area</label><input type="text" id="biz-area" placeholder="e.g. Southtown, Pearl, NW SA" /></div>
+          <div class="field"><label>Hook (optional)</label><input type="text" id="biz-hook" placeholder="e.g. new menu, grand opening" /></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <div class="field-label">Platform</div>
+          <div class="platform-row">
+            <button class="plat-btn active" id="btn-ig" onclick="setPlatform('Instagram DM','btn-ig')"><i class="ti ti-brand-instagram"></i> Instagram DM</button>
+            <button class="plat-btn" id="btn-fb" onclick="setPlatform('Facebook DM','btn-fb')"><i class="ti ti-brand-facebook"></i> Facebook DM</button>
+            <button class="plat-btn" id="btn-email" onclick="setPlatform('Email','btn-email')"><i class="ti ti-mail"></i> Email</button>
+          </div>
+        </div>
+        <div id="outreach-error" class="form-error" style="display:none;"></div>
+        <button class="gen-btn" onclick="generatePitch()"><i class="ti ti-copy"></i> Copy prompt to clipboard</button>
+        <div class="msg-grid">
+          <div class="msg-box">
+            <div class="msg-box-head"><span class="msg-box-label">First message</span><button class="copy-btn" onclick="copyMsg('pitch-text', this)"><i class="ti ti-copy"></i> Copy</button></div>
+            <div class="msg-text msg-placeholder" id="pitch-text">Fill in the form and click the button above. It copies a prompt — paste it into Claude and the message will appear here.</div>
+          </div>
+          <div class="msg-box">
+            <div class="msg-box-head"><span class="msg-box-label">Follow-up (3–5 days later)</span><button class="copy-btn" onclick="copyMsg('followup-text', this)"><i class="ti ti-copy"></i> Copy</button></div>
+            <div class="msg-text msg-placeholder" id="followup-text">Your follow-up message will appear here after you paste it in from Claude.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Outreach log</div>
+        <div class="row"><div><div class="row-name">Kotka y Chucho</div><div class="row-sub">Bakery / Southtown — sent today</div></div><span class="badge badge-sent">Sent</span></div>
+        <div class="row"><div><div class="row-name">The Friendly Spot</div><div class="row-sub">Bar / Southtown — sent 3 days ago</div></div><span class="badge badge-followup">Follow up</span></div>
+        <div class="row"><div><div class="row-name">Panadería Muñoz</div><div class="row-sub">Bakery / West Side — sent 5 days ago</div></div><span class="badge badge-followup">Follow up</span></div>
+        <div class="row"><div><div class="row-name">Rebelle</div><div class="row-sub">Restaurant / Pearl — replied, interested</div></div><span class="badge badge-replied">Replied</span></div>
+      </div>
+    </div>
+
+    <!-- LEADS -->
+    <div id="tab-leads" class="section">
+      <div class="pipeline">
+        <div class="pipeline-col"><div class="pipeline-head">Cold <span class="pipeline-count">3</span></div>
+          <div class="lead-card"><div class="lead-name">Kotka y Chucho</div><div class="lead-meta">Bakery / Southtown</div></div>
+          <div class="lead-card"><div class="lead-name">The Friendly Spot</div><div class="lead-meta">Bar / Southtown</div></div>
+          <div class="lead-card"><div class="lead-name">Panadería Muñoz</div><div class="lead-meta">Bakery / West Side</div></div>
+        </div>
+        <div class="pipeline-col"><div class="pipeline-head">Warm <span class="pipeline-count">2</span></div>
+          <div class="lead-card"><div class="lead-name">Rebelle</div><div class="lead-meta">Restaurant / Pearl</div></div>
+          <div class="lead-card"><div class="lead-name">Rosella Coffee</div><div class="lead-meta">Cafe / Southtown</div></div>
+        </div>
+        <div class="pipeline-col"><div class="pipeline-head">Negotiating <span class="pipeline-count">1</span></div>
+          <div class="lead-card"><div class="lead-name">Local Yoke</div><div class="lead-meta">Brunch / Alamo Heights</div></div>
+        </div>
+        <div class="pipeline-col"><div class="pipeline-head">Booked <span class="pipeline-count">1</span></div>
+          <div class="lead-card"><div class="lead-name">Battalion</div><div class="lead-meta">Italian / Southtown</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div id="tab-projects" class="section">
+      <div class="card">
+        <div class="card-title">Active projects</div>
+        <div class="row"><div><div class="row-name">Battalion — 3 reels</div><div class="row-sub">Reel 1 scheduled Friday noon / Reels 2 & 3 in edit</div></div><span class="badge badge-editing">In progress</span></div>
+        <div class="row"><div><div class="row-name">Local Yoke — 3 reels</div><div class="row-sub">Shoot done / editing / due Saturday</div></div><span class="badge badge-editing">Editing</span></div>
+        <div class="row"><div><div class="row-name">Tiki Spot — 3 reels</div><div class="row-sub">All delivered</div></div><span class="badge badge-delivered">Delivered</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Deliverables — Battalion</div>
+        <div class="checklist-item done" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Shoot completed</span></div>
+        <div class="checklist-item done" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Reel 1 — collab post edited & scheduled</span></div>
+        <div class="checklist-item" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Reel 2 — client copy editing</span></div>
+        <div class="checklist-item" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Reel 3 — client copy editing</span></div>
+        <div class="checklist-item" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Deliver reels 2 & 3 to client</span></div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div id="tab-calendar" class="section">
+      <div class="card">
+        <div class="card-title">May 2026</div>
+        <div class="cal-header">
+          <div class="cal-day-head">Sun</div><div class="cal-day-head">Mon</div><div class="cal-day-head">Tue</div>
+          <div class="cal-day-head">Wed</div><div class="cal-day-head">Thu</div><div class="cal-day-head">Fri</div><div class="cal-day-head">Sat</div>
+        </div>
+        <div class="cal-grid">
+          <div class="cal-day"><div class="cal-num">25</div></div>
+          <div class="cal-day"><div class="cal-num">26</div></div>
+          <div class="cal-day"><div class="cal-num">27</div></div>
+          <div class="cal-day"><div class="cal-num">28</div><div class="cal-event ev-outreach">Outreach</div></div>
+          <div class="cal-day today"><div class="cal-num today-num">29</div><div class="cal-event ev-edit">Edit Yoke</div></div>
+          <div class="cal-day"><div class="cal-num">30</div><div class="cal-event ev-post">Battalion live</div></div>
+          <div class="cal-day"><div class="cal-num">31</div><div class="cal-event ev-edit">Deliver Yoke</div></div>
+          <div class="cal-day"><div class="cal-num">1</div></div>
+          <div class="cal-day"><div class="cal-num">2</div><div class="cal-event ev-shoot">Shoot?</div></div>
+          <div class="cal-day"><div class="cal-num">3</div></div><div class="cal-day"><div class="cal-num">4</div></div>
+          <div class="cal-day"><div class="cal-num">5</div></div>
+          <div class="cal-day"><div class="cal-num">6</div><div class="cal-event ev-post">CSS post</div></div>
+          <div class="cal-day"><div class="cal-num">7</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div id="tab-clients" class="section">
+      <div class="client-grid">
+        <div class="client-card">
+          <div class="client-top"><div class="client-avatar" style="background:var(--green-bg);color:var(--green-text);">BA</div><div><div class="client-name">Battalion</div><div class="client-type">Italian restaurant / Southtown</div></div></div>
+          <div class="client-row"><span class="client-row-label">Project</span><span class="client-row-val">3 reels — in progress</span></div>
+          <div class="client-row"><span class="client-row-label">Value</span><span class="client-row-val">$150</span></div>
+          <div class="client-row"><span class="client-row-label">Contact</span><span class="client-row-val">Instagram DM</span></div>
+          <div class="client-row"><span class="client-row-label">Status</span><span class="client-row-val"><span class="badge badge-active">Active</span></span></div>
+        </div>
+        <div class="client-card">
+          <div class="client-top"><div class="client-avatar" style="background:var(--amber-bg);color:var(--amber-text);">TS</div><div><div class="client-name">Tiki Spot</div><div class="client-type">Tiki bar / San Antonio</div></div></div>
+          <div class="client-row"><span class="client-row-label">Project</span><span class="client-row-val">3 reels — delivered</span></div>
+          <div class="client-row"><span class="client-row-label">Value</span><span class="client-row-val">$150</span></div>
+          <div class="client-row"><span class="client-row-label">Contact</span><span class="client-row-val">Instagram DM</span></div>
+          <div class="client-row"><span class="client-row-label">Status</span><span class="client-row-val"><span class="badge badge-complete">Complete</span></span></div>
+        </div>
+        <div class="client-card">
+          <div class="client-top"><div class="client-avatar" style="background:var(--purple-bg);color:var(--purple-text);">LY</div><div><div class="client-name">Local Yoke</div><div class="client-type">Brunch / Alamo Heights</div></div></div>
+          <div class="client-row"><span class="client-row-label">Project</span><span class="client-row-val">3 reels — editing</span></div>
+          <div class="client-row"><span class="client-row-label">Value</span><span class="client-row-val">$150</span></div>
+          <div class="client-row"><span class="client-row-label">Contact</span><span class="client-row-val">Instagram DM</span></div>
+          <div class="client-row"><span class="client-row-label">Status</span><span class="client-row-val"><span class="badge badge-editing">In progress</span></span></div>
+        </div>
+        <div class="add-client" onclick="alert('Add client — coming soon!')">
+          <i class="ti ti-plus"></i><span>Add client</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script src="js/tabs.js"></script>
+<script src="js/outreach.js"></script>
+<script src="js/projects.js"></script>
+</body>
+</html>
