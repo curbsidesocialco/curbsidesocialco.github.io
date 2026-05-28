@@ -1,4 +1,4 @@
-const TABS = ['overview','outreach','leads','projects','calendar','clients'];
+const TABS = ['overview','outreach','leads','projects','calendar','clients','settings'];
 const DEFAULT_TAB = 'overview';
 
 function getActiveTab() {
