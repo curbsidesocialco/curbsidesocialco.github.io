@@ -3,246 +3,217 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Curbside Social Co. — Video Production & Digital Marketing, San Antonio TX</title>
+<title>Curbside Social Co. — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/components.css">
+<script src="js/pin.js"></script>
 </head>
 <body>
+<div class="shell">
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">Curbside Social Co.</a>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#video">Video</a></li>
-    <li><a href="#web">Web</a></li>
-    <li><a href="#about">About</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">Get a Quote</a>
-</nav>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-bg" aria-hidden="true">
-    <span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span>
-    <span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span>
-    <span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span>
-  </div>
-  <p class="hero-eyebrow">San Antonio, Texas</p>
-  <h1 class="hero-title">Curbside</h1>
-  <h2 class="hero-subtitle">Social Co.</h2>
-  <div class="hero-divider">
-    <span class="hero-divider-icon">✦ ✦ ✦</span>
-  </div>
-  <p class="hero-tagline">Video production & digital marketing built for real brands, in real spaces.</p>
-  <div class="hero-actions">
-    <a href="#video" class="btn-primary">View Packages</a>
-    <a href="#contact" class="btn-secondary">Get in Touch</a>
-  </div>
-  <div class="hero-scroll" aria-hidden="true">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
-</div>
-
-<!-- SERVICES -->
-<section id="services">
-  <span class="section-eyebrow">What We Do</span>
-  <h2 class="section-title">Full-Service Creative</h2>
-  <p class="section-body">From a single reel to a full brand rollout — we shoot, edit, and deliver content that moves people and moves product.</p>
-  <div class="services-grid">
-    <div class="service-item">
-      <span class="service-icon">🎬</span>
-      <div class="service-name">On-Location Video Production</div>
-      <p class="service-desc">Shot on-site at your spot, cut for your audience.</p>
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-icon">CS</div>
+      <div>
+        <div class="brand-name">Curbside Social Co.</div>
+        <div class="brand-handle">@cssocialtx</div>
+      </div>
     </div>
-    <div class="service-item">
-      <span class="service-icon">📱</span>
-      <div class="service-name">Social Media Content</div>
-      <p class="service-desc">Reels, short-form video, and photos built for the feed.</p>
-    </div>
-    <div class="service-item">
-      <span class="service-icon">🍽️</span>
-      <div class="service-name">Food & Restaurant Visuals</div>
-      <p class="service-desc">Make your menu look as good as it tastes.</p>
-    </div>
-    <div class="service-item">
-      <span class="service-icon">🎙️</span>
-      <div class="service-name">Interviews & Talking Head</div>
-      <p class="service-desc">Brand stories, testimonials, and founder content.</p>
-    </div>
-    <div class="service-item">
-      <span class="service-icon">🏠</span>
-      <div class="service-name">Real Estate Reels</div>
-      <p class="service-desc">Walkthroughs and property content that sells.</p>
-    </div>
-    <div class="service-item">
-      <span class="service-icon">🧠</span>
-      <div class="service-name">Brand Strategy & Identity</div>
-      <p class="service-desc">Positioning, visuals, and voice — all of it.</p>
-    </div>
-    <div class="service-item">
-      <span class="service-icon">💻</span>
-      <div class="service-name">Web & Landing Pages</div>
-      <p class="service-desc">Sites that convert visitors into customers.</p>
-    </div>
-    <div class="service-item">
-      <span class="service-icon">✏️</span>
-      <div class="service-name">Graphics for Social</div>
-      <p class="service-desc">Custom visuals for your brand's online presence.</p>
+    <div class="user-pill">
+      <span>Rob Galvan</span>
+      <div class="avatar">RG</div>
     </div>
   </div>
-</section>
 
-<div class="divider"></div>
-
-<!-- VIDEO PACKAGES -->
-<section id="video" class="section-wide">
-  <div class="section-inner">
-    <span class="section-eyebrow">Video Production</span>
-    <h2 class="section-title">Choose Your Style</h2>
-    <p class="section-body">Two ways to shoot. One goal — content that actually works for your business.</p>
+  <div class="tabs-bar">
+    <button class="tab-btn" data-tab="overview"><i class="ti ti-layout-dashboard"></i> Overview</button>
+    <button class="tab-btn" data-tab="outreach"><i class="ti ti-send"></i> Outreach</button>
+    <button class="tab-btn" data-tab="leads"><i class="ti ti-target"></i> Leads</button>
+    <button class="tab-btn" data-tab="projects"><i class="ti ti-video"></i> Projects</button>
+    <button class="tab-btn" data-tab="calendar"><i class="ti ti-calendar"></i> Content</button>
+    <button class="tab-btn" data-tab="clients"><i class="ti ti-users"></i> Clients</button>
   </div>
-  <div class="video-packages">
-    <div class="video-pkg" data-label="S">
-      <span class="pkg-tag">Social Package</span>
-      <div class="pkg-name">Social</div>
-      <div class="pkg-tagline">Optimized for reels, built for the feed</div>
-      <div class="pkg-price">$150</div>
-      <div class="pkg-price-note">3 reels — starting price</div>
-      <ul class="pkg-features">
-        <li>3 short-form vertical reels</li>
-        <li>Shot on high-quality mobile setup</li>
-        <li>Fast turnaround, 3–5 days</li>
-        <li>1 collab post on @cssocialtx</li>
-        <li>2 reels you keep to post yourself</li>
-        <li>Great for food, products, events</li>
-        <li>Music, captions, trending formats</li>
-      </ul>
-      <a href="#contact" class="pkg-btn outline">Book Social Package</a>
-    </div>
-    <div class="video-pkg featured" data-label="C">
-      <span class="pkg-tag">Cinematic Package</span>
-      <div class="pkg-name">Cinematic</div>
-      <div class="pkg-tagline">High-end brand film on Sony FX3</div>
-      <div class="pkg-price">$500+</div>
-      <div class="pkg-price-note">custom quote based on scope</div>
-      <ul class="pkg-features">
-        <li>Shot on Sony FX3 cinema camera</li>
-        <li>Full color grade & sound design</li>
-        <li>Multi-angle, professional lighting</li>
-        <li>Brand film, launch video, or campaign</li>
-        <li>Longer format available (60s–3min)</li>
-        <li>Perfect for upscale restaurants & venues</li>
-        <li>Dedicated pre-production planning</li>
-      </ul>
-      <a href="#contact" class="pkg-btn">Book Cinematic Package</a>
-    </div>
-  </div>
-</section>
 
-<div class="divider"></div>
+  <div class="main">
 
-<!-- WEB PRICING -->
-<section id="web">
-  <span class="section-eyebrow">Web Services</span>
-  <h2 class="section-title">Your Online Presence</h2>
-  <p class="section-body">Clean, fast websites built for local businesses that need to look the part and convert visitors.</p>
-  <div class="web-pricing">
-    <div class="web-tier">
-      <div class="tier-name">Landing Page</div>
-      <div class="tier-price">$500</div>
-      <div class="tier-price-note">one-time</div>
-      <ul class="tier-features">
-        <li>Single page design</li>
-        <li>Mobile responsive</li>
-        <li>Contact form</li>
-        <li>Basic SEO setup</li>
-        <li>1 round of revisions</li>
-      </ul>
-      <a href="#contact" class="tier-btn">Get Started</a>
+    <!-- OVERVIEW -->
+    <div id="tab-overview" class="section">
+      <div class="metrics">
+        <div class="metric"><div class="metric-label">Active leads</div><div class="metric-value">7</div><div class="metric-sub">+3 this week</div></div>
+        <div class="metric"><div class="metric-label">In progress</div><div class="metric-value">3</div><div class="metric-sub">2 due this week</div></div>
+        <div class="metric"><div class="metric-label">Revenue / month</div><div class="metric-value">$450</div><div class="metric-sub">3 bookings</div></div>
+        <div class="metric"><div class="metric-label">Reels delivered</div><div class="metric-value">11</div><div class="metric-sub">this month</div></div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Recent activity</div>
+          <div class="row"><div><div class="row-name">Battalion</div><div class="row-sub">Reel scheduled Friday noon</div></div><span class="badge badge-scheduled">Scheduled</span></div>
+          <div class="row"><div><div class="row-name">Tiki Spot</div><div class="row-sub">3 reels delivered</div></div><span class="badge badge-delivered">Delivered</span></div>
+          <div class="row"><div><div class="row-name">Kotka y Chucho</div><div class="row-sub">DM sent today</div></div><span class="badge badge-sent">Sent</span></div>
+          <div class="row"><div><div class="row-name">Local Yoke</div><div class="row-sub">Editing in progress</div></div><span class="badge badge-editing">Editing</span></div>
+        </div>
+        <div class="card">
+          <div class="card-title">This week</div>
+          <div class="row"><div><div class="row-name">Battalion reel goes live</div><div class="row-sub">Friday, 12:00 PM</div></div><i class="ti ti-calendar" style="color:var(--text-3);font-size:16px;"></i></div>
+          <div class="row"><div><div class="row-name">Follow up — 5 leads</div><div class="row-sub">No reply after 4+ days</div></div><i class="ti ti-send" style="color:var(--text-3);font-size:16px;"></i></div>
+          <div class="row"><div><div class="row-name">Deliver Local Yoke reels</div><div class="row-sub">Due Saturday</div></div><i class="ti ti-video" style="color:var(--text-3);font-size:16px;"></i></div>
+          <div class="row"><div><div class="row-name">Pitch 10 new spots</div><div class="row-sub">End of May goal</div></div><i class="ti ti-target" style="color:var(--text-3);font-size:16px;"></i></div>
+        </div>
+      </div>
     </div>
-    <div class="web-tier featured">
-      <div class="tier-name">Brochure Site</div>
-      <div class="tier-price">$1,200</div>
-      <div class="tier-price-note">one-time</div>
-      <ul class="tier-features">
-        <li>Up to 5 pages</li>
-        <li>Mobile responsive</li>
-        <li>Contact & booking form</li>
-        <li>Full SEO optimization</li>
-        <li>2 rounds of revisions</li>
-        <li>Social media integration</li>
-      </ul>
-      <a href="#contact" class="tier-btn">Get Started</a>
-    </div>
-    <div class="web-tier">
-      <div class="tier-name">Managed Site</div>
-      <div class="tier-price">$1,200</div>
-      <div class="tier-price-note">+ $150 / month</div>
-      <ul class="tier-features">
-        <li>Everything in Brochure</li>
-        <li>Monthly content updates</li>
-        <li>Hosting & maintenance</li>
-        <li>Performance monitoring</li>
-        <li>Priority support</li>
-        <li>Monthly analytics report</li>
-      </ul>
-      <a href="#contact" class="tier-btn">Get Started</a>
-    </div>
-    <div class="web-tier">
-      <div class="tier-name">Custom Web App</div>
-      <div class="tier-price">TBD</div>
-      <div class="tier-price-note">custom quote</div>
-      <ul class="tier-features">
-        <li>Fully custom build</li>
-        <li>Booking systems</li>
-        <li>Client portals</li>
-        <li>Dashboards & tools</li>
-        <li>API integrations</li>
-        <li>Ongoing dev support</li>
-      </ul>
-      <a href="#contact" class="tier-btn">Let's Talk</a>
-    </div>
-  </div>
-</section>
 
-<div class="divider"></div>
+    <!-- OUTREACH -->
+    <div id="tab-outreach" class="section">
+      <div class="card">
+        <div class="card-title">Generate outreach messages</div>
+        <div class="form-grid">
+          <div class="field"><label>Business name</label><input type="text" id="biz-name" placeholder="e.g. La Panadería" /></div>
+          <div class="field">
+            <label>Business type</label>
+            <select id="biz-type">
+              <option value="">Select type...</option>
+              <option>Restaurant</option><option>Taco shop</option><option>Bakery / cafe</option>
+              <option>Bar / cocktail bar</option><option>Food truck</option><option>Brunch spot</option>
+              <option>BBQ spot</option><option>Brewery / taproom</option><option>Event venue</option>
+              <option>Other local business</option>
+            </select>
+          </div>
+          <div class="field"><label>Neighborhood / area</label><input type="text" id="biz-area" placeholder="e.g. Southtown, Pearl, NW SA" /></div>
+          <div class="field"><label>Hook (optional)</label><input type="text" id="biz-hook" placeholder="e.g. new menu, grand opening" /></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <div class="field-label">Platform</div>
+          <div class="platform-row">
+            <button class="plat-btn active" id="btn-ig" onclick="setPlatform('Instagram DM','btn-ig')"><i class="ti ti-brand-instagram"></i> Instagram DM</button>
+            <button class="plat-btn" id="btn-fb" onclick="setPlatform('Facebook DM','btn-fb')"><i class="ti ti-brand-facebook"></i> Facebook DM</button>
+            <button class="plat-btn" id="btn-email" onclick="setPlatform('Email','btn-email')"><i class="ti ti-mail"></i> Email</button>
+          </div>
+        </div>
+        <div id="outreach-error" class="form-error" style="display:none;"></div>
+        <button class="gen-btn" id="gen-btn" onclick="generatePitch()"><i class="ti ti-wand"></i> Generate messages</button>
+        <div class="msg-grid">
+          <div class="msg-box">
+            <div class="msg-box-head"><span class="msg-box-label">First message</span><button class="copy-btn" onclick="copyMsg('pitch-text', this)"><i class="ti ti-copy"></i> Copy</button></div>
+            <div class="msg-text msg-placeholder" id="pitch-text">Fill in the form and hit generate.</div>
+          </div>
+          <div class="msg-box">
+            <div class="msg-box-head"><span class="msg-box-label">Follow-up (3–5 days later)</span><button class="copy-btn" onclick="copyMsg('followup-text', this)"><i class="ti ti-copy"></i> Copy</button></div>
+            <div class="msg-text msg-placeholder" id="followup-text">Your follow-up will appear here.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Outreach log</div>
+        <div class="row"><div><div class="row-name">Kotka y Chucho</div><div class="row-sub">Bakery / Southtown — sent today</div></div><span class="badge badge-sent">Sent</span></div>
+        <div class="row"><div><div class="row-name">The Friendly Spot</div><div class="row-sub">Bar / Southtown — sent 3 days ago</div></div><span class="badge badge-followup">Follow up</span></div>
+        <div class="row"><div><div class="row-name">Panadería Muñoz</div><div class="row-sub">Bakery / West Side — sent 5 days ago</div></div><span class="badge badge-followup">Follow up</span></div>
+        <div class="row"><div><div class="row-name">Rebelle</div><div class="row-sub">Restaurant / Pearl — replied, interested</div></div><span class="badge badge-replied">Replied</span></div>
+      </div>
+    </div>
 
-<!-- ABOUT -->
-<div class="about-strip" id="about">
-  <div class="about-inner">
-    <div class="about-quote">
-      "Built for <em>Real Brands</em>, in Real Spaces."
+    <!-- LEADS -->
+    <div id="tab-leads" class="section">
+      <div class="pipeline">
+        <div class="pipeline-col"><div class="pipeline-head">Cold <span class="pipeline-count">3</span></div>
+          <div class="lead-card"><div class="lead-name">Kotka y Chucho</div><div class="lead-meta">Bakery / Southtown</div></div>
+          <div class="lead-card"><div class="lead-name">The Friendly Spot</div><div class="lead-meta">Bar / Southtown</div></div>
+          <div class="lead-card"><div class="lead-name">Panadería Muñoz</div><div class="lead-meta">Bakery / West Side</div></div>
+        </div>
+        <div class="pipeline-col"><div class="pipeline-head">Warm <span class="pipeline-count">2</span></div>
+          <div class="lead-card"><div class="lead-name">Rebelle</div><div class="lead-meta">Restaurant / Pearl</div></div>
+          <div class="lead-card"><div class="lead-name">Rosella Coffee</div><div class="lead-meta">Cafe / Southtown</div></div>
+        </div>
+        <div class="pipeline-col"><div class="pipeline-head">Negotiating <span class="pipeline-count">1</span></div>
+          <div class="lead-card"><div class="lead-name">Local Yoke</div><div class="lead-meta">Brunch / Alamo Heights</div></div>
+        </div>
+        <div class="pipeline-col"><div class="pipeline-head">Booked <span class="pipeline-count">1</span></div>
+          <div class="lead-card"><div class="lead-name">Battalion</div><div class="lead-meta">Italian / Southtown</div></div>
+        </div>
+      </div>
     </div>
-    <div class="about-text">
-      <p>Curbside Social Co. is a San Antonio-based video production and digital marketing company run by Rob Galvan. We work with local restaurants, businesses, and brands that want content that actually looks like them.</p>
-      <p>Every shoot is on-location. Every edit is built for the platform. No stock footage, no generic templates — just real work for real places.</p>
+
+    <!-- PROJECTS -->
+    <div id="tab-projects" class="section">
+      <div class="card">
+        <div class="card-title">Active projects</div>
+        <div class="row"><div><div class="row-name">Battalion — 3 reels</div><div class="row-sub">Reel 1 scheduled Friday noon / Reels 2 & 3 in edit</div></div><span class="badge badge-editing">In progress</span></div>
+        <div class="row"><div><div class="row-name">Local Yoke — 3 reels</div><div class="row-sub">Shoot done / editing / due Saturday</div></div><span class="badge badge-editing">Editing</span></div>
+        <div class="row"><div><div class="row-name">Tiki Spot — 3 reels</div><div class="row-sub">All delivered</div></div><span class="badge badge-delivered">Delivered</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Deliverables — Battalion</div>
+        <div class="checklist-item done" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Shoot completed</span></div>
+        <div class="checklist-item done" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Reel 1 — collab post edited & scheduled</span></div>
+        <div class="checklist-item" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Reel 2 — client copy editing</span></div>
+        <div class="checklist-item" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Reel 3 — client copy editing</span></div>
+        <div class="checklist-item" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Deliver reels 2 & 3 to client</span></div>
+      </div>
     </div>
+
+    <!-- CALENDAR -->
+    <div id="tab-calendar" class="section">
+      <div class="card">
+        <div class="card-title">May 2026</div>
+        <div class="cal-header">
+          <div class="cal-day-head">Sun</div><div class="cal-day-head">Mon</div><div class="cal-day-head">Tue</div>
+          <div class="cal-day-head">Wed</div><div class="cal-day-head">Thu</div><div class="cal-day-head">Fri</div><div class="cal-day-head">Sat</div>
+        </div>
+        <div class="cal-grid">
+          <div class="cal-day"><div class="cal-num">25</div></div>
+          <div class="cal-day"><div class="cal-num">26</div></div>
+          <div class="cal-day"><div class="cal-num">27</div></div>
+          <div class="cal-day"><div class="cal-num">28</div><div class="cal-event ev-outreach">Outreach</div></div>
+          <div class="cal-day today"><div class="cal-num today-num">29</div><div class="cal-event ev-edit">Edit Yoke</div></div>
+          <div class="cal-day"><div class="cal-num">30</div><div class="cal-event ev-post">Battalion live</div></div>
+          <div class="cal-day"><div class="cal-num">31</div><div class="cal-event ev-edit">Deliver Yoke</div></div>
+          <div class="cal-day"><div class="cal-num">1</div></div>
+          <div class="cal-day"><div class="cal-num">2</div><div class="cal-event ev-shoot">Shoot?</div></div>
+          <div class="cal-day"><div class="cal-num">3</div></div>
+          <div class="cal-day"><div class="cal-num">4</div></div>
+          <div class="cal-day"><div class="cal-num">5</div></div>
+          <div class="cal-day"><div class="cal-num">6</div><div class="cal-event ev-post">CSS post</div></div>
+          <div class="cal-day"><div class="cal-num">7</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div id="tab-clients" class="section">
+      <div class="client-grid">
+        <div class="client-card">
+          <div class="client-top"><div class="client-avatar" style="background:var(--green-bg);color:var(--green-text);">BA</div><div><div class="client-name">Battalion</div><div class="client-type">Italian restaurant / Southtown</div></div></div>
+          <div class="client-row"><span class="client-row-label">Project</span><span class="client-row-val">3 reels — in progress</span></div>
+          <div class="client-row"><span class="client-row-label">Value</span><span class="client-row-val">$150</span></div>
+          <div class="client-row"><span class="client-row-label">Contact</span><span class="client-row-val">Instagram DM</span></div>
+          <div class="client-row"><span class="client-row-label">Status</span><span class="client-row-val"><span class="badge badge-active">Active</span></span></div>
+        </div>
+        <div class="client-card">
+          <div class="client-top"><div class="client-avatar" style="background:var(--amber-bg);color:var(--amber-text);">TS</div><div><div class="client-name">Tiki Spot</div><div class="client-type">Tiki bar / San Antonio</div></div></div>
+          <div class="client-row"><span class="client-row-label">Project</span><span class="client-row-val">3 reels — delivered</span></div>
+          <div class="client-row"><span class="client-row-label">Value</span><span class="client-row-val">$150</span></div>
+          <div class="client-row"><span class="client-row-label">Contact</span><span class="client-row-val">Instagram DM</span></div>
+          <div class="client-row"><span class="client-row-label">Status</span><span class="client-row-val"><span class="badge badge-complete">Complete</span></span></div>
+        </div>
+        <div class="client-card">
+          <div class="client-top"><div class="client-avatar" style="background:var(--purple-bg);color:var(--purple-text);">LY</div><div><div class="client-name">Local Yoke</div><div class="client-type">Brunch / Alamo Heights</div></div></div>
+          <div class="client-row"><span class="client-row-label">Project</span><span class="client-row-val">3 reels — editing</span></div>
+          <div class="client-row"><span class="client-row-label">Value</span><span class="client-row-val">$150</span></div>
+          <div class="client-row"><span class="client-row-label">Contact</span><span class="client-row-val">Instagram DM</span></div>
+          <div class="client-row"><span class="client-row-label">Status</span><span class="client-row-val"><span class="badge badge-editing">In progress</span></span></div>
+        </div>
+        <div class="add-client" onclick="alert('Add client — coming soon!')">
+          <i class="ti ti-plus"></i><span>Add client</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
-
-<!-- CTA -->
-<div class="cta-section" id="contact">
-  <h2 class="cta-title">Let's Work Together</h2>
-  <p class="cta-sub">Tell us about your business and we'll put together a package that fits.</p>
-  <a href="mailto:robgalvan@gmail.com" class="btn-primary">Send an Email</a>
-  <p class="cta-contact">or DM us on Instagram <a href="https://instagram.com/cssocialtx" target="_blank">@cssocialtx</a> &nbsp;·&nbsp; San Antonio, TX &nbsp;·&nbsp; 210.883.7567</p>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">Curbside Social Co.</div>
-  <p class="footer-text">© 2026 Curbside Social Co. — San Antonio, TX</p>
-  <ul class="footer-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#video">Video</a></li>
-    <li><a href="#web">Web</a></li>
-    <li><a href="dashboard/">Dashboard</a></li>
-  </ul>
-</footer>
-
-<script src="js/main.js"></script>
+<script src="js/tabs.js"></script>
+<script src="js/outreach.js"></script>
+<script src="js/projects.js"></script>
 </body>
 </html>
