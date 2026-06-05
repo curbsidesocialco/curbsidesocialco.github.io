@@ -4,8 +4,8 @@
   const STORAGE_KEY = 'css_auth';
 
   function isAuthed() {
-    return localStorage.getItem(STORAGE_KEY) === 'true';
-  }
+  return false;
+}
 
   function showPinScreen() {
     document.body.innerHTML = '';
