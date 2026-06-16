@@ -1,4 +1,6 @@
-// Outreach message generator — Anthropic API direct integration
+// Outreach message generator — calls Curbside Social Co. backend API
+
+const API_URL = 'https://api-production-eab8a.up.railway.app';
 
 let activePlatform = 'Instagram DM';
 
@@ -11,11 +13,14 @@ function setPlatform(platform, btnId) {
 }
 
 async function generatePitch() {
-  const name  = document.getElementById('biz-name').value.trim();
-  const type  = document.getElementById('biz-type').value;
-  const area  = document.getElementById('biz-area').value.trim();
-  const hook  = document.getElementById('biz-hook').value.trim();
-  const errEl = document.getElementById('outreach-error');
+  const name    = document.getElementById('biz-name').value.trim();
+  const type    = document.getElementById('biz-type').value;
+  const area    = document.getElementById('biz-area').value.trim();
+  const hook    = document.getElementById('biz-hook').value.trim();
+  const errEl   = document.getElementById('outreach-error');
+  const genBtn  = document.getElementById('gen-btn');
+  const pitchEl = document.getElementById('pitch-text');
+  const followupEl = document.getElementById('followup-text');
 
   errEl.style.display = 'none';
 
@@ -25,67 +30,23 @@ async function generatePitch() {
     return;
   }
 
-  const apiKey = localStorage.getItem('css_api_key');
-  if (!apiKey) {
-    errEl.textContent = 'No API key found. Go to the Settings tab and paste your Anthropic API key.';
-    errEl.style.display = 'block';
-    return;
-  }
-
-  const pitchEl    = document.getElementById('pitch-text');
-  const followupEl = document.getElementById('followup-text');
-  const genBtn     = document.getElementById('gen-btn');
-
-  pitchEl.classList.add('msg-placeholder');
-  pitchEl.textContent = 'Generating...';
-  followupEl.classList.add('msg-placeholder');
-  followupEl.textContent = 'Generating...';
   genBtn.disabled = true;
-  genBtn.textContent = 'Generating...';
-
-  const context = [
-    'Business name: ' + name,
-    'Type: ' + type,
-    area ? 'Area: ' + area + ', San Antonio TX' : 'Location: San Antonio TX',
-    hook ? 'Hook: ' + hook : ''
-  ].filter(Boolean).join('\n');
-
-  const prompt = `You are writing outreach messages for Rob Galvan, a San Antonio video creator and photographer. He runs Curbside Social Co. and shoots on Sony FX3 and Sony A7IV.
-
-His offer: $150 for 3 short-form video reels. One collab reel goes on his page highlighting the business, the business keeps 2 reels to post themselves. Good for a dish, product, or upcoming event.
-
-Platform: ${activePlatform}
-
-Business info:
-${context}
-
-Write two messages. Casual, like a real person texting. Short sentences. No em dashes. No hashtags. Sound local and genuine. Don't open with "Hey there" or anything generic.
-
-1. FIRST MESSAGE: Under 75 words. Mention the business by name. Sneak the offer in naturally, not as the opener.
-2. FOLLOW-UP: 2 sentences max. Super low-key. No pressure. Under 40 words.
-
-Respond ONLY with valid JSON, no markdown, no backticks:
-{"pitch":"...","followup":"..."}`;
+  genBtn.innerHTML = '<i class="ti ti-loader"></i> Generating...';
+  pitchEl.classList.add('msg-placeholder');
+  pitchEl.textContent = 'Writing your message...';
+  followupEl.classList.add('msg-placeholder');
+  followupEl.textContent = 'Writing follow-up...';
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(`${API_URL}/api/outreach`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 500,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, type, area, hook, platform: activePlatform })
     });
 
     if (!res.ok) {
       const err = await res.json();
-      errEl.textContent = 'API error: ' + (err.error?.message || res.status);
+      errEl.textContent = 'Error: ' + (err.error || res.status);
       errEl.style.display = 'block';
       pitchEl.textContent = '';
       followupEl.textContent = '';
@@ -93,17 +54,14 @@ Respond ONLY with valid JSON, no markdown, no backticks:
     }
 
     const data = await res.json();
-    const raw  = data.content.map(i => i.text || '').join('').trim();
-    const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();
-    const parsed = JSON.parse(clean);
 
     pitchEl.classList.remove('msg-placeholder');
-    pitchEl.textContent = parsed.pitch;
+    pitchEl.textContent = data.pitch;
     followupEl.classList.remove('msg-placeholder');
-    followupEl.textContent = parsed.followup;
+    followupEl.textContent = data.followup;
 
-  } catch (e) {
-    errEl.textContent = 'Error: ' + e.message;
+  } catch (err) {
+    errEl.textContent = 'Could not reach server. Check your connection and try again.';
     errEl.style.display = 'block';
     pitchEl.textContent = '';
     followupEl.textContent = '';
