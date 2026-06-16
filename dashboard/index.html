@@ -65,7 +65,7 @@
       </div>
     </div>
 
-    <!-- OUTREACH -->
+        <!-- OUTREACH -->
     <div id="tab-outreach" class="section">
       <div class="card">
         <div class="card-title">Generate outreach messages</div>
@@ -83,6 +83,31 @@
           </div>
           <div class="field"><label>Neighborhood / area</label><input type="text" id="biz-area" placeholder="e.g. Southtown, Pearl, NW SA" /></div>
           <div class="field"><label>Hook (optional)</label><input type="text" id="biz-hook" placeholder="e.g. new menu, grand opening" /></div>
+          <div class="field">
+            <label>Relationship</label>
+            <select id="biz-relationship">
+              <option value="new">New lead — never contacted</option>
+              <option value="contacted">Contacted before — no deal yet</option>
+              <option value="past_client">Past client — worked together before</option>
+              <option value="active_client">Active client — currently working together</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Offer type</label>
+            <select id="biz-offer" onchange="togglePriceField()">
+              <option value="3reels">3 Reels package</option>
+              <option value="cinematic">Cinematic / brand film</option>
+              <option value="trial_rate">Trial rate (first-timer)</option>
+              <option value="retainer">Monthly retainer</option>
+              <option value="free_intro">Free intro reel</option>
+              <option value="custom">Custom</option>
+              <option value="none">No offer — just open conversation</option>
+            </select>
+          </div>
+          <div class="field" id="price-field-wrap">
+            <label>Price (optional)</label>
+            <input type="text" id="biz-price" placeholder="e.g. $150, $500, $200/mo" />
+          </div>
         </div>
         <div style="margin-bottom:14px;">
           <div class="field-label">Platform</div>
@@ -104,15 +129,19 @@
             <div class="msg-text msg-placeholder" id="followup-text">Your follow-up will appear here.</div>
           </div>
         </div>
+        <div id="log-btn-wrap" style="display:none;margin-top:12px;text-align:right;">
+          <button id="log-btn" onclick="logOutreach()" style="font-size:12px;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-family:'DM Sans',sans-serif;">Log this outreach</button>
+        </div>
       </div>
+
       <div class="card">
         <div class="card-title">Outreach log</div>
-        <div class="row"><div><div class="row-name">Kotka y Chucho</div><div class="row-sub">Bakery / Southtown — sent today</div></div><span class="badge badge-sent">Sent</span></div>
-        <div class="row"><div><div class="row-name">The Friendly Spot</div><div class="row-sub">Bar / Southtown — sent 3 days ago</div></div><span class="badge badge-followup">Follow up</span></div>
-        <div class="row"><div><div class="row-name">Panadería Muñoz</div><div class="row-sub">Bakery / West Side — sent 5 days ago</div></div><span class="badge badge-followup">Follow up</span></div>
-        <div class="row"><div><div class="row-name">Rebelle</div><div class="row-sub">Restaurant / Pearl — replied, interested</div></div><span class="badge badge-replied">Replied</span></div>
+        <div id="outreach-log-entries">
+          <p style="font-size:13px;color:var(--text-3);padding:12px 0;">Loading...</p>
+        </div>
       </div>
     </div>
+
 
     <!-- LEADS -->
     <div id="tab-leads" class="section">
