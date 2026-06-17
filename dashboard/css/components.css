@@ -197,6 +197,9 @@
 .log-btn:hover { opacity: 0.9; }
 .log-btn:disabled { opacity: 0.6; cursor: default; }
 .log-client-tag { color: var(--text-2); }
+.audit-save-msg { font-size: 12px; margin-top: 10px; text-align: right; }
+.audit-save-msg.ok { color: var(--green-text); }
+.audit-save-msg.err { color: var(--red-text); }
 
 /* ---- Site audit ---- */
 .audit-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }

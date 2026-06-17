@@ -158,6 +158,22 @@ function renderClientDetail(c) {
       </div>`;
   }).join('') : '<p style="font-size:13px;color:var(--text-3);padding:8px 0;">No outreach linked to this client yet. Generate a message in the Outreach tab and link it here.</p>';
 
+  const audits = c.audits || [];
+  const auditHistory = audits.length ? audits.map(a => {
+    const date = new Date(a.created_at).toLocaleDateString();
+    const aBadge = (a.score >= 7) ? 'badge-delivered' : 'badge-followup'; // green when strong, amber otherwise, never red
+    let host = a.url || 'site';
+    try { host = new URL(a.url).hostname.replace(/^www\./, ''); } catch (e) {}
+    return `
+      <div class="row">
+        <div style="flex:1;min-width:0;padding-right:10px;">
+          <div class="row-name">${escapeHtml(host)} · ${date}</div>
+          <div class="row-sub">${escapeHtml(a.opportunity || '')}</div>
+        </div>
+        <span class="badge ${aBadge}">${a.score}/${a.total}</span>
+      </div>`;
+  }).join('') : '<p style="font-size:13px;color:var(--text-3);padding:8px 0;">No audits saved for this client yet. Run one in the Audit tab and save it here.</p>';
+
   document.getElementById('client-detail').innerHTML = `
     <div class="detail-bar">
       <button class="client-cancel-btn" onclick="backToClients()"><i class="ti ti-arrow-left"></i> Back to clients</button>
@@ -178,6 +194,10 @@ function renderClientDetail(c) {
     <div class="card">
       <div class="card-title">Outreach history</div>
       ${history}
+    </div>
+    <div class="card">
+      <div class="card-title">Audit history</div>
+      ${auditHistory}
     </div>`;
 }
 

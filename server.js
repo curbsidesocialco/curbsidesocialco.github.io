@@ -48,6 +48,20 @@ async function initDb() {
       ALTER TABLE outreach
       ADD COLUMN IF NOT EXISTS client_id INTEGER REFERENCES clients(id) ON DELETE SET NULL
     `);
+    // Saved audits always belong to a client; ON DELETE CASCADE clears them with the client.
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS audits (
+        id SERIAL PRIMARY KEY,
+        client_id INTEGER REFERENCES clients(id) ON DELETE CASCADE,
+        url TEXT,
+        score INTEGER,
+        total INTEGER,
+        wins INTEGER,
+        opportunity TEXT,
+        findings JSONB,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
     console.log('Database ready');
   } catch (err) {
     console.error('DB init error:', err);
@@ -254,7 +268,11 @@ app.get('/api/clients/:id', async (req, res) => {
       'SELECT * FROM outreach WHERE client_id = $1 ORDER BY created_at DESC',
       [id]
     );
-    res.json({ ...clientRes.rows[0], outreach: outreachRes.rows });
+    const auditsRes = await pool.query(
+      'SELECT * FROM audits WHERE client_id = $1 ORDER BY created_at DESC',
+      [id]
+    );
+    res.json({ ...clientRes.rows[0], outreach: outreachRes.rows, audits: auditsRes.rows });
   } catch (err) {
     console.error('Client detail error:', err);
     res.status(500).json({ error: 'Failed to load client' });
@@ -289,6 +307,24 @@ app.delete('/api/clients/:id', async (req, res) => {
   } catch (err) {
     console.error('Client delete error:', err);
     res.status(500).json({ error: 'Failed to delete client' });
+  }
+});
+
+// ---- Save an audit to a client ----
+app.post('/api/audits', async (req, res) => {
+  const { client_id, url, score, total, wins, opportunity, findings } = req.body;
+  if (!client_id) return res.status(400).json({ error: 'A client is required to save an audit' });
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO audits (client_id, url, score, total, wins, opportunity, findings)
+       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+      [client_id, url, score, total, wins, opportunity, JSON.stringify(findings || [])]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Audit save error:', err);
+    res.status(500).json({ error: 'Failed to save audit' });
   }
 });
 

@@ -202,6 +202,15 @@
           <div class="card-title">Wins and easy fixes</div>
           <div id="audit-findings"></div>
         </div>
+
+        <div class="card" id="audit-save-card">
+          <div class="log-link-row">
+            <label for="audit-client">Save this audit to</label>
+            <select id="audit-client"></select>
+            <button id="audit-save-btn" class="log-btn" onclick="saveAudit()">Save audit</button>
+          </div>
+          <div id="audit-save-msg" class="audit-save-msg" style="display:none;"></div>
+        </div>
       </div>
     </div>
 
