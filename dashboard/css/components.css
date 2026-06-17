@@ -156,6 +156,28 @@
 .add-client i { font-size: 22px; }
 .add-client span { font-size: 13px; }
 
+.client-actions {
+  display: flex; gap: 8px; margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.client-actions button {
+  font-family: 'DM Sans', sans-serif; font-size: 11px; padding: 5px 10px;
+  border: 1px solid var(--border-med); border-radius: var(--radius-sm);
+  background: none; color: var(--text-2); cursor: pointer;
+  display: flex; align-items: center; gap: 4px; transition: all 0.15s;
+}
+.client-actions button:hover { color: var(--text); border-color: var(--accent); }
+
+.client-notes-field { grid-column: 1 / -1; }
+.client-form-actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
+.client-save-btn { width: auto; margin-bottom: 0; padding: 11px 20px; }
+.client-cancel-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 11px 18px;
+  border: 1px solid var(--border-med); border-radius: var(--radius-sm);
+  background: none; color: var(--text-2); cursor: pointer; transition: all 0.15s;
+}
+.client-cancel-btn:hover { color: var(--text); border-color: var(--accent); }
+
 /* ---- Site audit ---- */
 .audit-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
 .audit-card {

@@ -248,11 +248,40 @@
 
     <!-- CLIENTS -->
     <div id="tab-clients" class="section">
-      <div class="client-grid">
-        <div class="add-client" onclick="alert('Add client — coming soon!')">
-          <i class="ti ti-plus"></i><span>Add client</span>
+      <div class="card" id="client-form-card" style="display:none;">
+        <div class="card-title" id="client-form-title">Add a client</div>
+        <div class="form-grid">
+          <div class="field"><label>Business name</label><input type="text" id="client-business" placeholder="e.g. Rosella Coffee" /></div>
+          <div class="field">
+            <label>Business type</label>
+            <select id="client-type">
+              <option value="">Select type...</option>
+              <option>Restaurant</option><option>Taco shop</option><option>Bakery / cafe</option>
+              <option>Bar / cocktail bar</option><option>Food truck</option><option>Brunch spot</option>
+              <option>BBQ spot</option><option>Brewery / taproom</option><option>Event venue</option>
+              <option>Other local business</option>
+            </select>
+          </div>
+          <div class="field"><label>Neighborhood / area</label><input type="text" id="client-area" placeholder="e.g. Southtown, Pearl" /></div>
+          <div class="field"><label>Contact</label><input type="text" id="client-contact" placeholder="e.g. Instagram DM, email, phone" /></div>
+          <div class="field">
+            <label>Status</label>
+            <select id="client-status">
+              <option value="lead">Lead</option>
+              <option value="active">Active</option>
+              <option value="past">Past client</option>
+            </select>
+          </div>
+          <div class="field client-notes-field"><label>Notes</label><input type="text" id="client-notes" placeholder="Anything worth remembering" /></div>
+        </div>
+        <div id="client-error" class="form-error" style="display:none;"></div>
+        <div class="client-form-actions">
+          <button class="client-cancel-btn" onclick="hideClientForm()">Cancel</button>
+          <button class="gen-btn client-save-btn" id="client-save-btn" onclick="saveClient()"><i class="ti ti-check"></i> Save client</button>
         </div>
       </div>
+
+      <div class="client-grid" id="clients-grid"></div>
     </div>
 
   </div>
@@ -260,6 +289,7 @@
 <script src="/dashboard/js/tabs.js"></script>
 <script src="/dashboard/js/outreach.js"></script>
 <script src="/dashboard/js/audit.js"></script>
+<script src="/dashboard/js/clients.js"></script>
 <script src="/dashboard/js/projects.js"></script>
 <script src="/dashboard/js/pin.js"></script>
 </body>
