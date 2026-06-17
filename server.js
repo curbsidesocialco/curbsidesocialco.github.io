@@ -244,6 +244,23 @@ app.get('/api/clients', async (req, res) => {
   }
 });
 
+// ---- Get one client with their history ----
+app.get('/api/clients/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const clientRes = await pool.query('SELECT * FROM clients WHERE id = $1', [id]);
+    if (!clientRes.rows.length) return res.status(404).json({ error: 'Client not found' });
+    const outreachRes = await pool.query(
+      'SELECT * FROM outreach WHERE client_id = $1 ORDER BY created_at DESC',
+      [id]
+    );
+    res.json({ ...clientRes.rows[0], outreach: outreachRes.rows });
+  } catch (err) {
+    console.error('Client detail error:', err);
+    res.status(500).json({ error: 'Failed to load client' });
+  }
+});
+
 // ---- Update a client ----
 app.patch('/api/clients/:id', async (req, res) => {
   const { id } = req.params;
