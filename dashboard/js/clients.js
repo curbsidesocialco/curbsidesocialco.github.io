@@ -174,6 +174,30 @@ function renderClientDetail(c) {
       </div>`;
   }).join('') : '<p style="font-size:13px;color:var(--text-3);padding:8px 0;">No audits saved for this client yet. Run one in the Audit tab and save it here.</p>';
 
+  const projects = c.projects || [];
+  let totalVal = 0, collectedVal = 0;
+  projects.forEach(p => { totalVal += Number(p.amount || 0); if (p.paid) collectedVal += Number(p.amount || 0); });
+  const projBadge = { booked: 'badge-scheduled', shooting: 'badge-followup', editing: 'badge-editing', delivered: 'badge-delivered' };
+  const dollars = n => '$' + Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+  const projectHistory = projects.length ? projects.map(p => {
+    const badge = projBadge[p.status] || 'badge-scheduled';
+    const amt = p.amount ? ' · ' + dollars(p.amount) : '';
+    return `
+      <div class="row">
+        <div style="flex:1;min-width:0;padding-right:10px;">
+          <div class="row-name">${escapeHtml(p.title || 'Project')}${amt}</div>
+          <div class="row-sub">${escapeHtml(p.package || '')}</div>
+        </div>
+        <div class="project-row-actions">
+          <span class="badge ${p.paid ? 'badge-delivered' : 'badge-followup'}">${p.paid ? 'Paid' : 'Unpaid'}</span>
+          <span class="badge ${badge}">${escapeHtml(p.status || 'booked')}</span>
+        </div>
+      </div>`;
+  }).join('') : '<p style="font-size:13px;color:var(--text-3);padding:8px 0;">No projects yet. Add one in the Projects tab.</p>';
+  const projectTotal = projects.length
+    ? `<div class="row"><div class="row-name">Total</div><div style="font-weight:600;">${dollars(totalVal)} <span style="color:var(--text-2);font-weight:400;">(collected ${dollars(collectedVal)})</span></div></div>`
+    : '';
+
   document.getElementById('client-detail').innerHTML = `
     <div class="detail-bar">
       <button class="client-cancel-btn" onclick="backToClients()"><i class="ti ti-arrow-left"></i> Back to clients</button>
@@ -190,6 +214,11 @@ function renderClientDetail(c) {
         <button onclick="editClient(${c.id})"><i class="ti ti-pencil"></i> Edit</button>
         <button onclick="deleteClient(${c.id})"><i class="ti ti-trash"></i> Delete</button>
       </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Projects</div>
+      ${projectHistory}
+      ${projectTotal}
     </div>
     <div class="card">
       <div class="card-title">Outreach history</div>

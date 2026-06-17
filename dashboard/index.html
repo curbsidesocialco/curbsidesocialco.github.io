@@ -43,25 +43,19 @@
     <!-- OVERVIEW -->
     <div id="tab-overview" class="section">
       <div class="metrics">
-        <div class="metric"><div class="metric-label">Active leads</div><div class="metric-value">7</div><div class="metric-sub">+3 this week</div></div>
-        <div class="metric"><div class="metric-label">In progress</div><div class="metric-value">3</div><div class="metric-sub">2 due this week</div></div>
-        <div class="metric"><div class="metric-label">Revenue / month</div><div class="metric-value">$450</div><div class="metric-sub">3 bookings</div></div>
-        <div class="metric"><div class="metric-label">Reels delivered</div><div class="metric-value">11</div><div class="metric-sub">this month</div></div>
+        <div class="metric"><div class="metric-label">Leads</div><div class="metric-value" id="ov-leads">0</div><div class="metric-sub">to chase</div></div>
+        <div class="metric"><div class="metric-label">Active clients</div><div class="metric-value" id="ov-active">0</div><div class="metric-sub">working with</div></div>
+        <div class="metric"><div class="metric-label">Collected</div><div class="metric-value" id="ov-collected">$0</div><div class="metric-sub">paid projects</div></div>
+        <div class="metric"><div class="metric-label">Outstanding</div><div class="metric-value" id="ov-outstanding">$0</div><div class="metric-sub">still owed</div></div>
       </div>
       <div class="two-col">
         <div class="card">
           <div class="card-title">Recent activity</div>
-          <div class="row"><div><div class="row-name">Battalion</div><div class="row-sub">Reel scheduled Friday noon</div></div><span class="badge badge-scheduled">Scheduled</span></div>
-          <div class="row"><div><div class="row-name">Tiki Spot</div><div class="row-sub">3 reels delivered</div></div><span class="badge badge-delivered">Delivered</span></div>
-          <div class="row"><div><div class="row-name">Kotka y Chucho</div><div class="row-sub">DM sent today</div></div><span class="badge badge-sent">Sent</span></div>
-          <div class="row"><div><div class="row-name">Local Yoke</div><div class="row-sub">Editing in progress</div></div><span class="badge badge-editing">Editing</span></div>
+          <div id="overview-recent"><p style="font-size:13px;color:var(--text-3);padding:8px 0;">Loading...</p></div>
         </div>
         <div class="card">
-          <div class="card-title">This week</div>
-          <div class="row"><div><div class="row-name">Battalion reel goes live</div><div class="row-sub">Friday, 12:00 PM</div></div><i class="ti ti-calendar" style="color:var(--text-3);font-size:16px;"></i></div>
-          <div class="row"><div><div class="row-name">Follow up — 5 leads</div><div class="row-sub">No reply after 4+ days</div></div><i class="ti ti-send" style="color:var(--text-3);font-size:16px;"></i></div>
-          <div class="row"><div><div class="row-name">Deliver Local Yoke reels</div><div class="row-sub">Due Saturday</div></div><i class="ti ti-video" style="color:var(--text-3);font-size:16px;"></i></div>
-          <div class="row"><div><div class="row-name">Pitch 10 new spots</div><div class="row-sub">End of May goal</div></div><i class="ti ti-target" style="color:var(--text-3);font-size:16px;"></i></div>
+          <div class="card-title">Upcoming shoots</div>
+          <div id="overview-upcoming"><p style="font-size:13px;color:var(--text-3);padding:8px 0;">Loading...</p></div>
         </div>
       </div>
     </div>
@@ -150,22 +144,9 @@
 
     <!-- LEADS -->
     <div id="tab-leads" class="section">
-      <div class="pipeline">
-        <div class="pipeline-col"><div class="pipeline-head">Cold <span class="pipeline-count">3</span></div>
-          <div class="lead-card"><div class="lead-name">Kotka y Chucho</div><div class="lead-meta">Bakery / Southtown</div></div>
-          <div class="lead-card"><div class="lead-name">The Friendly Spot</div><div class="lead-meta">Bar / Southtown</div></div>
-          <div class="lead-card"><div class="lead-name">Panadería Muñoz</div><div class="lead-meta">Bakery / West Side</div></div>
-        </div>
-        <div class="pipeline-col"><div class="pipeline-head">Warm <span class="pipeline-count">2</span></div>
-          <div class="lead-card"><div class="lead-name">Rebelle</div><div class="lead-meta">Restaurant / Pearl</div></div>
-          <div class="lead-card"><div class="lead-name">Rosella Coffee</div><div class="lead-meta">Cafe / Southtown</div></div>
-        </div>
-        <div class="pipeline-col"><div class="pipeline-head">Negotiating <span class="pipeline-count">1</span></div>
-          <div class="lead-card"><div class="lead-name">Local Yoke</div><div class="lead-meta">Brunch / Alamo Heights</div></div>
-        </div>
-        <div class="pipeline-col"><div class="pipeline-head">Booked <span class="pipeline-count">1</span></div>
-          <div class="lead-card"><div class="lead-name">Battalion</div><div class="lead-meta">Italian / Southtown</div></div>
-        </div>
+      <div class="card">
+        <div class="card-title">Pipeline</div>
+        <p style="font-size:13px;color:var(--text-2);padding:8px 0;">A drag-and-drop pipeline view is coming soon. For now, your leads live in the <a href="#clients" style="color:var(--accent);font-weight:500;">Clients</a> tab, marked with the Lead status.</p>
       </div>
     </div>
 
@@ -216,46 +197,51 @@
 
     <!-- PROJECTS -->
     <div id="tab-projects" class="section">
-      <div class="card">
-        <div class="card-title">Active projects</div>
-        <div class="row"><div><div class="row-name">Battalion — 3 reels</div><div class="row-sub">Reel 1 scheduled Friday noon / Reels 2 & 3 in edit</div></div><span class="badge badge-editing">In progress</span></div>
-        <div class="row"><div><div class="row-name">Local Yoke — 3 reels</div><div class="row-sub">Shoot done / editing / due Saturday</div></div><span class="badge badge-editing">Editing</span></div>
-        <div class="row"><div><div class="row-name">Tiki Spot — 3 reels</div><div class="row-sub">All delivered</div></div><span class="badge badge-delivered">Delivered</span></div>
+      <div class="card" id="project-form-card" style="display:none;">
+        <div class="card-title" id="project-form-title">Add a project</div>
+        <div class="form-grid">
+          <div class="field"><label>Client</label><select id="project-client"></select></div>
+          <div class="field"><label>Title</label><input type="text" id="project-title" placeholder="e.g. 3 reels, brand film" /></div>
+          <div class="field">
+            <label>Package</label>
+            <select id="project-package">
+              <option value="">Select package...</option>
+              <option>3 reels</option><option>Cinematic</option><option>Landing page</option>
+              <option>Brochure site</option><option>Managed site</option><option>Retainer</option><option>Custom</option>
+            </select>
+          </div>
+          <div class="field"><label>Amount ($)</label><input type="number" id="project-amount" placeholder="e.g. 150" min="0" step="1" /></div>
+          <div class="field">
+            <label>Status</label>
+            <select id="project-status">
+              <option value="booked">Booked</option><option value="shooting">Shooting</option>
+              <option value="editing">Editing</option><option value="delivered">Delivered</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Paid</label>
+            <select id="project-paid"><option value="false">Not yet</option><option value="true">Paid</option></select>
+          </div>
+          <div class="field"><label>Shoot date</label><input type="date" id="project-shoot-date" /></div>
+        </div>
+        <div id="project-error" class="form-error" style="display:none;"></div>
+        <div class="client-form-actions">
+          <button class="client-cancel-btn" onclick="hideProjectForm()">Cancel</button>
+          <button class="gen-btn client-save-btn" id="project-save-btn" onclick="saveProject()"><i class="ti ti-check"></i> Save project</button>
+        </div>
       </div>
+
       <div class="card">
-        <div class="card-title">Deliverables — Battalion</div>
-        <div class="checklist-item done" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Shoot completed</span></div>
-        <div class="checklist-item done" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Reel 1 — collab post edited & scheduled</span></div>
-        <div class="checklist-item" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Reel 2 — client copy editing</span></div>
-        <div class="checklist-item" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Reel 3 — client copy editing</span></div>
-        <div class="checklist-item" onclick="toggleCheck(this)"><div class="check-circle"></div><span class="check-label">Deliver reels 2 & 3 to client</span></div>
+        <div class="card-title">Projects</div>
+        <div id="projects-list"></div>
       </div>
     </div>
 
     <!-- CALENDAR -->
     <div id="tab-calendar" class="section">
       <div class="card">
-        <div class="card-title">May 2026</div>
-        <div class="cal-header">
-          <div class="cal-day-head">Sun</div><div class="cal-day-head">Mon</div><div class="cal-day-head">Tue</div>
-          <div class="cal-day-head">Wed</div><div class="cal-day-head">Thu</div><div class="cal-day-head">Fri</div><div class="cal-day-head">Sat</div>
-        </div>
-        <div class="cal-grid">
-          <div class="cal-day"><div class="cal-num">25</div></div>
-          <div class="cal-day"><div class="cal-num">26</div></div>
-          <div class="cal-day"><div class="cal-num">27</div></div>
-          <div class="cal-day"><div class="cal-num">28</div><div class="cal-event ev-outreach">Outreach</div></div>
-          <div class="cal-day today"><div class="cal-num today-num">29</div><div class="cal-event ev-edit">Edit Yoke</div></div>
-          <div class="cal-day"><div class="cal-num">30</div><div class="cal-event ev-post">Battalion live</div></div>
-          <div class="cal-day"><div class="cal-num">31</div><div class="cal-event ev-edit">Deliver Yoke</div></div>
-          <div class="cal-day"><div class="cal-num">1</div></div>
-          <div class="cal-day"><div class="cal-num">2</div><div class="cal-event ev-shoot">Shoot?</div></div>
-          <div class="cal-day"><div class="cal-num">3</div></div>
-          <div class="cal-day"><div class="cal-num">4</div></div>
-          <div class="cal-day"><div class="cal-num">5</div></div>
-          <div class="cal-day"><div class="cal-num">6</div><div class="cal-event ev-post">CSS post</div></div>
-          <div class="cal-day"><div class="cal-num">7</div></div>
-        </div>
+        <div class="card-title">Content calendar</div>
+        <p style="font-size:13px;color:var(--text-2);padding:8px 0;">A real content and shoot calendar is coming soon. For now, upcoming shoots show on the <a href="#overview" style="color:var(--accent);font-weight:500;">Overview</a>.</p>
       </div>
     </div>
 
@@ -305,6 +291,7 @@
 <script src="/dashboard/js/audit.js"></script>
 <script src="/dashboard/js/clients.js"></script>
 <script src="/dashboard/js/projects.js"></script>
+<script src="/dashboard/js/overview.js"></script>
 <script src="/dashboard/js/pin.js"></script>
 </body>
 </html>

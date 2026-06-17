@@ -62,6 +62,20 @@ async function initDb() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `);
+    // Real projects/jobs carry the money; deleting a client removes their projects.
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS projects (
+        id SERIAL PRIMARY KEY,
+        client_id INTEGER REFERENCES clients(id) ON DELETE CASCADE,
+        title TEXT,
+        package TEXT,
+        amount NUMERIC(10,2),
+        status TEXT DEFAULT 'booked',
+        paid BOOLEAN DEFAULT false,
+        shoot_date DATE,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
     console.log('Database ready');
   } catch (err) {
     console.error('DB init error:', err);
@@ -272,7 +286,11 @@ app.get('/api/clients/:id', async (req, res) => {
       'SELECT * FROM audits WHERE client_id = $1 ORDER BY created_at DESC',
       [id]
     );
-    res.json({ ...clientRes.rows[0], outreach: outreachRes.rows, audits: auditsRes.rows });
+    const projectsRes = await pool.query(
+      'SELECT * FROM projects WHERE client_id = $1 ORDER BY created_at DESC',
+      [id]
+    );
+    res.json({ ...clientRes.rows[0], outreach: outreachRes.rows, audits: auditsRes.rows, projects: projectsRes.rows });
   } catch (err) {
     console.error('Client detail error:', err);
     res.status(500).json({ error: 'Failed to load client' });
@@ -325,6 +343,109 @@ app.post('/api/audits', async (req, res) => {
   } catch (err) {
     console.error('Audit save error:', err);
     res.status(500).json({ error: 'Failed to save audit' });
+  }
+});
+
+// ---- Create a project ----
+app.post('/api/projects', async (req, res) => {
+  const { client_id, title, package: pkg, amount, status, paid, shoot_date } = req.body;
+  if (!client_id) return res.status(400).json({ error: 'A client is required for a project' });
+  try {
+    const result = await pool.query(
+      `INSERT INTO projects (client_id, title, package, amount, status, paid, shoot_date)
+       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+      [client_id, title, pkg, amount || null, status || 'booked', paid || false, shoot_date || null]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Project create error:', err);
+    res.status(500).json({ error: 'Failed to create project' });
+  }
+});
+
+// ---- Get all projects ----
+app.get('/api/projects', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT projects.*, clients.business AS client_name
+       FROM projects LEFT JOIN clients ON projects.client_id = clients.id
+       ORDER BY projects.created_at DESC`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Project fetch error:', err);
+    res.status(500).json({ error: 'Failed to fetch projects' });
+  }
+});
+
+// ---- Update a project ----
+app.patch('/api/projects/:id', async (req, res) => {
+  const { id } = req.params;
+  const { client_id, title, package: pkg, amount, status, paid, shoot_date } = req.body;
+  if (!client_id) return res.status(400).json({ error: 'A client is required for a project' });
+  try {
+    const result = await pool.query(
+      `UPDATE projects SET client_id=$1, title=$2, package=$3, amount=$4, status=$5, paid=$6, shoot_date=$7
+       WHERE id=$8 RETURNING *`,
+      [client_id, title, pkg, amount || null, status || 'booked', paid || false, shoot_date || null, id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Project update error:', err);
+    res.status(500).json({ error: 'Failed to update project' });
+  }
+});
+
+// ---- Delete a project ----
+app.delete('/api/projects/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await pool.query('DELETE FROM projects WHERE id = $1', [id]);
+    res.json({ deleted: true });
+  } catch (err) {
+    console.error('Project delete error:', err);
+    res.status(500).json({ error: 'Failed to delete project' });
+  }
+});
+
+// ---- Overview aggregates (live dashboard numbers) ----
+app.get('/api/overview', async (req, res) => {
+  try {
+    const [leads, active, collected, outstanding, recentOutreach, recentAudits, recentProjects, upcoming] = await Promise.all([
+      pool.query(`SELECT COUNT(*)::int AS n FROM clients WHERE status='lead'`),
+      pool.query(`SELECT COUNT(*)::int AS n FROM clients WHERE status='active'`),
+      pool.query(`SELECT COALESCE(SUM(amount),0) AS sum FROM projects WHERE paid=true`),
+      pool.query(`SELECT COALESCE(SUM(amount),0) AS sum FROM projects WHERE paid=false`),
+      pool.query(`SELECT business AS name, status, created_at FROM outreach ORDER BY created_at DESC LIMIT 6`),
+      pool.query(`SELECT clients.business AS name, audits.score, audits.total, audits.created_at
+                  FROM audits LEFT JOIN clients ON audits.client_id=clients.id
+                  ORDER BY audits.created_at DESC LIMIT 6`),
+      pool.query(`SELECT clients.business AS name, projects.title, projects.status, projects.created_at
+                  FROM projects LEFT JOIN clients ON projects.client_id=clients.id
+                  ORDER BY projects.created_at DESC LIMIT 6`),
+      pool.query(`SELECT clients.business AS name, projects.title, projects.shoot_date
+                  FROM projects LEFT JOIN clients ON projects.client_id=clients.id
+                  WHERE projects.shoot_date >= CURRENT_DATE
+                  ORDER BY projects.shoot_date ASC LIMIT 5`)
+    ]);
+
+    const recent = [];
+    recentOutreach.rows.forEach(r => recent.push({ kind: 'outreach', name: r.name, sub: 'Outreach', status: r.status, created_at: r.created_at }));
+    recentAudits.rows.forEach(r => recent.push({ kind: 'audit', name: r.name || 'Site audit', sub: 'Audit ' + r.score + '/' + r.total, status: null, created_at: r.created_at }));
+    recentProjects.rows.forEach(r => recent.push({ kind: 'project', name: r.name || 'Project', sub: r.title || 'Project', status: r.status, created_at: r.created_at }));
+    recent.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    res.json({
+      leads: leads.rows[0].n,
+      activeClients: active.rows[0].n,
+      collected: Number(collected.rows[0].sum),
+      outstanding: Number(outstanding.rows[0].sum),
+      recent: recent.slice(0, 6),
+      upcoming: upcoming.rows
+    });
+  } catch (err) {
+    console.error('Overview error:', err);
+    res.status(500).json({ error: 'Failed to load overview' });
   }
 });
 
