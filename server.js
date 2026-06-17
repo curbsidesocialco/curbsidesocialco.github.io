@@ -42,6 +42,12 @@ async function initDb() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `);
+    // Link outreach entries back to a client (added after clients exists).
+    // ON DELETE SET NULL so deleting a client keeps its outreach history, just unlinked.
+    await pool.query(`
+      ALTER TABLE outreach
+      ADD COLUMN IF NOT EXISTS client_id INTEGER REFERENCES clients(id) ON DELETE SET NULL
+    `);
     console.log('Database ready');
   } catch (err) {
     console.error('DB init error:', err);
@@ -149,14 +155,14 @@ Respond ONLY with valid JSON, no markdown, no backticks:
 
 // ---- Save an outreach log entry ----
 app.post('/api/log', async (req, res) => {
-  const { business, type, area, relationship, offer, price, platform, pitch, followup, status } = req.body;
+  const { business, type, area, relationship, offer, price, platform, pitch, followup, status, client_id } = req.body;
   if (!business) return res.status(400).json({ error: 'Business is required' });
 
   try {
     const result = await pool.query(
-      `INSERT INTO outreach (business, type, area, relationship, offer, price, platform, pitch, followup, status)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-      [business, type, area, relationship, offer, price, platform, pitch, followup, status || 'sent']
+      `INSERT INTO outreach (business, type, area, relationship, offer, price, platform, pitch, followup, status, client_id)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
+      [business, type, area, relationship, offer, price, platform, pitch, followup, status || 'sent', client_id || null]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -168,7 +174,12 @@ app.post('/api/log', async (req, res) => {
 // ---- Get all outreach log entries ----
 app.get('/api/log', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM outreach ORDER BY created_at DESC');
+    const result = await pool.query(
+      `SELECT outreach.*, clients.business AS client_name
+       FROM outreach
+       LEFT JOIN clients ON outreach.client_id = clients.id
+       ORDER BY outreach.created_at DESC`
+    );
     res.json(result.rows);
   } catch (err) {
     console.error('Log fetch error:', err);

@@ -178,6 +178,21 @@
 }
 .client-cancel-btn:hover { color: var(--text); border-color: var(--accent); }
 
+.log-link-row { display: flex; align-items: center; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.log-link-row label { font-size: 11px; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; }
+.log-link-row select {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 7px 10px;
+  border: 1px solid var(--border-med); background: var(--surface2);
+  color: var(--text); border-radius: var(--radius-sm); max-width: 220px;
+}
+.log-btn {
+  font-size: 12px; padding: 8px 20px; background: var(--accent); color: #fff;
+  border: none; border-radius: var(--radius-sm); cursor: pointer; font-family: 'DM Sans', sans-serif;
+}
+.log-btn:hover { opacity: 0.9; }
+.log-btn:disabled { opacity: 0.6; cursor: default; }
+.log-client-tag { color: var(--text-2); }
+
 /* ---- Site audit ---- */
 .audit-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
 .audit-card {

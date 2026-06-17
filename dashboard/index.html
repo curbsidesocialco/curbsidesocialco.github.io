@@ -130,8 +130,12 @@
             <div class="msg-text msg-placeholder" id="followup-text">Your follow-up will appear here.</div>
           </div>
         </div>
-        <div id="log-btn-wrap" style="display:none;margin-top:12px;text-align:right;">
-          <button id="log-btn" onclick="logOutreach()" style="font-size:12px;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-family:'DM Sans',sans-serif;">Log this outreach</button>
+        <div id="log-btn-wrap" style="display:none;margin-top:12px;">
+          <div class="log-link-row">
+            <label for="outreach-client">Link to client</label>
+            <select id="outreach-client"></select>
+            <button id="log-btn" class="log-btn" onclick="logOutreach()">Log this outreach</button>
+          </div>
         </div>
       </div>
 

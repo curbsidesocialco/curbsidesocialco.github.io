@@ -64,8 +64,10 @@ async function generatePitch() {
     // Store generated messages for logging
     window._lastPitch = { business: name, type, area, relationship, offer, price, platform: activePlatform, pitch: data.pitch, followup: data.followup };
 
-    // Show log button
+    // Show log button, default the client link to "Not linked"
     document.getElementById('log-btn-wrap').style.display = 'block';
+    const clientSel = document.getElementById('outreach-client');
+    if (clientSel) clientSel.value = '';
 
   } catch (err) {
     errEl.textContent = 'Could not reach server. Check your connection and try again.';
@@ -81,14 +83,34 @@ async function generatePitch() {
 async function logOutreach() {
   if (!window._lastPitch) return;
   const logBtn = document.getElementById('log-btn');
+  const clientSel = document.getElementById('outreach-client');
+  let clientId = clientSel ? clientSel.value : '';
   logBtn.disabled = true;
   logBtn.textContent = 'Saving...';
 
   try {
+    // "+ New client from this business": create the client first, then link to it
+    if (clientId === '__new__') {
+      const p = window._lastPitch;
+      const cRes = await fetch(`${API_URL}/api/clients`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ business: p.business, type: p.type, area: p.area, contact: p.platform, status: 'lead' })
+      });
+      if (cRes.ok) {
+        const newClient = await cRes.json();
+        clientId = newClient.id;
+        if (typeof loadClients === 'function') loadClients(); // refresh the Clients tab
+        loadClientOptions();                                  // refresh this dropdown
+      } else {
+        clientId = '';
+      }
+    }
+
     const res = await fetch(`${API_URL}/api/log`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...window._lastPitch, status: 'sent' })
+      body: JSON.stringify({ ...window._lastPitch, status: 'sent', client_id: clientId || null })
     });
 
     if (res.ok) {
@@ -132,7 +154,7 @@ async function loadOutreachLog() {
       <div class="row" id="log-entry-${e.id}">
         <div>
           <div class="row-name">${e.business}</div>
-          <div class="row-sub">${e.type || ''} ${e.area ? '/ ' + e.area : ''} — ${new Date(e.created_at).toLocaleDateString()}</div>
+          <div class="row-sub">${e.type || ''} ${e.area ? '/ ' + e.area : ''} — ${new Date(e.created_at).toLocaleDateString()}${e.client_name ? ' · <span class="log-client-tag"><i class="ti ti-user"></i> ' + e.client_name + '</span>' : ''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
           <select onchange="updateLogStatus(${e.id}, this.value)" style="font-size:11px;padding:3px 6px;border:1px solid var(--border-med);background:var(--surface2);color:var(--text);border-radius:var(--radius-sm);">
@@ -185,5 +207,26 @@ async function copyMsg(id, btn) {
   } catch (e) {}
 }
 
-// Load log on page ready
-document.addEventListener('DOMContentLoaded', loadOutreachLog);
+// Fill the "Link to client" dropdown with existing clients. Uses new Option()
+// so business names are inserted safely without manual escaping.
+async function loadClientOptions() {
+  const sel = document.getElementById('outreach-client');
+  if (!sel) return;
+  try {
+    const res = await fetch(`${API_URL}/api/clients`);
+    const clients = await res.json();
+    sel.innerHTML = '';
+    sel.add(new Option('Not linked', ''));
+    clients.forEach(c => sel.add(new Option(c.business, c.id)));
+    sel.add(new Option('+ New client from this business', '__new__'));
+  } catch (err) {
+    sel.innerHTML = '';
+    sel.add(new Option('Not linked', ''));
+  }
+}
+
+// Load log + client options on page ready
+document.addEventListener('DOMContentLoaded', () => {
+  loadOutreachLog();
+  loadClientOptions();
+});
