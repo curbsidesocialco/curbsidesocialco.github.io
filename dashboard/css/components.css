@@ -155,3 +155,53 @@
 .add-client:hover { border-color: var(--accent); color: var(--text-2); }
 .add-client i { font-size: 22px; }
 .add-client span { font-size: 13px; }
+
+/* ---- Site audit ---- */
+.audit-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+.audit-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+}
+.audit-card.good { background: var(--green-bg); border-color: transparent; }
+.audit-card.warn { background: var(--amber-bg); border-color: transparent; }
+.audit-card.muted { background: var(--surface2); border-style: dashed; border-color: var(--border-med); }
+.audit-card-label {
+  font-size: 11px; color: var(--text-2); text-transform: uppercase;
+  letter-spacing: 0.05em; margin-bottom: 8px;
+}
+.audit-card.good .audit-card-label { color: var(--green-text); }
+.audit-card.warn .audit-card-label { color: var(--amber-text); }
+.audit-card-value { font-size: 26px; font-weight: 500; font-family: 'DM Mono', monospace; line-height: 1; }
+.audit-card.good .audit-card-value { color: var(--green-text); }
+.audit-card.warn .audit-card-value { color: var(--amber-text); }
+.audit-card-total { font-size: 14px; color: var(--text-3); }
+.audit-card.good .audit-card-total, .audit-card.warn .audit-card-total { color: inherit; opacity: 0.7; }
+.audit-card-sub { font-size: 11px; color: var(--text-3); margin-top: 6px; }
+.audit-card.good .audit-card-sub, .audit-card.warn .audit-card-sub { color: inherit; opacity: 0.85; }
+.audit-card-text { font-size: 12px; color: var(--text); line-height: 1.55; }
+.audit-card.muted .audit-card-text { color: var(--text-3); font-style: italic; }
+
+.finding {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 11px 0; border-bottom: 1px solid var(--border);
+}
+.finding:last-child { border-bottom: none; }
+.finding-icon {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center; font-size: 13px;
+}
+.finding.good .finding-icon { background: var(--green-bg); color: var(--green-text); }
+.finding.warn .finding-icon { background: var(--amber-bg); color: var(--amber-text); }
+.finding-body { flex: 1; }
+.finding-label { font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.finding-status { font-size: 12px; color: var(--green-text); margin-top: 1px; }
+.finding-fix { font-size: 12px; color: var(--text-2); margin-top: 3px; line-height: 1.55; }
+.finding-tag {
+  font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em;
+  background: var(--amber-bg); color: var(--amber-text);
+  padding: 2px 7px; border-radius: 99px;
+}
+
+@media (max-width: 700px) {
+  .audit-summary { grid-template-columns: 1fr; }
+}

@@ -32,6 +32,7 @@
     <button class="tab-btn" data-tab="overview"><i class="ti ti-layout-dashboard"></i> Overview</button>
     <button class="tab-btn" data-tab="outreach"><i class="ti ti-send"></i> Outreach</button>
     <button class="tab-btn" data-tab="leads"><i class="ti ti-target"></i> Leads</button>
+    <button class="tab-btn" data-tab="audit"><i class="ti ti-clipboard-check"></i> Audit</button>
     <button class="tab-btn" data-tab="projects"><i class="ti ti-video"></i> Projects</button>
     <button class="tab-btn" data-tab="calendar"><i class="ti ti-calendar"></i> Content</button>
     <button class="tab-btn" data-tab="clients"><i class="ti ti-users"></i> Clients</button>
@@ -164,6 +165,42 @@
       </div>
     </div>
 
+    <!-- AUDIT -->
+    <div id="tab-audit" class="section">
+      <div class="card">
+        <div class="card-title">Run a site audit</div>
+        <div class="form-grid">
+          <div class="field"><label>Business name</label><input type="text" id="audit-name" placeholder="e.g. Rosella Coffee" /></div>
+          <div class="field"><label>Website URL</label><input type="text" id="audit-url" placeholder="e.g. rosellacoffee.com" /></div>
+        </div>
+        <div id="audit-error" class="form-error" style="display:none;"></div>
+        <button class="gen-btn" id="audit-btn" onclick="runAudit()"><i class="ti ti-clipboard-check"></i> Run audit</button>
+      </div>
+
+      <div id="audit-results" style="display:none;">
+        <div class="audit-summary">
+          <div class="audit-card" id="audit-health">
+            <div class="audit-card-label">Site health</div>
+            <div class="audit-card-value"><span id="audit-score">0</span> <span class="audit-card-total">/ 9</span></div>
+            <div class="audit-card-sub" id="audit-wins"></div>
+          </div>
+          <div class="audit-card">
+            <div class="audit-card-label">Opportunity</div>
+            <div class="audit-card-text" id="audit-opp-text"></div>
+          </div>
+          <div class="audit-card muted">
+            <div class="audit-card-label">Google rating</div>
+            <div class="audit-card-text">Coming soon. This fills in once Google is wired up.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Wins and easy fixes</div>
+          <div id="audit-findings"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- PROJECTS -->
     <div id="tab-projects" class="section">
       <div class="card">
@@ -243,6 +280,7 @@
 </div>
 <script src="/dashboard/js/tabs.js"></script>
 <script src="/dashboard/js/outreach.js"></script>
+<script src="/dashboard/js/audit.js"></script>
 <script src="/dashboard/js/projects.js"></script>
 <script src="/dashboard/js/pin.js"></script>
 </body>

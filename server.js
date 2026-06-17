@@ -192,6 +192,162 @@ app.delete('/api/log/:id', async (req, res) => {
   }
 });
 
+// ---- Website audit (free, runs server-side) ----
+// Fetches a business's site and reports wins + easy fixes. Framing is always
+// positive: green looks-good for passes, amber easy-win for misses, each with a
+// short "what I'd do about it" line that points back at something Rob sells.
+
+// Strip scripts/styles/tags so we can scan visible text (e.g. for a phone number)
+function stripTags(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ');
+}
+
+function check(key, pass, label, fix) {
+  return { key, label, pass, fix: pass ? '' : fix };
+}
+
+// The 9 presence checks. Returns the findings array.
+function runSiteChecks(html) {
+  const metaTags = html.match(/<meta\b[^>]*>/gi) || [];
+
+  // 1. mobile viewport
+  const hasViewport = metaTags.some(t => /name=["']?viewport["']?/i.test(t));
+
+  // 2. non-empty title
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  const hasTitle = !!(titleMatch && titleMatch[1].trim().length);
+
+  // 3. meta description with real content
+  const descTag = metaTags.find(t => /name=["']?description["']?/i.test(t));
+  const hasDescription = !!(descTag && /content=["'][^"']+["']/i.test(descTag));
+
+  // 4. at least one H1
+  const hasH1 = /<h1[\s>]/i.test(html);
+
+  // 5. favicon (any rel containing "icon")
+  const hasFavicon = /<link[^>]+rel=["'][^"']*icon[^"']*["']/i.test(html);
+
+  // 6. Open Graph image with real content
+  const ogTag = metaTags.find(t => /property=["']?og:image["']?/i.test(t));
+  const hasOgImage = !!(ogTag && /content=["'][^"']+["']/i.test(ogTag));
+
+  // 7. visible phone: a tel: link or a phone-shaped string in the text
+  const hasTel = /href=["']tel:/i.test(html);
+  const hasPhonePattern = /(\+?1[\s.\-]?)?\(?\d{3}\)?[\s.\-]\d{3}[\s.\-]\d{4}/.test(stripTags(html));
+  const hasPhone = hasTel || hasPhonePattern;
+
+  // 8. social media link
+  const hasSocial = /(instagram\.com|facebook\.com|fb\.com|tiktok\.com|youtube\.com|youtu\.be|twitter\.com|x\.com)/i.test(html);
+
+  // 9. image alt text: if images exist, most should carry an alt attribute
+  const imgTags = html.match(/<img\b[^>]*>/gi) || [];
+  let altOk;
+  if (imgTags.length === 0) {
+    altOk = true; // nothing to fix
+  } else {
+    const withAlt = imgTags.filter(t => /\salt\s*=\s*["']/i.test(t)).length;
+    altOk = withAlt / imgTags.length >= 0.7;
+  }
+
+  return [
+    check('viewport', hasViewport, 'Mobile-friendly viewport',
+      'Looks like it is not set up for phones. Most of your customers find you on mobile, so I would tighten the mobile layout as part of a site refresh.'),
+    check('title', hasTitle, 'Page title',
+      'The browser tab has no real title. I would set it to your name so it does not read as Untitled.'),
+    check('description', hasDescription, 'Search description',
+      'No summary under your name in Google search. I would write the little blurb so it sounds like you, not a guess.'),
+    check('h1', hasH1, 'Clear headline',
+      'No clear headline up top. I would add one so people and Google instantly get what you do.'),
+    check('favicon', hasFavicon, 'Favicon (tab icon)',
+      'Tiny one. I would add the little tab icon so the site looks finished.'),
+    check('ogImage', hasOgImage, 'Link-preview image',
+      'When someone shares your link it shows a blank box. I would drop in a clean preview frame, the kind I pull from a reel shoot.'),
+    check('phone', hasPhone, 'Visible phone number',
+      'No tap-to-call number I can find. I would add one up top so a hungry customer can call or book in one tap.'),
+    check('social', hasSocial, 'Social media links',
+      'Your social links are not on the site. I would add them so visitors follow you, then keep that page fed with a reels package.'),
+    check('alt', altOk, 'Image alt text',
+      'Some photos have no description. Small fix. I would add alt text so Google and screen readers can read your images.')
+  ];
+}
+
+function buildOpportunity(score) {
+  if (score >= 7) {
+    return "Site's in good shape. The gap is fresh content. I'd pitch a 3 reels package or a monthly retainer to keep it active.";
+  }
+  if (score <= 4) {
+    return "I'd lead with a site refresh (a landing or brochure site), then keep it fed with reels.";
+  }
+  return "A few easy wins on the site, plus fresh content. I'd pair a light site refresh with a 3 reels package.";
+}
+
+app.post('/api/audit', async (req, res) => {
+  let { url } = req.body;
+  if (!url || typeof url !== 'string') {
+    return res.status(400).json({ error: 'A website URL is required.' });
+  }
+
+  url = url.trim();
+  // Normalize: add https:// if the user left off the protocol
+  if (!/^https?:\/\//i.test(url)) {
+    url = 'https://' + url;
+  }
+
+  // Only allow http/https
+  let parsed;
+  try {
+    parsed = new URL(url);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      throw new Error('unsupported protocol');
+    }
+  } catch (e) {
+    return res.status(400).json({ error: 'That does not look like a valid website URL.' });
+  }
+
+  // Fetch with a timeout and a normal browser user-agent so sites don't block us
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
+
+  let html;
+  try {
+    const response = await fetch(url, {
+      redirect: 'follow',
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
+      }
+    });
+    clearTimeout(timer);
+
+    if (!response.ok) {
+      return res.status(502).json({ error: 'Could not load that site. Double-check the URL.' });
+    }
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('text/html')) {
+      return res.status(502).json({ error: 'That link did not return a normal web page. Double-check the URL.' });
+    }
+    html = await response.text();
+  } catch (err) {
+    clearTimeout(timer);
+    console.error('Audit fetch error:', err.message);
+    return res.status(502).json({ error: 'Could not load that site. Double-check the URL.' });
+  }
+
+  try {
+    const findings = runSiteChecks(html);
+    const score = findings.filter(f => f.pass).length;
+    const total = findings.length;
+    const wins = total - score;
+    res.json({ url: parsed.href, score, total, wins, opportunity: buildOpportunity(score), findings });
+  } catch (err) {
+    console.error('Audit parse error:', err);
+    res.status(500).json({ error: 'Failed to run the audit.' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
