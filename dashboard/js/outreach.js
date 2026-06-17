@@ -62,7 +62,7 @@ async function generatePitch() {
     followupEl.textContent = data.followup;
 
     // Store generated messages for logging
-    window._lastPitch = { name, type, area, relationship, offer, price, platform: activePlatform, pitch: data.pitch, followup: data.followup };
+    window._lastPitch = { business: name, type, area, relationship, offer, price, platform: activePlatform, pitch: data.pitch, followup: data.followup };
 
     // Show log button
     document.getElementById('log-btn-wrap').style.display = 'block';
