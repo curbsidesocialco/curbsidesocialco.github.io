@@ -1,6 +1,7 @@
 const API_URL = 'https://api-production-eab8a.up.railway.app';
 
 let activePlatform = 'Instagram DM';
+let outreachClients = []; // cached client list for the "Link to client" picker
 
 function setPlatform(platform, btnId) {
   activePlatform = platform;
@@ -64,10 +65,9 @@ async function generatePitch() {
     // Store generated messages for logging
     window._lastPitch = { business: name, type, area, relationship, offer, price, platform: activePlatform, pitch: data.pitch, followup: data.followup };
 
-    // Show log button, default the client link to "Not linked"
+    // Show log button and tailor the client picker to this business
     document.getElementById('log-btn-wrap').style.display = 'block';
-    const clientSel = document.getElementById('outreach-client');
-    if (clientSel) clientSel.value = '';
+    prepareClientLink(name);
 
   } catch (err) {
     errEl.textContent = 'Could not reach server. Check your connection and try again.';
@@ -214,15 +214,27 @@ async function loadClientOptions() {
   if (!sel) return;
   try {
     const res = await fetch(`${API_URL}/api/clients`);
-    const clients = await res.json();
+    outreachClients = await res.json();
     sel.innerHTML = '';
-    sel.add(new Option('Not linked', ''));
-    clients.forEach(c => sel.add(new Option(c.business, c.id)));
-    sel.add(new Option('+ New client from this business', '__new__'));
+    sel.add(new Option("Don't add to clients", ''));
+    outreachClients.forEach(c => sel.add(new Option(c.business, c.id)));
+    sel.add(new Option('+ Add as a new client', '__new__'));
   } catch (err) {
+    outreachClients = [];
     sel.innerHTML = '';
-    sel.add(new Option('Not linked', ''));
+    sel.add(new Option("Don't add to clients", ''));
   }
+}
+
+// Tailor the picker to the business just generated: name the "new client" option,
+// and auto-select an existing client when the business is already in the list.
+function prepareClientLink(name) {
+  const sel = document.getElementById('outreach-client');
+  if (!sel) return;
+  const newOpt = Array.from(sel.options).find(o => o.value === '__new__');
+  if (newOpt) newOpt.text = name ? `+ Add "${name}" as a new client` : '+ Add as a new client';
+  const match = outreachClients.find(c => (c.business || '').trim().toLowerCase() === name.trim().toLowerCase());
+  sel.value = match ? String(match.id) : '';
 }
 
 // Load log + client options on page ready
