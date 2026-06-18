@@ -99,7 +99,15 @@ function fillProjectClientOptions(selectedId) {
   sel.innerHTML = '';
   sel.add(new Option('Select client...', ''));
   projectClients.forEach(c => sel.add(new Option(c.business, c.id)));
+  sel.add(new Option('+ Add new client', '__new__'));
   if (selectedId != null) sel.value = String(selectedId);
+}
+
+// Reveal the "New client name" input only when "+ Add new client" is picked
+function toggleNewClientField() {
+  const wrap = document.getElementById('project-new-client-wrap');
+  if (!wrap) return;
+  wrap.style.display = document.getElementById('project-client').value === '__new__' ? 'flex' : 'none';
 }
 
 function showProjectForm(project) {
@@ -114,6 +122,8 @@ function showProjectForm(project) {
   document.getElementById('project-shoot-date').value = project ? dateInputValue(project.shoot_date) : '';
   document.getElementById('project-delivery').value = project ? (project.delivery || '') : '';
   document.getElementById('project-delivery-link').value = project ? (project.delivery_link || '') : '';
+  document.getElementById('project-new-client').value = '';
+  toggleNewClientField();
   document.getElementById('project-error').style.display = 'none';
   const card = document.getElementById('project-form-card');
   card.style.display = 'block';
@@ -131,7 +141,7 @@ function hideProjectForm() {
 }
 
 async function saveProject() {
-  const clientId = document.getElementById('project-client').value;
+  let clientId = document.getElementById('project-client').value;
   const errEl = document.getElementById('project-error');
   const saveBtn = document.getElementById('project-save-btn');
 
@@ -141,10 +151,15 @@ async function saveProject() {
     errEl.style.display = 'block';
     return;
   }
+  const newClientName = clientId === '__new__' ? document.getElementById('project-new-client').value.trim() : '';
+  if (clientId === '__new__' && !newClientName) {
+    errEl.textContent = 'Enter a name for the new client.';
+    errEl.style.display = 'block';
+    return;
+  }
 
   const amountRaw = document.getElementById('project-amount').value.trim();
   const payload = {
-    client_id: clientId,
     title: document.getElementById('project-title').value.trim(),
     package: document.getElementById('project-package').value,
     amount: amountRaw === '' ? null : Number(amountRaw),
@@ -164,6 +179,22 @@ async function saveProject() {
   saveBtn.innerHTML = '<i class="ti ti-loader"></i> Saving...';
 
   try {
+    // "+ Add new client": create the client first, then attach the project to it
+    if (clientId === '__new__') {
+      const cRes = await fetch(`${API_URL}/api/clients`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ business: newClientName, status: 'active' })
+      });
+      if (!cRes.ok) {
+        errEl.textContent = 'Could not create the new client. Try again.';
+        errEl.style.display = 'block';
+        return;
+      }
+      clientId = (await cRes.json()).id;
+    }
+    payload.client_id = clientId;
+
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));

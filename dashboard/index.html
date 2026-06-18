@@ -200,7 +200,8 @@
       <div class="card" id="project-form-card" style="display:none;">
         <div class="card-title" id="project-form-title">Add a project</div>
         <div class="form-grid">
-          <div class="field"><label>Client</label><select id="project-client"></select></div>
+          <div class="field"><label>Client</label><select id="project-client" onchange="toggleNewClientField()"></select></div>
+          <div class="field" id="project-new-client-wrap" style="display:none;"><label>New client name</label><input type="text" id="project-new-client" placeholder="Business name" /></div>
           <div class="field"><label>Title</label><input type="text" id="project-title" placeholder="e.g. 3 reels, brand film" /></div>
           <div class="field">
             <label>Package</label>
