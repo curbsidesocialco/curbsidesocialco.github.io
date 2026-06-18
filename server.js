@@ -135,7 +135,7 @@ app.post('/api/outreach', async (req, res) => {
   } else if (offer === 'cinematic') {
     offerNote = `Pitch a single high-end cinematic brand film shot on the Sony FX3${price ? ' starting at ' + price : ''}. Emphasize premium quality for an upscale brand.`;
   } else if (offer === '3reels') {
-    offerNote = `Offer 3 short-form reels${price ? ' for ' + price : ' for $150'}. One collab reel on Rob's page, the business keeps 2 to post. Good for a dish, product, or event.`;
+    offerNote = `Offer 3 short-form reels${price ? ' for ' + price : ' for $150'}. One collab reel on Rob's page, the business keeps 2 to post. Good for showing off the space, a product, a service, or an event.`;
   } else if (offer === 'custom') {
     offerNote = `Offer: ${price || 'custom package, discuss details'}. Work this in naturally.`;
   }
@@ -151,6 +151,8 @@ Business name: ${name}
 Type: ${type}
 ${area ? 'Area: ' + area + ', San Antonio TX' : 'Location: San Antonio TX'}
 ${hook ? 'Hook or angle: ' + hook : ''}
+
+Tailor the angle to the business type. For restaurants, bars, cafes, and food trucks: dishes, atmosphere, the experience. For dental, med spa, clinics, law firms, and other medical or professional practices: trust, a polished and credible brand image, patient or client education, testimonial and before/after style videos, clean facility tours. Never use food language for a non-food business.
 
 Write two messages. Casual, like a real person texting. Short sentences. No em dashes. No hashtags. Sound local and genuine. Don't open with "Hey there" or anything generic. Adapt fully to the relationship context above.
 
@@ -529,7 +531,7 @@ function runSiteChecks(html) {
     check('ogImage', hasOgImage, 'Link-preview image',
       'When someone shares your link it shows a blank box. I would drop in a clean preview frame, the kind I pull from a reel shoot.'),
     check('phone', hasPhone, 'Visible phone number',
-      'No tap-to-call number I can find. I would add one up top so a hungry customer can call or book in one tap.'),
+      'No tap-to-call number I can find. I would add one up top so a customer can call or book in one tap.'),
     check('social', hasSocial, 'Social media links',
       'Your social links are not on the site. I would add them so visitors follow you, then keep that page fed with a reels package.'),
     check('alt', altOk, 'Image alt text',

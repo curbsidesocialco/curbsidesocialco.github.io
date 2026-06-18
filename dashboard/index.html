@@ -68,13 +68,18 @@
           <div class="field"><label>Business name</label><input type="text" id="biz-name" placeholder="e.g. La Panadería" /></div>
           <div class="field">
             <label>Business type</label>
-            <select id="biz-type">
-              <option value="">Select type...</option>
-              <option>Restaurant</option><option>Taco shop</option><option>Bakery / cafe</option>
-              <option>Bar / cocktail bar</option><option>Food truck</option><option>Brunch spot</option>
-              <option>BBQ spot</option><option>Brewery / taproom</option><option>Event venue</option>
-              <option>Other local business</option>
-            </select>
+            <input type="text" id="biz-type" list="industry-types" placeholder="pick or type, e.g. Med spa" />
+            <datalist id="industry-types">
+              <option value="Restaurant"></option><option value="Bar / cocktail bar"></option>
+              <option value="Cafe / coffee shop"></option><option value="Bakery"></option>
+              <option value="Food truck"></option><option value="Brewery / taproom"></option>
+              <option value="Med spa"></option><option value="Dental practice"></option>
+              <option value="Medical clinic"></option><option value="Chiropractor"></option>
+              <option value="Law firm"></option><option value="Private practice"></option>
+              <option value="Salon / barber"></option><option value="Gym / fitness studio"></option>
+              <option value="Real estate"></option><option value="Event venue"></option>
+              <option value="Retail shop"></option><option value="Other local business"></option>
+            </datalist>
           </div>
           <div class="field"><label>Neighborhood / area</label><input type="text" id="biz-area" placeholder="e.g. Southtown, Pearl, NW SA" /></div>
           <div class="field"><label>Hook (optional)</label><input type="text" id="biz-hook" placeholder="e.g. new menu, grand opening" /></div>
@@ -267,13 +272,7 @@
           <div class="field"><label>Business name</label><input type="text" id="client-business" placeholder="e.g. Rosella Coffee" /></div>
           <div class="field">
             <label>Business type</label>
-            <select id="client-type">
-              <option value="">Select type...</option>
-              <option>Restaurant</option><option>Taco shop</option><option>Bakery / cafe</option>
-              <option>Bar / cocktail bar</option><option>Food truck</option><option>Brunch spot</option>
-              <option>BBQ spot</option><option>Brewery / taproom</option><option>Event venue</option>
-              <option>Other local business</option>
-            </select>
+            <input type="text" id="client-type" list="industry-types" placeholder="pick or type, e.g. Med spa" />
           </div>
           <div class="field"><label>Neighborhood / area</label><input type="text" id="client-area" placeholder="e.g. Southtown, Pearl" /></div>
           <div class="field"><label>Contact</label><input type="text" id="client-contact" placeholder="e.g. Instagram DM, email, phone" /></div>
