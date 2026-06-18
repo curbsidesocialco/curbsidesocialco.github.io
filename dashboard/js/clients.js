@@ -168,7 +168,7 @@ function renderClientDetail(c) {
       <div class="row">
         <div style="flex:1;min-width:0;padding-right:10px;">
           <div class="row-name">${escapeHtml(host)} · ${date}</div>
-          <div class="row-sub">${escapeHtml(a.opportunity || '')}</div>
+          <div class="row-sub">${escapeHtml(a.opportunity || '')}${a.platform ? ' · ' + escapeHtml(a.platform) : ''}</div>
         </div>
         <span class="badge ${aBadge}">${a.score}/${a.total}</span>
       </div>`;

@@ -43,7 +43,7 @@ async function runAudit() {
     const name = document.getElementById('audit-name').value.trim();
     window._lastAudit = {
       business: name, url: data.url, score: data.score, total: data.total,
-      wins: data.wins, opportunity: data.opportunity, findings: data.findings
+      wins: data.wins, opportunity: data.opportunity, findings: data.findings, platform: data.platform
     };
     prepareAuditClientLink(name);
     const savedMsg = document.getElementById('audit-save-msg');
@@ -73,6 +73,14 @@ function renderAudit(data) {
 
   // Opportunity card
   document.getElementById('audit-opp-text').textContent = data.opportunity;
+
+  // Platform recon line
+  const platEl = document.getElementById('audit-platform');
+  if (platEl) {
+    platEl.textContent = data.platform
+      ? `Built on ${data.platform}`
+      : 'No site builder detected (custom or hand-built)';
+  }
 
   // Findings: green looks-good rows, amber easy-win rows carrying the fix line
   const container = document.getElementById('audit-findings');
@@ -170,7 +178,7 @@ async function saveAudit() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         client_id: clientId, url: a.url, score: a.score, total: a.total,
-        wins: a.wins, opportunity: a.opportunity, findings: a.findings
+        wins: a.wins, opportunity: a.opportunity, findings: a.findings, platform: a.platform
       })
     });
     if (!res.ok) throw new Error('audit save failed');

@@ -216,6 +216,7 @@
 .audit-save-msg { font-size: 12px; margin-top: 10px; text-align: right; }
 .audit-save-msg.ok { color: var(--green-text); }
 .audit-save-msg.err { color: var(--red-text); }
+.audit-platform { font-size: 12px; color: var(--text-2); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
 
 /* ---- Site audit ---- */
 .audit-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }

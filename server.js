@@ -82,6 +82,8 @@ async function initDb() {
       ADD COLUMN IF NOT EXISTS delivery TEXT,
       ADD COLUMN IF NOT EXISTS delivery_link TEXT
     `);
+    // Save the detected website platform alongside each audit
+    await pool.query(`ALTER TABLE audits ADD COLUMN IF NOT EXISTS platform TEXT`);
     console.log('Database ready');
   } catch (err) {
     console.error('DB init error:', err);
@@ -338,14 +340,14 @@ app.delete('/api/clients/:id', async (req, res) => {
 
 // ---- Save an audit to a client ----
 app.post('/api/audits', async (req, res) => {
-  const { client_id, url, score, total, wins, opportunity, findings } = req.body;
+  const { client_id, url, score, total, wins, opportunity, findings, platform } = req.body;
   if (!client_id) return res.status(400).json({ error: 'A client is required to save an audit' });
 
   try {
     const result = await pool.query(
-      `INSERT INTO audits (client_id, url, score, total, wins, opportunity, findings)
-       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
-      [client_id, url, score, total, wins, opportunity, JSON.stringify(findings || [])]
+      `INSERT INTO audits (client_id, url, score, total, wins, opportunity, findings, platform)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+      [client_id, url, score, total, wins, opportunity, JSON.stringify(findings || []), platform || null]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -539,6 +541,29 @@ function runSiteChecks(html) {
   ];
 }
 
+// Recon: detect the site's platform from its HTML. Tells Rob whether to pitch a
+// new site (template builders / none) or just content (clean custom site).
+function detectStack(html) {
+  const h = (html || '').toLowerCase();
+  const signatures = [
+    ['SpotHopper', /spothopper/],
+    ['WordPress', /wp-content|wp-includes|\/wp-json|generator["'][^>]*wordpress/],
+    ['Squarespace', /squarespace\.com|static1\.squarespace|generator["'][^>]*squarespace/],
+    ['Wix', /wixstatic\.com|static\.parastorage|generator["'][^>]*wix/],
+    ['Shopify', /cdn\.shopify\.com|myshopify\.com/],
+    ['Webflow', /assets\.website-files\.com|\.webflow\.io|generator["'][^>]*webflow/],
+    ['Weebly', /weebly\.com|editmysite\.com/],
+    ['Duda', /irp\.cdn-website\.com|dudaone/],
+    ['GoDaddy', /generator["'][^>]*godaddy|websitebuilder\.godaddy/],
+    ['Framer', /framerusercontent\.com/],
+    ['Carrd', /\bcarrd\.co\b/]
+  ];
+  for (const [name, re] of signatures) {
+    if (re.test(h)) return name;
+  }
+  return null;
+}
+
 function buildOpportunity(score) {
   if (score >= 7) {
     return "Site's in good shape. The gap is fresh content. I'd pitch a 3 reels package or a monthly retainer to keep it active.";
@@ -606,7 +631,7 @@ app.post('/api/audit', async (req, res) => {
     const score = findings.filter(f => f.pass).length;
     const total = findings.length;
     const wins = total - score;
-    res.json({ url: parsed.href, score, total, wins, opportunity: buildOpportunity(score), findings });
+    res.json({ url: parsed.href, platform: detectStack(html), score, total, wins, opportunity: buildOpportunity(score), findings });
   } catch (err) {
     console.error('Audit parse error:', err);
     res.status(500).json({ error: 'Failed to run the audit.' });
