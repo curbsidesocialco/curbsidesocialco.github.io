@@ -76,6 +76,12 @@ async function initDb() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `);
+    // Track how the work was delivered (Apple album / Dropbox / Pictime / etc.) + a link
+    await pool.query(`
+      ALTER TABLE projects
+      ADD COLUMN IF NOT EXISTS delivery TEXT,
+      ADD COLUMN IF NOT EXISTS delivery_link TEXT
+    `);
     console.log('Database ready');
   } catch (err) {
     console.error('DB init error:', err);
@@ -348,13 +354,13 @@ app.post('/api/audits', async (req, res) => {
 
 // ---- Create a project ----
 app.post('/api/projects', async (req, res) => {
-  const { client_id, title, package: pkg, amount, status, paid, shoot_date } = req.body;
+  const { client_id, title, package: pkg, amount, status, paid, shoot_date, delivery, delivery_link } = req.body;
   if (!client_id) return res.status(400).json({ error: 'A client is required for a project' });
   try {
     const result = await pool.query(
-      `INSERT INTO projects (client_id, title, package, amount, status, paid, shoot_date)
-       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
-      [client_id, title, pkg, amount || null, status || 'booked', paid || false, shoot_date || null]
+      `INSERT INTO projects (client_id, title, package, amount, status, paid, shoot_date, delivery, delivery_link)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+      [client_id, title, pkg, amount || null, status || 'booked', paid || false, shoot_date || null, delivery || null, delivery_link || null]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -381,13 +387,13 @@ app.get('/api/projects', async (req, res) => {
 // ---- Update a project ----
 app.patch('/api/projects/:id', async (req, res) => {
   const { id } = req.params;
-  const { client_id, title, package: pkg, amount, status, paid, shoot_date } = req.body;
+  const { client_id, title, package: pkg, amount, status, paid, shoot_date, delivery, delivery_link } = req.body;
   if (!client_id) return res.status(400).json({ error: 'A client is required for a project' });
   try {
     const result = await pool.query(
-      `UPDATE projects SET client_id=$1, title=$2, package=$3, amount=$4, status=$5, paid=$6, shoot_date=$7
-       WHERE id=$8 RETURNING *`,
-      [client_id, title, pkg, amount || null, status || 'booked', paid || false, shoot_date || null, id]
+      `UPDATE projects SET client_id=$1, title=$2, package=$3, amount=$4, status=$5, paid=$6, shoot_date=$7, delivery=$8, delivery_link=$9
+       WHERE id=$10 RETURNING *`,
+      [client_id, title, pkg, amount || null, status || 'booked', paid || false, shoot_date || null, delivery || null, delivery_link || null, id]
     );
     res.json(result.rows[0]);
   } catch (err) {

@@ -58,12 +58,14 @@ function renderProjects(list) {
     const paidBadge = p.paid ? 'badge-delivered' : 'badge-followup';
     const paidLabel = p.paid ? 'Paid' : 'Unpaid';
     const shoot = fmtDate(p.shoot_date);
-    const meta = [p.client_name || 'No client', p.package, shoot].filter(Boolean).join(' · ');
+    const meta = [p.client_name || 'No client', p.package, shoot, p.delivery].filter(Boolean).join(' · ');
+    const link = (p.delivery_link && /^https?:\/\//i.test(p.delivery_link))
+      ? ' · <a href="' + escapeHtml(p.delivery_link) + '" target="_blank" rel="noopener">link</a>' : '';
     return `
       <div class="row">
         <div style="flex:1;min-width:0;padding-right:10px;">
           <div class="row-name">${escapeHtml(p.title || 'Project')} ${p.amount ? '· ' + money(p.amount) : ''}</div>
-          <div class="row-sub">${escapeHtml(meta)}</div>
+          <div class="row-sub">${escapeHtml(meta)}${link}</div>
         </div>
         <div class="project-row-actions">
           <span class="badge ${paidBadge}">${paidLabel}</span>
@@ -98,6 +100,8 @@ function showProjectForm(project) {
   document.getElementById('project-status').value = project ? (project.status || 'booked') : 'booked';
   document.getElementById('project-paid').value = project && project.paid ? 'true' : 'false';
   document.getElementById('project-shoot-date').value = project ? dateInputValue(project.shoot_date) : '';
+  document.getElementById('project-delivery').value = project ? (project.delivery || '') : '';
+  document.getElementById('project-delivery-link').value = project ? (project.delivery_link || '') : '';
   document.getElementById('project-error').style.display = 'none';
   const card = document.getElementById('project-form-card');
   card.style.display = 'block';
@@ -134,7 +138,9 @@ async function saveProject() {
     amount: amountRaw === '' ? null : Number(amountRaw),
     status: document.getElementById('project-status').value,
     paid: document.getElementById('project-paid').value === 'true',
-    shoot_date: document.getElementById('project-shoot-date').value || null
+    shoot_date: document.getElementById('project-shoot-date').value || null,
+    delivery: document.getElementById('project-delivery').value || null,
+    delivery_link: document.getElementById('project-delivery-link').value.trim() || null
   };
 
   const editing = editingProjectId !== null;

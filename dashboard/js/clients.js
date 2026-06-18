@@ -186,7 +186,7 @@ function renderClientDetail(c) {
       <div class="row">
         <div style="flex:1;min-width:0;padding-right:10px;">
           <div class="row-name">${escapeHtml(p.title || 'Project')}${amt}</div>
-          <div class="row-sub">${escapeHtml(p.package || '')}</div>
+          <div class="row-sub">${escapeHtml([p.package, p.delivery].filter(Boolean).join(' · '))}</div>
         </div>
         <div class="project-row-actions">
           <span class="badge ${p.paid ? 'badge-delivered' : 'badge-followup'}">${p.paid ? 'Paid' : 'Unpaid'}</span>
