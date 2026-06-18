@@ -459,6 +459,71 @@ app.get('/api/overview', async (req, res) => {
   }
 });
 
+// ---- Google Places (lead-finder + audit rating) ----
+// Shared call to Places API (New) Text Search. Key lives in Railway env.
+async function placesTextSearch(textQuery, fieldMask) {
+  const key = process.env.GOOGLE_PLACES_API_KEY;
+  if (!key) throw new Error('Places API key not configured');
+  const resp = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': key,
+      'X-Goog-FieldMask': fieldMask
+    },
+    body: JSON.stringify({ textQuery })
+  });
+  const data = await resp.json();
+  if (!resp.ok) throw new Error((data.error && data.error.message) || 'Places request failed');
+  return data.places || [];
+}
+
+// Find businesses by industry + area. Returns name/address/phone/website/rating.
+app.post('/api/find-leads', async (req, res) => {
+  const { industry, area } = req.body;
+  if (!industry && !area) return res.status(400).json({ error: 'Enter an industry or area to search' });
+  const query = `${industry || 'local businesses'} in ${area || 'San Antonio TX'}`;
+  try {
+    const places = await placesTextSearch(
+      query,
+      'places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.rating,places.userRatingCount'
+    );
+    const results = places.map(p => ({
+      name: (p.displayName && p.displayName.text) || '',
+      address: p.formattedAddress || '',
+      phone: p.nationalPhoneNumber || '',
+      website: p.websiteUri || '',
+      rating: p.rating || null,
+      reviews: p.userRatingCount || 0
+    }));
+    res.json({ query, results });
+  } catch (err) {
+    console.error('Find-leads error:', err.message);
+    res.status(502).json({ error: 'Lead search failed: ' + err.message });
+  }
+});
+
+// Look up a business's Google rating + review count (fills the audit card).
+app.post('/api/rating', async (req, res) => {
+  const { name, area } = req.body;
+  if (!name) return res.status(400).json({ error: 'Business name is required' });
+  const query = `${name} ${area || 'San Antonio TX'}`;
+  try {
+    const places = await placesTextSearch(query, 'places.displayName,places.rating,places.userRatingCount');
+    const top = places[0];
+    if (!top) return res.json({ found: false });
+    res.json({
+      found: true,
+      name: (top.displayName && top.displayName.text) || name,
+      rating: top.rating || null,
+      reviews: top.userRatingCount || 0
+    });
+  } catch (err) {
+    console.error('Rating error:', err.message);
+    res.status(502).json({ error: 'Rating lookup failed: ' + err.message });
+  }
+});
+
 // ---- Website audit (free, runs server-side) ----
 // Fetches a business's site and reports wins + easy fixes. Framing is always
 // positive: green looks-good for passes, amber easy-win for misses, each with a
