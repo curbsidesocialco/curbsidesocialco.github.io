@@ -225,11 +225,15 @@
           <div class="field"><label>Shoot date</label><input type="date" id="project-shoot-date" /></div>
           <div class="field">
             <label>Delivered via</label>
-            <select id="project-delivery">
-              <option value="">Not delivered yet</option>
-              <option>Apple album</option><option>Dropbox</option><option>Pictime</option>
-              <option>Google Drive</option><option>WeTransfer</option><option>Other</option>
-            </select>
+            <input type="text" id="project-delivery" list="delivery-options" placeholder="pick one or type your own" />
+            <datalist id="delivery-options">
+              <option value="Apple shared album"></option>
+              <option value="Dropbox"></option>
+              <option value="Pictime"></option>
+              <option value="Google Drive"></option>
+              <option value="WeTransfer"></option>
+              <option value="Frame.io"></option>
+            </datalist>
           </div>
           <div class="field client-notes-field"><label>Delivery link (optional)</label><input type="text" id="project-delivery-link" placeholder="paste the gallery or folder link" /></div>
         </div>

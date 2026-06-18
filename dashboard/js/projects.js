@@ -42,6 +42,7 @@ async function loadProjects() {
     ]);
     projectsCache = await pRes.json();
     projectClients = await cRes.json();
+    refreshDeliveryOptions();
     renderProjects(projectsCache);
   } catch (err) {
     list.innerHTML = '<p style="font-size:13px;color:var(--text-3);padding:12px 0;">Could not load projects.</p>';
@@ -79,6 +80,17 @@ function renderProjects(list) {
   const addTile = '<div class="add-row" onclick="showProjectForm()"><i class="ti ti-plus"></i> Add project</div>';
   const empty = '<p style="font-size:13px;color:var(--text-3);padding:8px 0;">No projects yet. Add your first booked job.</p>';
   container.innerHTML = (list.length ? rows : empty) + addTile;
+}
+
+// Seed the delivery suggestions with common methods plus any Rob has already used,
+// so a new method he types once shows up as a suggestion next time.
+function refreshDeliveryOptions() {
+  const dl = document.getElementById('delivery-options');
+  if (!dl) return;
+  const defaults = ['Apple shared album', 'Dropbox', 'Pictime', 'Google Drive', 'WeTransfer', 'Frame.io'];
+  const used = projectsCache.map(p => p.delivery).filter(Boolean);
+  const all = [...new Set([...defaults, ...used])];
+  dl.innerHTML = all.map(v => `<option value="${escapeHtml(v)}"></option>`).join('');
 }
 
 function fillProjectClientOptions(selectedId) {
