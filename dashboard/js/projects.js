@@ -93,6 +93,14 @@ function refreshDeliveryOptions() {
   dl.innerHTML = all.map(v => `<option value="${escapeHtml(v)}"></option>`).join('');
 }
 
+// Pull the latest clients so the dropdown includes any added since page load
+async function refreshProjectClients() {
+  try {
+    const res = await fetch(`${API_URL}/api/clients`);
+    projectClients = await res.json();
+  } catch (e) { /* keep the existing cache if the fetch fails */ }
+}
+
 function fillProjectClientOptions(selectedId) {
   const sel = document.getElementById('project-client');
   if (!sel) return;
@@ -110,7 +118,8 @@ function toggleNewClientField() {
   wrap.style.display = document.getElementById('project-client').value === '__new__' ? 'flex' : 'none';
 }
 
-function showProjectForm(project) {
+async function showProjectForm(project) {
+  await refreshProjectClients(); // always show the latest clients, including ones just added
   editingProjectId = project ? project.id : null;
   document.getElementById('project-form-title').textContent = project ? 'Edit project' : 'Add a project';
   fillProjectClientOptions(project ? project.client_id : null);

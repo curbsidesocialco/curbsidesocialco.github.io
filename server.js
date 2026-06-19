@@ -76,6 +76,20 @@ async function initDb() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `);
+    // Follow-ups / reminders. Can hang off a client and/or a project, but don't
+    // get deleted with them (SET NULL) so the open loop survives.
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS tasks (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        due_date DATE,
+        done BOOLEAN DEFAULT false,
+        client_id INTEGER REFERENCES clients(id) ON DELETE SET NULL,
+        project_id INTEGER REFERENCES projects(id) ON DELETE SET NULL,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
     // Track how the work was delivered (Apple album / Dropbox / Pictime / etc.) + a link
     await pool.query(`
       ALTER TABLE projects
@@ -456,6 +470,67 @@ app.get('/api/overview', async (req, res) => {
   } catch (err) {
     console.error('Overview error:', err);
     res.status(500).json({ error: 'Failed to load overview' });
+  }
+});
+
+// ---- Tasks / follow-ups ----
+app.post('/api/tasks', async (req, res) => {
+  const { title, due_date, client_id, project_id, notes } = req.body;
+  if (!title) return res.status(400).json({ error: 'A task needs a title' });
+  try {
+    const result = await pool.query(
+      `INSERT INTO tasks (title, due_date, client_id, project_id, notes)
+       VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+      [title, due_date || null, client_id || null, project_id || null, notes || null]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Task create error:', err);
+    res.status(500).json({ error: 'Failed to create task' });
+  }
+});
+
+app.get('/api/tasks', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT tasks.*, clients.business AS client_name, projects.title AS project_title
+       FROM tasks
+       LEFT JOIN clients ON tasks.client_id = clients.id
+       LEFT JOIN projects ON tasks.project_id = projects.id
+       ORDER BY tasks.done ASC, (tasks.due_date IS NULL) ASC, tasks.due_date ASC, tasks.created_at DESC`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Task fetch error:', err);
+    res.status(500).json({ error: 'Failed to fetch tasks' });
+  }
+});
+
+app.patch('/api/tasks/:id', async (req, res) => {
+  const { id } = req.params;
+  const { title, due_date, done, client_id, project_id, notes } = req.body;
+  if (!title) return res.status(400).json({ error: 'A task needs a title' });
+  try {
+    const result = await pool.query(
+      `UPDATE tasks SET title=$1, due_date=$2, done=$3, client_id=$4, project_id=$5, notes=$6
+       WHERE id=$7 RETURNING *`,
+      [title, due_date || null, done || false, client_id || null, project_id || null, notes || null, id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Task update error:', err);
+    res.status(500).json({ error: 'Failed to update task' });
+  }
+});
+
+app.delete('/api/tasks/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await pool.query('DELETE FROM tasks WHERE id = $1', [id]);
+    res.json({ deleted: true });
+  } catch (err) {
+    console.error('Task delete error:', err);
+    res.status(500).json({ error: 'Failed to delete task' });
   }
 });
 
