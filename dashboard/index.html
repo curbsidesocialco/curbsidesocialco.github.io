@@ -48,6 +48,16 @@
         <div class="metric"><div class="metric-label">Collected</div><div class="metric-value" id="ov-collected">$0</div><div class="metric-sub">paid projects</div></div>
         <div class="metric"><div class="metric-label">Outstanding</div><div class="metric-value" id="ov-outstanding">$0</div><div class="metric-sub">still owed</div></div>
       </div>
+      <div class="card">
+        <div class="card-title">To-do &amp; follow-ups</div>
+        <div class="task-add">
+          <input type="text" id="task-title" placeholder="e.g. Send Battalion their gallery" />
+          <input type="date" id="task-due" />
+          <select id="task-client"></select>
+          <button class="log-btn" onclick="addTask()">Add</button>
+        </div>
+        <div id="tasks-list"></div>
+      </div>
       <div class="two-col">
         <div class="card">
           <div class="card-title">Recent activity</div>
@@ -306,6 +316,7 @@
 <script src="/dashboard/js/clients.js"></script>
 <script src="/dashboard/js/projects.js"></script>
 <script src="/dashboard/js/overview.js"></script>
+<script src="/dashboard/js/tasks.js"></script>
 <script src="/dashboard/js/pin.js"></script>
 </body>
 </html>

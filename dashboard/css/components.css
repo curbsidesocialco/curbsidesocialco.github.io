@@ -189,6 +189,30 @@
 }
 .add-row:hover { border-color: var(--accent); color: var(--text-2); }
 
+.task-add { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.task-add input[type="text"] {
+  flex: 1; min-width: 160px; font-family: 'DM Sans', sans-serif; font-size: 13px;
+  padding: 9px 12px; border: 1px solid var(--border-med); border-radius: var(--radius-sm);
+  background: var(--surface2); color: var(--text); outline: none;
+}
+.task-add input[type="date"], .task-add select {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 9px 10px;
+  border: 1px solid var(--border-med); border-radius: var(--radius-sm);
+  background: var(--surface2); color: var(--text); outline: none;
+}
+.task-add input:focus, .task-add select:focus { border-color: var(--accent); background: var(--surface); }
+.task-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.task-row:last-child { border-bottom: none; }
+.task-check {
+  width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border-med);
+  background: none; cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+}
+.task-check:hover { border-color: var(--green-text); background: var(--green-bg); }
+.task-title { font-size: 13px; font-weight: 500; }
+.task-meta { font-size: 11px; color: var(--text-2); margin-top: 1px; }
+.task-overdue { color: var(--amber-text); font-weight: 500; }
+.task-today { color: var(--text); font-weight: 500; }
+
 .client-notes-field { grid-column: 1 / -1; }
 .client-form-actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
 .client-save-btn { width: auto; margin-bottom: 0; padding: 11px 20px; }
