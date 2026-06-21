@@ -447,7 +447,7 @@ app.get('/api/overview', async (req, res) => {
       pool.query(`SELECT clients.business AS name, projects.title, projects.status, projects.created_at
                   FROM projects LEFT JOIN clients ON projects.client_id=clients.id
                   ORDER BY projects.created_at DESC LIMIT 6`),
-      pool.query(`SELECT clients.business AS name, projects.title, projects.shoot_date
+      pool.query(`SELECT clients.business AS name, projects.title, projects.package, projects.shoot_date
                   FROM projects LEFT JOIN clients ON projects.client_id=clients.id
                   WHERE projects.shoot_date >= CURRENT_DATE
                   ORDER BY projects.shoot_date ASC LIMIT 5`)

@@ -37,7 +37,7 @@ async function loadOverview() {
 
     upcomingEl.innerHTML = (data.upcoming && data.upcoming.length) ? data.upcoming.map(u => `
       <div class="row">
-        <div><div class="row-name">${escapeHtml(u.name || 'Shoot')}</div><div class="row-sub">${escapeHtml(u.title || '')}</div></div>
+        <div><div class="row-name">${escapeHtml(u.name || 'Project')}</div><div class="row-sub">${escapeHtml([u.title, u.package].filter(Boolean).join(' · '))}</div></div>
         <span style="font-size:12px;color:var(--text-2);">${ovFmtDate(u.shoot_date)}</span>
       </div>`).join('') : '<p style="font-size:13px;color:var(--text-3);padding:8px 0;">No upcoming shoots scheduled.</p>';
   } catch (err) {
