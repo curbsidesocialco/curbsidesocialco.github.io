@@ -21,8 +21,9 @@ function money(n) {
 // Format a date-only value without timezone drift (shoot dates must not shift a day)
 function fmtDate(d) {
   if (!d) return '';
-  const dt = (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) ? new Date(d + 'T00:00:00Z') : new Date(d);
-  return dt.toLocaleDateString('en-US', { timeZone: 'UTC' });
+  // d may be "2026-06-25" or a full ISO timestamp; take just the date part
+  const dt = new Date(String(d).slice(0, 10) + 'T00:00:00Z');
+  return isNaN(dt.getTime()) ? '' : dt.toLocaleDateString('en-US', { timeZone: 'UTC' });
 }
 
 // pg may return a DATE as a string or a Date; normalize to YYYY-MM-DD for inputs

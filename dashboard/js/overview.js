@@ -11,8 +11,9 @@ function ovMoney(n) {
 // Date-only formatting without timezone drift (matches projects.js fmtDate)
 function ovFmtDate(d) {
   if (!d) return '';
-  const dt = (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) ? new Date(d + 'T00:00:00Z') : new Date(d);
-  return dt.toLocaleDateString('en-US', { timeZone: 'UTC' });
+  // d may be "2026-06-25" or a full ISO timestamp; take just the date part
+  const dt = new Date(String(d).slice(0, 10) + 'T00:00:00Z');
+  return isNaN(dt.getTime()) ? '' : dt.toLocaleDateString('en-US', { timeZone: 'UTC' });
 }
 
 async function loadOverview() {

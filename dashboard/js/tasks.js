@@ -7,7 +7,9 @@ let taskClients = [];
 // Parse a date-only value as UTC and flag overdue / today without timezone drift
 function taskDateInfo(due) {
   if (!due) return { label: '', cls: '' };
-  const d = (typeof due === 'string' && /^\d{4}-\d{2}-\d{2}/.test(due)) ? new Date(due + 'T00:00:00Z') : new Date(due);
+  // due may be "2026-06-25" or a full ISO timestamp; take just the date part
+  const d = new Date(String(due).slice(0, 10) + 'T00:00:00Z');
+  if (isNaN(d.getTime())) return { label: '', cls: '' };
   const now = new Date();
   const todayUTC = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
   const label = d.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric' });
