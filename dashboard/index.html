@@ -166,11 +166,13 @@
         <div class="card-title">Find leads</div>
         <div style="font-size:11px;color:var(--text-3);margin:-8px 0 12px;">Search local businesses by type and area, then audit them or add them as a lead.</div>
         <div class="form-grid">
-          <div class="field"><label>Industry</label><input type="text" id="lead-industry" list="industry-types" placeholder="e.g. Med spa, Dental practice" /></div>
-          <div class="field"><label>Area / zip</label><input type="text" id="lead-area" placeholder="e.g. 78204, Southtown" /></div>
+          <div class="field"><label>Industry</label><input type="text" id="lead-industry" list="industry-types" placeholder="e.g. Med spa, Dental practice" onkeydown="if(event.key==='Enter')findLeads()" /></div>
+          <div class="field"><label>Area / zip</label><input type="text" id="lead-area" placeholder="e.g. 78204, Southtown" onkeydown="if(event.key==='Enter')findLeads()" /></div>
         </div>
         <div id="lead-error" class="form-error" style="display:none;"></div>
         <button class="gen-btn" id="lead-search-btn" onclick="findLeads()"><i class="ti ti-search"></i> Search</button>
+        <div style="font-size:11px;color:var(--text-3);margin:14px 0 8px;">Or tap an industry to search it:</div>
+        <div id="lead-suggestions" class="lead-suggestions"></div>
       </div>
       <div class="card">
         <div class="card-title">Results</div>

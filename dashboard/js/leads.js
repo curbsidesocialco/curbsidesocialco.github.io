@@ -4,6 +4,39 @@
 
 let lastLeads = [];
 
+// Browsable industry ideas so Rob never has to remember them. Leans toward
+// under-marketed, high-ticket local verticals (few creators competing).
+const INDUSTRY_GROUPS = [
+  ['Home & trade', ['Roofing', 'HVAC', 'Plumbing', 'Electrician', 'Solar installer', 'Remodeling', 'Home builder', 'Pool builder', 'Landscaping', 'Painting', 'Pest control', 'Cleaning service']],
+  ['Auto', ['Auto detailing', 'Auto repair', 'Body shop', 'Car dealership']],
+  ['Health', ['Dental practice', 'Chiropractor', 'Physical therapy', 'Veterinarian', 'Med spa', 'Optometrist', 'Wellness clinic']],
+  ['Pro services', ['Law firm', 'Real estate', 'Accountant', 'Financial advisor', 'Architect', 'Interior designer']],
+  ['Local & visual', ['Jewelry store', 'Furniture store', 'Florist', 'Boutique', 'Brewery', 'Winery', 'Coffee roaster', 'Event venue']],
+  ['Fitness & beauty', ['Gym', 'Yoga studio', 'Martial arts', 'Salon', 'Barbershop', 'Tattoo studio']]
+];
+
+function renderLeadSuggestions() {
+  const el = document.getElementById('lead-suggestions');
+  if (!el) return;
+  el.innerHTML = INDUSTRY_GROUPS.map(([label, items]) => `
+    <div class="lead-group">
+      <div class="lead-group-label">${label}</div>
+      <div class="chip-row">
+        ${items.map(name => `<button class="chip" onclick="pickIndustry('${name.replace(/'/g, "\\'")}')">${name}</button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// Tap a chip: fill the industry, then search if an area is set, else focus area
+function pickIndustry(name) {
+  document.getElementById('lead-industry').value = name;
+  const area = document.getElementById('lead-area').value.trim();
+  if (area) findLeads();
+  else document.getElementById('lead-area').focus();
+}
+
+document.addEventListener('DOMContentLoaded', renderLeadSuggestions);
+
 async function findLeads() {
   const industry = document.getElementById('lead-industry').value.trim();
   const area = document.getElementById('lead-area').value.trim();
