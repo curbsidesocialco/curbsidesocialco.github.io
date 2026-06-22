@@ -163,8 +163,18 @@
     <!-- LEADS -->
     <div id="tab-leads" class="section">
       <div class="card">
-        <div class="card-title">Pipeline</div>
-        <p style="font-size:13px;color:var(--text-2);padding:8px 0;">A drag-and-drop pipeline view is coming soon. For now, your leads live in the <a href="#clients" style="color:var(--accent);font-weight:500;">Clients</a> tab, marked with the Lead status.</p>
+        <div class="card-title">Find leads</div>
+        <div style="font-size:11px;color:var(--text-3);margin:-8px 0 12px;">Search local businesses by type and area, then audit them or add them as a lead.</div>
+        <div class="form-grid">
+          <div class="field"><label>Industry</label><input type="text" id="lead-industry" list="industry-types" placeholder="e.g. Med spa, Dental practice" /></div>
+          <div class="field"><label>Area / zip</label><input type="text" id="lead-area" placeholder="e.g. 78204, Southtown" /></div>
+        </div>
+        <div id="lead-error" class="form-error" style="display:none;"></div>
+        <button class="gen-btn" id="lead-search-btn" onclick="findLeads()"><i class="ti ti-search"></i> Search</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Results</div>
+        <div id="lead-results"><p style="font-size:13px;color:var(--text-3);padding:8px 0;">Search above to find businesses.</p></div>
       </div>
     </div>
 
@@ -320,6 +330,7 @@
 <script src="/dashboard/js/projects.js"></script>
 <script src="/dashboard/js/overview.js"></script>
 <script src="/dashboard/js/tasks.js"></script>
+<script src="/dashboard/js/leads.js"></script>
 <script src="/dashboard/js/pin.js"></script>
 </body>
 </html>

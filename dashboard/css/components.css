@@ -213,6 +213,12 @@
 .task-overdue { color: var(--amber-text); font-weight: 500; }
 .task-today { color: var(--text); font-weight: 500; }
 
+.lead-result { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.lead-result:last-child { border-bottom: none; }
+.lead-result-main { flex: 1; min-width: 200px; }
+.lead-rating { font-size: 11px; color: var(--text-2); font-weight: 400; }
+.lead-result-actions { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
+
 .client-notes-field { grid-column: 1 / -1; }
 .client-form-actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
 .client-save-btn { width: auto; margin-bottom: 0; padding: 11px 20px; }
