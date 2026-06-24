@@ -171,6 +171,7 @@
         </div>
         <div id="lead-error" class="form-error" style="display:none;"></div>
         <button class="gen-btn" id="lead-search-btn" onclick="findLeads()"><i class="ti ti-search"></i> Search</button>
+        <div id="lead-recent" style="margin:14px 0 0;"></div>
         <div style="font-size:11px;color:var(--text-3);margin:14px 0 8px;">Or tap an industry to search it:</div>
         <div id="lead-suggestions" class="lead-suggestions"></div>
       </div>
@@ -203,9 +204,9 @@
             <div class="audit-card-label">Opportunity</div>
             <div class="audit-card-text" id="audit-opp-text"></div>
           </div>
-          <div class="audit-card muted">
+          <div class="audit-card">
             <div class="audit-card-label">Google rating</div>
-            <div class="audit-card-text">Coming soon. This fills in once Google is wired up.</div>
+            <div class="audit-card-text" id="audit-rating-text">—</div>
           </div>
         </div>
 
@@ -319,6 +320,15 @@
         </div>
       </div>
 
+      <div class="client-filter" id="client-filter">
+        <input type="text" id="client-search" placeholder="Search clients..." oninput="filterClients()" />
+        <select id="client-status-filter" onchange="filterClients()">
+          <option value="">All statuses</option>
+          <option value="lead">Leads</option>
+          <option value="active">Active</option>
+          <option value="past">Past</option>
+        </select>
+      </div>
       <div class="client-grid" id="clients-grid"></div>
       <div id="client-detail" style="display:none;"></div>
     </div>

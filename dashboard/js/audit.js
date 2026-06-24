@@ -46,6 +46,7 @@ async function runAudit() {
       wins: data.wins, opportunity: data.opportunity, findings: data.findings, platform: data.platform
     };
     prepareAuditClientLink(name);
+    fetchAuditRating(name);
     const savedMsg = document.getElementById('audit-save-msg');
     if (savedMsg) savedMsg.style.display = 'none';
 
@@ -104,6 +105,25 @@ function renderAudit(data) {
         </div>
       </div>`;
   }).join('');
+}
+
+// Pull the business's Google rating into the rating card
+async function fetchAuditRating(name) {
+  const el = document.getElementById('audit-rating-text');
+  if (!el) return;
+  if (!name) { el.textContent = 'Add a business name to pull the rating'; return; }
+  el.textContent = 'Checking Google...';
+  try {
+    const res = await fetch(`${API_URL}/api/rating`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name })
+    });
+    const data = await res.json();
+    el.textContent = (data.found && data.rating) ? `★ ${data.rating} (${data.reviews} reviews)` : 'No Google rating found';
+  } catch (e) {
+    el.textContent = 'Could not load rating';
+  }
 }
 
 // ---- Save an audit to a client ----

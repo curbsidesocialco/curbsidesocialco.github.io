@@ -229,6 +229,19 @@
 }
 .chip:hover { border-color: var(--accent); color: var(--text); }
 
+.client-filter { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.client-filter input {
+  flex: 1; min-width: 160px; font-family: 'DM Sans', sans-serif; font-size: 13px;
+  padding: 9px 12px; border: 1px solid var(--border-med); border-radius: var(--radius-sm);
+  background: var(--surface2); color: var(--text); outline: none;
+}
+.client-filter select {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 9px 10px;
+  border: 1px solid var(--border-med); border-radius: var(--radius-sm);
+  background: var(--surface2); color: var(--text);
+}
+.client-filter input:focus { border-color: var(--accent); background: var(--surface); }
+
 .client-notes-field { grid-column: 1 / -1; }
 .client-form-actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
 .client-save-btn { width: auto; margin-bottom: 0; padding: 11px 20px; }

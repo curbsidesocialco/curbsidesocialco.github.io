@@ -47,10 +47,20 @@ async function loadClients() {
   try {
     const res = await fetch(`${API_URL}/api/clients`);
     clientsCache = await res.json();
-    renderClients(clientsCache);
+    filterClients();
   } catch (err) {
     grid.innerHTML = '<p style="font-size:13px;color:var(--text-3);padding:12px 0;">Could not load clients.</p>';
   }
+}
+
+// Filter the grid by search text + status (falls back to the full list)
+function filterClients() {
+  const q = (document.getElementById('client-search') && document.getElementById('client-search').value || '').trim().toLowerCase();
+  const status = (document.getElementById('client-status-filter') && document.getElementById('client-status-filter').value) || '';
+  let list = clientsCache;
+  if (status) list = list.filter(c => c.status === status);
+  if (q) list = list.filter(c => (`${c.business} ${c.type || ''} ${c.area || ''} ${c.notes || ''}`).toLowerCase().includes(q));
+  renderClients(list);
 }
 
 function renderClients(list) {
@@ -113,6 +123,8 @@ function editClient(id) {
 function showGridView() {
   document.getElementById('client-detail').style.display = 'none';
   document.getElementById('clients-grid').style.display = ''; // restore the CSS grid
+  const filter = document.getElementById('client-filter');
+  if (filter) filter.style.display = '';
 }
 
 function backToClients() {
@@ -125,6 +137,8 @@ async function openClient(id) {
   const detail = document.getElementById('client-detail');
   hideClientForm();
   document.getElementById('clients-grid').style.display = 'none';
+  const filter = document.getElementById('client-filter');
+  if (filter) filter.style.display = 'none';
   detail.style.display = 'block';
   detail.innerHTML = '<div class="card"><p style="font-size:13px;color:var(--text-3);">Loading...</p></div>';
   try {

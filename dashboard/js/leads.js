@@ -35,7 +35,42 @@ function pickIndustry(name) {
   else document.getElementById('lead-area').focus();
 }
 
+// Remember the last few searches (localStorage) so Rob can repeat them in one tap
+function saveRecentSearch(industry, area) {
+  try {
+    let recent = JSON.parse(localStorage.getItem('css_recent_leads') || '[]');
+    recent = recent.filter(r => !(r.industry === industry && r.area === area));
+    recent.unshift({ industry, area });
+    localStorage.setItem('css_recent_leads', JSON.stringify(recent.slice(0, 5)));
+    renderRecentSearches();
+  } catch (e) {}
+}
+
+function renderRecentSearches() {
+  const el = document.getElementById('lead-recent');
+  if (!el) return;
+  let recent = [];
+  try { recent = JSON.parse(localStorage.getItem('css_recent_leads') || '[]'); } catch (e) {}
+  if (!recent.length) { el.innerHTML = ''; return; }
+  el.innerHTML = `
+    <div class="lead-group-label">Recent searches</div>
+    <div class="chip-row">
+      ${recent.map((r, i) => `<button class="chip" onclick="rerunSearch(${i})">${escapeHtml([r.industry, r.area].filter(Boolean).join(' · '))}</button>`).join('')}
+    </div>`;
+}
+
+function rerunSearch(i) {
+  let recent = [];
+  try { recent = JSON.parse(localStorage.getItem('css_recent_leads') || '[]'); } catch (e) {}
+  const r = recent[i];
+  if (!r) return;
+  document.getElementById('lead-industry').value = r.industry || '';
+  document.getElementById('lead-area').value = r.area || '';
+  findLeads();
+}
+
 document.addEventListener('DOMContentLoaded', renderLeadSuggestions);
+document.addEventListener('DOMContentLoaded', renderRecentSearches);
 
 async function findLeads() {
   const industry = document.getElementById('lead-industry').value.trim();
@@ -72,6 +107,7 @@ async function findLeads() {
     const data = await res.json();
     lastLeads = data.results || [];
     renderLeads(lastLeads);
+    saveRecentSearch(industry, area);
   } catch (e) {
     errEl.textContent = 'Could not reach the server. Try again.';
     errEl.style.display = 'block';
