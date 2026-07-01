@@ -1,6 +1,31 @@
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
+const nodemailer = require('nodemailer');
+
+// Gmail sender (OAuth2). Built lazily so the server still boots if creds are missing.
+let mailer = null;
+function getMailer() {
+  if (mailer) return mailer;
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_REFRESH_TOKEN) return null;
+  mailer = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: process.env.GMAIL_USER,
+      clientId: process.env.GMAIL_CLIENT_ID,
+      clientSecret: process.env.GMAIL_CLIENT_SECRET,
+      refreshToken: process.env.GMAIL_REFRESH_TOKEN
+    }
+  });
+  return mailer;
+}
+
+async function sendEmail(to, subject, html) {
+  const m = getMailer();
+  if (!m) throw new Error('Gmail is not configured');
+  await m.sendMail({ from: `Curbside Social Co. <${process.env.GMAIL_USER}>`, to, subject, html });
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -474,30 +499,60 @@ app.get('/api/overview', async (req, res) => {
 });
 
 // ---- Monthly report (this calendar month) ----
+async function monthlyReport() {
+  const inMonth = `date_trunc('month', created_at) = date_trunc('month', CURRENT_DATE)`;
+  const [booked, collected, newClients, outreachSent, auditsRun, delivered] = await Promise.all([
+    pool.query(`SELECT COALESCE(SUM(amount),0) AS sum, COUNT(*)::int AS n FROM projects WHERE ${inMonth}`),
+    pool.query(`SELECT COALESCE(SUM(amount),0) AS sum FROM projects WHERE paid = true AND ${inMonth}`),
+    pool.query(`SELECT COUNT(*)::int AS n FROM clients WHERE ${inMonth}`),
+    pool.query(`SELECT COUNT(*)::int AS n FROM outreach WHERE ${inMonth}`),
+    pool.query(`SELECT COUNT(*)::int AS n FROM audits WHERE ${inMonth}`),
+    pool.query(`SELECT COUNT(*)::int AS n FROM projects WHERE status='delivered' AND ${inMonth}`)
+  ]);
+  return {
+    month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }),
+    booked: Number(booked.rows[0].sum),
+    projects: booked.rows[0].n,
+    collected: Number(collected.rows[0].sum),
+    delivered: delivered.rows[0].n,
+    newClients: newClients.rows[0].n,
+    outreachSent: outreachSent.rows[0].n,
+    auditsRun: auditsRun.rows[0].n
+  };
+}
+
 app.get('/api/report', async (req, res) => {
   try {
-    const inMonth = `date_trunc('month', created_at) = date_trunc('month', CURRENT_DATE)`;
-    const [booked, collected, newClients, outreachSent, auditsRun, delivered] = await Promise.all([
-      pool.query(`SELECT COALESCE(SUM(amount),0) AS sum, COUNT(*)::int AS n FROM projects WHERE ${inMonth}`),
-      pool.query(`SELECT COALESCE(SUM(amount),0) AS sum FROM projects WHERE paid = true AND ${inMonth}`),
-      pool.query(`SELECT COUNT(*)::int AS n FROM clients WHERE ${inMonth}`),
-      pool.query(`SELECT COUNT(*)::int AS n FROM outreach WHERE ${inMonth}`),
-      pool.query(`SELECT COUNT(*)::int AS n FROM audits WHERE ${inMonth}`),
-      pool.query(`SELECT COUNT(*)::int AS n FROM projects WHERE status='delivered' AND ${inMonth}`)
-    ]);
-    res.json({
-      month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }),
-      booked: Number(booked.rows[0].sum),
-      projects: booked.rows[0].n,
-      collected: Number(collected.rows[0].sum),
-      delivered: delivered.rows[0].n,
-      newClients: newClients.rows[0].n,
-      outreachSent: outreachSent.rows[0].n,
-      auditsRun: auditsRun.rows[0].n
-    });
+    res.json(await monthlyReport());
   } catch (err) {
     console.error('Report error:', err);
     res.status(500).json({ error: 'Failed to load report' });
+  }
+});
+
+// Email this month's report to Rob (also our test that Gmail sending works)
+app.post('/api/email/report', async (req, res) => {
+  try {
+    const r = await monthlyReport();
+    const money = n => '$' + Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+    const html = `
+      <div style="font-family:Arial,sans-serif;color:#1a1a18;">
+        <h2 style="margin:0 0 4px;">Curbside Social Co.</h2>
+        <p style="color:#6b6b65;margin:0 0 16px;">Your report for ${r.month}</p>
+        <ul style="line-height:1.7;font-size:15px;">
+          <li><b>Collected:</b> ${money(r.collected)}</li>
+          <li><b>Booked:</b> ${money(r.booked)} (${r.projects} project${r.projects === 1 ? '' : 's'})</li>
+          <li><b>Delivered:</b> ${r.delivered}</li>
+          <li><b>New clients:</b> ${r.newClients}</li>
+          <li><b>Outreach sent:</b> ${r.outreachSent}</li>
+          <li><b>Audits run:</b> ${r.auditsRun}</li>
+        </ul>
+      </div>`;
+    await sendEmail(process.env.GMAIL_USER, `Your Curbside report — ${r.month}`, html);
+    res.json({ sent: true });
+  } catch (err) {
+    console.error('Report email error:', err.message);
+    res.status(500).json({ error: err.message || 'Failed to send the email' });
   }
 });
 
