@@ -75,7 +75,10 @@ async function emailReport(btn) {
   const orig = btn.innerHTML;
   btn.innerHTML = '<i class="ti ti-loader"></i> Sending...';
   try {
-    const res = await fetch(`${API_URL}/api/email/report`, { method: 'POST' });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 30000); // never hang forever
+    const res = await fetch(`${API_URL}/api/email/report`, { method: 'POST', signal: controller.signal });
+    clearTimeout(timer);
     btn.innerHTML = res.ok ? '<i class="ti ti-check"></i> Sent, check your inbox' : 'Failed to send';
   } catch (e) {
     btn.innerHTML = 'Failed to send';
