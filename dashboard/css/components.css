@@ -271,6 +271,14 @@
 }
 .log-btn:hover { opacity: 0.9; }
 .log-btn:disabled { opacity: 0.6; cursor: default; }
+.followup-btn {
+  width: 100%; margin-top: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 11px; border: 1px solid var(--accent); border-radius: var(--radius-sm);
+  background: none; color: var(--accent); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s;
+}
+.followup-btn:hover { background: var(--accent); color: #fff; }
+.followup-btn:disabled { opacity: 0.6; cursor: default; }
 .log-client-tag { color: var(--text-2); }
 .audit-save-msg { font-size: 12px; margin-top: 10px; text-align: right; }
 .audit-save-msg.ok { color: var(--green-text); }
