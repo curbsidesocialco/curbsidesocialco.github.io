@@ -1,30 +1,43 @@
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
-const nodemailer = require('nodemailer');
-
-// Gmail sender (OAuth2). Built lazily so the server still boots if creds are missing.
-let mailer = null;
-function getMailer() {
-  if (mailer) return mailer;
-  if (!process.env.GMAIL_USER || !process.env.GMAIL_REFRESH_TOKEN) return null;
-  mailer = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      type: 'OAuth2',
-      user: process.env.GMAIL_USER,
-      clientId: process.env.GMAIL_CLIENT_ID,
-      clientSecret: process.env.GMAIL_CLIENT_SECRET,
-      refreshToken: process.env.GMAIL_REFRESH_TOKEN
-    }
+// Gmail sender via the Gmail API over HTTPS. (Railway blocks SMTP ports, so no
+// nodemailer/SMTP.) Uses the OAuth2 refresh token to mint a short-lived access token.
+async function getGmailAccessToken() {
+  const resp = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: process.env.GMAIL_CLIENT_ID,
+      client_secret: process.env.GMAIL_CLIENT_SECRET,
+      refresh_token: process.env.GMAIL_REFRESH_TOKEN,
+      grant_type: 'refresh_token'
+    })
   });
-  return mailer;
+  const data = await resp.json();
+  if (!resp.ok || !data.access_token) throw new Error(data.error_description || data.error || 'Token refresh failed');
+  return data.access_token;
 }
 
 async function sendEmail(to, subject, html) {
-  const m = getMailer();
-  if (!m) throw new Error('Gmail is not configured');
-  await m.sendMail({ from: `Curbside Social Co. <${process.env.GMAIL_USER}>`, to, subject, html });
+  if (!process.env.GMAIL_REFRESH_TOKEN) throw new Error('Gmail is not configured');
+  const token = await getGmailAccessToken();
+  const mime =
+    `From: Curbside Social Co. <${process.env.GMAIL_USER}>\r\n` +
+    `To: ${to}\r\n` +
+    `Subject: ${subject}\r\n` +
+    `MIME-Version: 1.0\r\n` +
+    `Content-Type: text/html; charset="UTF-8"\r\n\r\n` +
+    html;
+  const raw = Buffer.from(mime).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const resp = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ raw })
+  });
+  const data = await resp.json();
+  if (!resp.ok) throw new Error((data.error && data.error.message) || 'Gmail send failed');
+  return data;
 }
 
 const app = express();
@@ -548,7 +561,7 @@ app.post('/api/email/report', async (req, res) => {
           <li><b>Audits run:</b> ${r.auditsRun}</li>
         </ul>
       </div>`;
-    await sendEmail(process.env.GMAIL_USER, `Your Curbside report — ${r.month}`, html);
+    await sendEmail(process.env.GMAIL_USER, `Your Curbside report for ${r.month}`, html);
     res.json({ sent: true });
   } catch (err) {
     console.error('Report email error:', err.message);
