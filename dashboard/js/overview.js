@@ -46,4 +46,29 @@ async function loadOverview() {
   }
 }
 
+async function loadReport() {
+  const body = document.getElementById('report-body');
+  if (!body) return;
+  try {
+    const res = await fetch(`${API_URL}/api/report`);
+    const r = await res.json();
+    const monthEl = document.getElementById('report-month');
+    if (monthEl) monthEl.textContent = r.month ? '· ' + r.month : '';
+    const stats = [
+      ['Collected', ovMoney(r.collected)],
+      ['Booked', `${ovMoney(r.booked)} (${r.projects})`],
+      ['Delivered', r.delivered],
+      ['New clients', r.newClients],
+      ['Outreach sent', r.outreachSent],
+      ['Audits run', r.auditsRun]
+    ];
+    body.innerHTML = '<div class="report-grid">' + stats.map(([label, val]) =>
+      `<div class="report-stat"><div class="report-stat-val">${val}</div><div class="report-stat-label">${label}</div></div>`
+    ).join('') + '</div>';
+  } catch (e) {
+    body.innerHTML = '<p style="font-size:13px;color:var(--text-3);padding:8px 0;">Could not load this month.</p>';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', loadOverview);
+document.addEventListener('DOMContentLoaded', loadReport);

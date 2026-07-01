@@ -72,6 +72,7 @@ function renderProjects(list) {
         <div class="project-row-actions">
           <span class="badge ${paidBadge}">${paidLabel}</span>
           <span class="badge ${badge}">${escapeHtml(statusLabel)}</span>
+          <button class="icon-btn" onclick="addProjectTask(${p.id}, this)" title="Add a follow-up task"><i class="ti ti-bell-plus"></i></button>
           <button class="icon-btn" onclick="editProject(${p.id})" title="Edit"><i class="ti ti-pencil"></i></button>
           <button class="icon-btn" onclick="deleteProject(${p.id})" title="Delete"><i class="ti ti-trash"></i></button>
         </div>
@@ -221,6 +222,22 @@ async function saveProject() {
     saveBtn.disabled = false;
     saveBtn.innerHTML = orig;
   }
+}
+
+// Spawn a follow-up task from a project (review ask if delivered, else a nudge)
+async function addProjectTask(id, btn) {
+  const p = projectsCache.find(x => x.id === id);
+  if (!p) return;
+  const title = p.status === 'delivered'
+    ? `Ask ${p.client_name || 'client'} for a review`
+    : `Follow up on ${p.title || 'project'}${p.client_name ? ' for ' + p.client_name : ''}`;
+  btn.disabled = true;
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<i class="ti ti-check"></i>';
+  if (typeof createTask === 'function') {
+    await createTask({ title, due_date: (typeof daysFromNow === 'function' ? daysFromNow(2) : null), client_id: p.client_id || null, project_id: p.id });
+  }
+  setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 2000);
 }
 
 async function deleteProject(id) {

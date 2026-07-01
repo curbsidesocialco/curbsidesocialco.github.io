@@ -242,6 +242,12 @@
 }
 .client-filter input:focus { border-color: var(--accent); background: var(--surface); }
 
+.report-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.report-stat { background: var(--surface2); border-radius: var(--radius-sm); padding: 12px; }
+.report-stat-val { font-size: 18px; font-weight: 500; font-family: 'DM Mono', monospace; }
+.report-stat-label { font-size: 11px; color: var(--text-2); margin-top: 2px; }
+@media (max-width: 560px) { .report-grid { grid-template-columns: repeat(2, 1fr); } }
+
 .client-notes-field { grid-column: 1 / -1; }
 .client-form-actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
 .client-save-btn { width: auto; margin-bottom: 0; padding: 11px 20px; }

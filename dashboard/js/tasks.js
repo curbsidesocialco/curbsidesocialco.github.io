@@ -117,4 +117,25 @@ async function deleteTask(id) {
   }
 }
 
+// Shared helpers so other tabs can drop a follow-up task (the connective tissue)
+function daysFromNow(n) {
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+async function createTask(payload) {
+  try {
+    await fetch(`${API_URL}/api/tasks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (typeof loadTasks === 'function') loadTasks(); // refresh the Overview list
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', loadTasks);

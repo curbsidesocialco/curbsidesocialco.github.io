@@ -129,6 +129,22 @@ async function logOutreach() {
   }
 }
 
+// Drop a "follow up in 3 days" task for the business just generated
+async function addOutreachFollowup(btn) {
+  if (!window._lastPitch) return;
+  const sel = document.getElementById('outreach-client');
+  let clientId = sel ? sel.value : '';
+  if (clientId === '__new__') clientId = ''; // a task, not a new client
+  const biz = window._lastPitch.business || 'this lead';
+  btn.disabled = true;
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<i class="ti ti-check"></i> Added';
+  if (typeof createTask === 'function') {
+    await createTask({ title: `Follow up with ${biz}`, due_date: (typeof daysFromNow === 'function' ? daysFromNow(3) : null), client_id: clientId || null });
+  }
+  setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 2000);
+}
+
 async function loadOutreachLog() {
   const container = document.getElementById('outreach-log-entries');
   if (!container) return;

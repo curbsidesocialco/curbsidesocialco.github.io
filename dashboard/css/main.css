@@ -108,4 +108,9 @@ body {
 @media (max-width: 560px) {
   .form-grid { grid-template-columns: 1fr; }
   .msg-grid { grid-template-columns: 1fr; }
+  .main { padding: 14px; }
+  .card { padding: 14px; }
+  .topbar { padding: 0 14px; }
+  .tabs-bar { padding: 0 14px; }
+  .metric-value { font-size: 22px; }
 }

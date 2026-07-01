@@ -71,6 +71,10 @@
           <div id="overview-upcoming"><p style="font-size:13px;color:var(--text-3);padding:8px 0;">Loading...</p></div>
         </div>
       </div>
+      <div class="card">
+        <div class="card-title">This month <span id="report-month" style="text-transform:none;letter-spacing:0;color:var(--text-3);font-weight:400;"></span></div>
+        <div id="report-body"><p style="font-size:13px;color:var(--text-3);padding:8px 0;">Loading...</p></div>
+      </div>
     </div>
 
         <!-- OUTREACH -->
@@ -147,6 +151,7 @@
             <label for="outreach-client">Link to client</label>
             <select id="outreach-client"></select>
             <button id="log-btn" class="log-btn" onclick="logOutreach()">Log this outreach</button>
+            <button class="icon-btn" onclick="addOutreachFollowup(this)" title="Add a 3-day follow-up task"><i class="ti ti-bell-plus"></i> Follow-up</button>
           </div>
         </div>
       </div>

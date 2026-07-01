@@ -473,6 +473,34 @@ app.get('/api/overview', async (req, res) => {
   }
 });
 
+// ---- Monthly report (this calendar month) ----
+app.get('/api/report', async (req, res) => {
+  try {
+    const inMonth = `date_trunc('month', created_at) = date_trunc('month', CURRENT_DATE)`;
+    const [booked, collected, newClients, outreachSent, auditsRun, delivered] = await Promise.all([
+      pool.query(`SELECT COALESCE(SUM(amount),0) AS sum, COUNT(*)::int AS n FROM projects WHERE ${inMonth}`),
+      pool.query(`SELECT COALESCE(SUM(amount),0) AS sum FROM projects WHERE paid = true AND ${inMonth}`),
+      pool.query(`SELECT COUNT(*)::int AS n FROM clients WHERE ${inMonth}`),
+      pool.query(`SELECT COUNT(*)::int AS n FROM outreach WHERE ${inMonth}`),
+      pool.query(`SELECT COUNT(*)::int AS n FROM audits WHERE ${inMonth}`),
+      pool.query(`SELECT COUNT(*)::int AS n FROM projects WHERE status='delivered' AND ${inMonth}`)
+    ]);
+    res.json({
+      month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }),
+      booked: Number(booked.rows[0].sum),
+      projects: booked.rows[0].n,
+      collected: Number(collected.rows[0].sum),
+      delivered: delivered.rows[0].n,
+      newClients: newClients.rows[0].n,
+      outreachSent: outreachSent.rows[0].n,
+      auditsRun: auditsRun.rows[0].n
+    });
+  } catch (err) {
+    console.error('Report error:', err);
+    res.status(500).json({ error: 'Failed to load report' });
+  }
+});
+
 // ---- Tasks / follow-ups ----
 app.post('/api/tasks', async (req, res) => {
   const { title, due_date, client_id, project_id, notes } = req.body;
