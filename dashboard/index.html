@@ -242,11 +242,12 @@
           <div class="field"><label>Title</label><input type="text" id="project-title" placeholder="e.g. 3 reels, brand film" /></div>
           <div class="field">
             <label>Package</label>
-            <select id="project-package">
-              <option value="">Select package...</option>
-              <option>3 reels</option><option>Cinematic</option><option>Landing page</option>
-              <option>Brochure site</option><option>Managed site</option><option>Retainer</option><option>Custom</option>
-            </select>
+            <input type="text" id="project-package" list="package-types" placeholder="pick or type your own" />
+            <datalist id="package-types">
+              <option value="3 reels"></option><option value="Cinematic"></option>
+              <option value="Landing page"></option><option value="Brochure site"></option>
+              <option value="Managed site"></option><option value="Retainer"></option>
+            </datalist>
           </div>
           <div class="field"><label>Amount ($)</label><input type="number" id="project-amount" placeholder="e.g. 150" min="0" step="1" /></div>
           <div class="field">
