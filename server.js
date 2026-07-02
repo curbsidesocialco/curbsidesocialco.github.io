@@ -40,6 +40,21 @@ async function sendEmail(to, subject, html) {
   return data;
 }
 
+// Branded HTML wrapper for outgoing emails (inline styles, table layout for email clients)
+function emailShell(heading, subheading, innerHtml) {
+  return `<div style="background:#f5f4f0;padding:24px 12px;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e6e3da;">
+      <tr><td style="background:#0a0a08;padding:24px 28px;">
+        <div style="color:#b8974a;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;">Curbside Social Co.</div>
+        <div style="color:#e8e0d0;font-size:22px;font-weight:bold;margin-top:6px;">${heading}</div>
+        ${subheading ? `<div style="color:#8a8a80;font-size:13px;margin-top:4px;">${subheading}</div>` : ''}
+      </td></tr>
+      <tr><td style="padding:22px 28px;color:#1a1a18;">${innerHtml}</td></tr>
+      <tr><td style="padding:0 28px 22px;"><div style="border-top:1px solid #f0efe9;padding-top:14px;color:#a0a09a;font-size:11px;">Sent from your Curbside dashboard.</div></td></tr>
+    </table>
+  </div>`;
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -548,19 +563,19 @@ app.post('/api/email/report', async (req, res) => {
   try {
     const r = await monthlyReport();
     const money = n => '$' + Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
-    const html = `
-      <div style="font-family:Arial,sans-serif;color:#1a1a18;">
-        <h2 style="margin:0 0 4px;">Curbside Social Co.</h2>
-        <p style="color:#6b6b65;margin:0 0 16px;">Your report for ${r.month}</p>
-        <ul style="line-height:1.7;font-size:15px;">
-          <li><b>Collected:</b> ${money(r.collected)}</li>
-          <li><b>Booked:</b> ${money(r.booked)} (${r.projects} project${r.projects === 1 ? '' : 's'})</li>
-          <li><b>Delivered:</b> ${r.delivered}</li>
-          <li><b>New clients:</b> ${r.newClients}</li>
-          <li><b>Outreach sent:</b> ${r.outreachSent}</li>
-          <li><b>Audits run:</b> ${r.auditsRun}</li>
-        </ul>
-      </div>`;
+    const row = (label, val, color) => `<tr>
+      <td style="padding:11px 0;border-bottom:1px solid #f0efe9;color:#6b6b65;font-size:14px;">${label}</td>
+      <td style="padding:11px 0;border-bottom:1px solid #f0efe9;text-align:right;font-size:16px;font-weight:bold;color:${color || '#1a1a18'};">${val}</td>
+    </tr>`;
+    const inner = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      ${row('Collected', money(r.collected), '#2a5e28')}
+      ${row('Booked', money(r.booked) + ' &middot; ' + r.projects + (r.projects === 1 ? ' project' : ' projects'))}
+      ${row('Delivered', r.delivered)}
+      ${row('New clients', r.newClients)}
+      ${row('Outreach sent', r.outreachSent)}
+      ${row('Audits run', r.auditsRun)}
+    </table>`;
+    const html = emailShell('Monthly report', r.month, inner);
     await sendEmail(process.env.GMAIL_USER, `Your Curbside report for ${r.month}`, html);
     res.json({ sent: true });
   } catch (err) {
