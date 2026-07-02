@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Curbside Social Co. — Video Production & Digital Marketing, San Antonio TX</title>
+<title>Curbside Social Co. | Video Production & Digital Marketing, San Antonio TX</title>
+<meta name="description" content="San Antonio video production and digital marketing. Cinematic brand films, social reels, photography, and websites for restaurants, med spas, law firms, and local businesses. Shot on location." />
+<meta property="og:title" content="Curbside Social Co." />
+<meta property="og:description" content="Cinematic video and digital marketing for real brands, in real spaces. San Antonio, TX." />
+<meta property="og:image" content="https://curbsidesocial.co/assets/og.jpg" />
+<meta property="og:url" content="https://curbsidesocial.co" />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a08'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23e8e0d0' text-anchor='middle'%3ECS%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/main.css">
@@ -11,86 +18,160 @@
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="nav">
   <a href="#" class="nav-logo">Curbside Social Co.</a>
   <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#video">Video</a></li>
     <li><a href="#web">Web</a></li>
     <li><a href="#about">About</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Get a Quote</a>
+  <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span>
+  </button>
 </nav>
+<div class="nav-panel" id="nav-panel">
+  <a href="#work">Work</a>
+  <a href="#services">Services</a>
+  <a href="#video">Video</a>
+  <a href="#web">Web</a>
+  <a href="#about">About</a>
+  <a href="#contact" class="nav-panel-cta">Get a Quote</a>
+</div>
 
 <!-- HERO -->
-<div class="hero">
+<header class="hero no-video" id="hero">
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true">
+    <source src="assets/hero.mp4" type="video/mp4">
+  </video>
+  <div class="hero-shade" aria-hidden="true"></div>
   <div class="hero-bg" aria-hidden="true">
     <span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span>
     <span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span>
     <span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span><span>CS</span>
   </div>
-  <p class="hero-eyebrow">San Antonio, Texas</p>
-  <h1 class="hero-title">Curbside</h1>
-  <h2 class="hero-subtitle">Social Co.</h2>
-  <div class="hero-divider">
-    <span class="hero-divider-icon">✦ ✦ ✦</span>
-  </div>
-  <p class="hero-tagline">Video production & digital marketing built for real brands, in real spaces.</p>
-  <div class="hero-actions">
-    <a href="#video" class="btn-primary">View Packages</a>
-    <a href="#contact" class="btn-secondary">Get in Touch</a>
+  <div class="hero-content">
+    <p class="hero-eyebrow">San Antonio, Texas</p>
+    <h1 class="hero-title">Curbside</h1>
+    <h2 class="hero-subtitle">Social Co.</h2>
+    <div class="hero-divider">
+      <span class="hero-divider-icon">✦ ✦ ✦</span>
+    </div>
+    <p class="hero-tagline">Cinematic video and digital marketing for real brands, in real spaces.</p>
+    <div class="hero-actions">
+      <a href="#work" class="btn-primary">See the Work</a>
+      <a href="#contact" class="btn-secondary">Get in Touch</a>
+    </div>
   </div>
   <div class="hero-scroll" aria-hidden="true">
     <div class="scroll-line"></div>
     <span>Scroll</span>
   </div>
+</header>
+
+<!-- TRUSTED BY (hidden until logo files exist in assets/logos/) -->
+<div class="trusted-strip" id="trusted" hidden>
+  <span class="trusted-label">Trusted by</span>
+  <div class="trusted-logos">
+    <img src="assets/logos/logo-1.png" alt="" loading="lazy" />
+    <img src="assets/logos/logo-2.png" alt="" loading="lazy" />
+    <img src="assets/logos/logo-3.png" alt="" loading="lazy" />
+    <img src="assets/logos/logo-4.png" alt="" loading="lazy" />
+    <img src="assets/logos/logo-5.png" alt="" loading="lazy" />
+    <img src="assets/logos/logo-6.png" alt="" loading="lazy" />
+  </div>
 </div>
 
+<!-- WORK -->
+<section id="work" class="reveal">
+  <span class="section-eyebrow">Recent Work</span>
+  <h2 class="section-title">Shot on Location</h2>
+  <p class="section-body">A few recent films. Every frame is a real business, a real space, a real story.</p>
+  <div class="work-row">
+    <figure class="work-frame">
+      <video muted loop playsinline preload="metadata">
+        <source src="assets/work-1.mp4" type="video/mp4">
+      </video>
+      <div class="work-placeholder"><span class="work-mono">CS</span><em>Film coming soon</em></div>
+      <figcaption class="work-caption">Brand film</figcaption>
+    </figure>
+    <figure class="work-frame">
+      <video muted loop playsinline preload="metadata">
+        <source src="assets/work-2.mp4" type="video/mp4">
+      </video>
+      <div class="work-placeholder"><span class="work-mono">CS</span><em>Film coming soon</em></div>
+      <figcaption class="work-caption">Social reel</figcaption>
+    </figure>
+    <figure class="work-frame">
+      <video muted loop playsinline preload="metadata">
+        <source src="assets/work-3.mp4" type="video/mp4">
+      </video>
+      <div class="work-placeholder"><span class="work-mono">CS</span><em>Film coming soon</em></div>
+      <figcaption class="work-caption">On location</figcaption>
+    </figure>
+    <figure class="work-frame">
+      <video muted loop playsinline preload="metadata">
+        <source src="assets/work-4.mp4" type="video/mp4">
+      </video>
+      <div class="work-placeholder"><span class="work-mono">CS</span><em>Film coming soon</em></div>
+      <figcaption class="work-caption">Photography</figcaption>
+    </figure>
+  </div>
+  <p class="work-more">More every week on <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a></p>
+</section>
+
+<div class="divider"></div>
+
 <!-- SERVICES -->
-<section id="services">
+<section id="services" class="reveal">
   <span class="section-eyebrow">What We Do</span>
   <h2 class="section-title">Full-Service Creative</h2>
-  <p class="section-body">From a single reel to a full brand rollout — we shoot, edit, and deliver content that moves people and moves product.</p>
-  <div class="services-grid">
+  <p class="section-body">From a single reel to a full brand rollout. We shoot, edit, and deliver content that moves people and moves product.</p>
+  <p class="industries-line">Restaurants &middot; Med spas &amp; clinics &middot; Law firms &middot; Real estate &middot; Venues &amp; events</p>
+  <div class="services-list">
     <div class="service-item">
-      <span class="service-icon">🎬</span>
-      <div class="service-name">On-Location Video Production</div>
-      <p class="service-desc">Shot on-site at your spot, cut for your audience.</p>
+      <span class="service-num">01</span>
+      <div>
+        <div class="service-name">Brand Films</div>
+        <p class="service-desc">A cinematic film that makes your business feel the way it feels in person. Shot on the Sony FX3.</p>
+      </div>
     </div>
     <div class="service-item">
-      <span class="service-icon">📱</span>
-      <div class="service-name">Social Media Content</div>
-      <p class="service-desc">Reels, short-form video, and photos built for the feed.</p>
+      <span class="service-num">02</span>
+      <div>
+        <div class="service-name">Social Content</div>
+        <p class="service-desc">Reels and short-form video built for the feed, delivered ready to post.</p>
+      </div>
     </div>
     <div class="service-item">
-      <span class="service-icon">🍽️</span>
-      <div class="service-name">Food & Restaurant Visuals</div>
-      <p class="service-desc">Make your menu look as good as it tastes.</p>
+      <span class="service-num">03</span>
+      <div>
+        <div class="service-name">Photography</div>
+        <p class="service-desc">Food, spaces, products, and people. Shot on location, edited to match your brand.</p>
+      </div>
     </div>
     <div class="service-item">
-      <span class="service-icon">🎙️</span>
-      <div class="service-name">Interviews & Talking Head</div>
-      <p class="service-desc">Brand stories, testimonials, and founder content.</p>
+      <span class="service-num">04</span>
+      <div>
+        <div class="service-name">Interviews &amp; Testimonials</div>
+        <p class="service-desc">Founder stories and client testimonials that build trust before you ever meet.</p>
+      </div>
     </div>
     <div class="service-item">
-      <span class="service-icon">🏠</span>
-      <div class="service-name">Real Estate Reels</div>
-      <p class="service-desc">Walkthroughs and property content that sells.</p>
+      <span class="service-num">05</span>
+      <div>
+        <div class="service-name">Web &amp; Landing Pages</div>
+        <p class="service-desc">Fast, clean sites that look the part and convert visitors into customers.</p>
+      </div>
     </div>
     <div class="service-item">
-      <span class="service-icon">🧠</span>
-      <div class="service-name">Brand Strategy & Identity</div>
-      <p class="service-desc">Positioning, visuals, and voice — all of it.</p>
-    </div>
-    <div class="service-item">
-      <span class="service-icon">💻</span>
-      <div class="service-name">Web & Landing Pages</div>
-      <p class="service-desc">Sites that convert visitors into customers.</p>
-    </div>
-    <div class="service-item">
-      <span class="service-icon">✏️</span>
-      <div class="service-name">Graphics for Social</div>
-      <p class="service-desc">Custom visuals for your brand's online presence.</p>
+      <span class="service-num">06</span>
+      <div>
+        <div class="service-name">Content Strategy</div>
+        <p class="service-desc">What to post, where, and why. A plan that fits your business, not a template.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -98,11 +179,11 @@
 <div class="divider"></div>
 
 <!-- VIDEO PACKAGES -->
-<section id="video" class="section-wide">
+<section id="video" class="section-wide reveal">
   <div class="section-inner">
     <span class="section-eyebrow">Video Production</span>
     <h2 class="section-title">Choose Your Style</h2>
-    <p class="section-body">Two ways to shoot. One goal — content that actually works for your business.</p>
+    <p class="section-body">Two ways to shoot. One goal: content that actually works for your business.</p>
   </div>
   <div class="video-packages">
     <div class="video-pkg" data-label="S">
@@ -110,14 +191,14 @@
       <div class="pkg-name">Social</div>
       <div class="pkg-tagline">Optimized for reels, built for the feed</div>
       <div class="pkg-price">$150</div>
-      <div class="pkg-price-note">3 reels — starting price</div>
+      <div class="pkg-price-note">3 reels, starting price</div>
       <ul class="pkg-features">
         <li>3 short-form vertical reels</li>
         <li>Shot on high-quality mobile setup</li>
-        <li>Fast turnaround, 3–5 days</li>
+        <li>Fast turnaround, 3 to 5 days</li>
         <li>1 collab post on @cssocialtx</li>
         <li>2 reels you keep to post yourself</li>
-        <li>Great for food, products, events</li>
+        <li>Great for a dish, a service, a space, or an event</li>
         <li>Music, captions, trending formats</li>
       </ul>
       <a href="#contact" class="pkg-btn outline">Book Social Package</a>
@@ -130,11 +211,11 @@
       <div class="pkg-price-note">custom quote based on scope</div>
       <ul class="pkg-features">
         <li>Shot on Sony FX3 cinema camera</li>
-        <li>Full color grade & sound design</li>
+        <li>Full color grade &amp; sound design</li>
         <li>Multi-angle, professional lighting</li>
         <li>Brand film, launch video, or campaign</li>
-        <li>Longer format available (60s–3min)</li>
-        <li>Perfect for upscale restaurants & venues</li>
+        <li>Longer format available (60s to 3min)</li>
+        <li>Perfect for upscale brands, practices, and venues</li>
         <li>Dedicated pre-production planning</li>
       </ul>
       <a href="#contact" class="pkg-btn">Book Cinematic Package</a>
@@ -145,10 +226,10 @@
 <div class="divider"></div>
 
 <!-- WEB PRICING -->
-<section id="web">
+<section id="web" class="reveal">
   <span class="section-eyebrow">Web Services</span>
   <h2 class="section-title">Your Online Presence</h2>
-  <p class="section-body">Clean, fast websites built for local businesses that need to look the part and convert visitors.</p>
+  <p class="section-body">Clean, fast websites for businesses that need to look the part and convert. Built custom, no rented templates.</p>
   <div class="web-pricing">
     <div class="web-tier">
       <div class="tier-name">Landing Page</div>
@@ -170,7 +251,7 @@
       <ul class="tier-features">
         <li>Up to 5 pages</li>
         <li>Mobile responsive</li>
-        <li>Contact & booking form</li>
+        <li>Contact &amp; booking form</li>
         <li>Full SEO optimization</li>
         <li>2 rounds of revisions</li>
         <li>Social media integration</li>
@@ -184,7 +265,7 @@
       <ul class="tier-features">
         <li>Everything in Brochure</li>
         <li>Monthly content updates</li>
-        <li>Hosting & maintenance</li>
+        <li>Hosting &amp; maintenance</li>
         <li>Performance monitoring</li>
         <li>Priority support</li>
         <li>Monthly analytics report</li>
@@ -199,7 +280,7 @@
         <li>Fully custom build</li>
         <li>Booking systems</li>
         <li>Client portals</li>
-        <li>Dashboards & tools</li>
+        <li>Dashboards &amp; tools</li>
         <li>API integrations</li>
         <li>Ongoing dev support</li>
       </ul>
@@ -208,34 +289,33 @@
   </div>
 </section>
 
-<div class="divider"></div>
-
 <!-- ABOUT -->
-<div class="about-strip" id="about">
+<div class="about-strip reveal" id="about">
   <div class="about-inner">
     <div class="about-quote">
       "Built for <em>Real Brands</em>, in Real Spaces."
     </div>
     <div class="about-text">
-      <p>Curbside Social Co. is a San Antonio-based video production and digital marketing company run by Rob Galvan. We work with local restaurants, businesses, and brands that want content that actually looks like them.</p>
-      <p>Every shoot is on-location. Every edit is built for the platform. No stock footage, no generic templates — just real work for real places.</p>
+      <p>Curbside Social Co. is a San Antonio video production and digital marketing studio run by Rob Galvan. Based in King William, working on location across the city: restaurants, med spas, law firms, venues, and the local businesses in between.</p>
+      <p>Every shoot is on location. Every edit is built for the platform. No stock footage, no templates. Real work for real places.</p>
     </div>
   </div>
 </div>
 
 <!-- CTA -->
-<div class="cta-section" id="contact">
+<div class="cta-section reveal" id="contact">
   <h2 class="cta-title">Let's Work Together</h2>
   <p class="cta-sub">Tell us about your business and we'll put together a package that fits.</p>
   <a href="mailto:robgalvan@gmail.com" class="btn-primary">Send an Email</a>
-  <p class="cta-contact">or DM us on Instagram <a href="https://instagram.com/cssocialtx" target="_blank">@cssocialtx</a> &nbsp;·&nbsp; San Antonio, TX &nbsp;·&nbsp; 210.883.7567</p>
+  <p class="cta-contact">or DM us on Instagram <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a> &nbsp;&middot;&nbsp; San Antonio, TX &nbsp;&middot;&nbsp; 210.883.7567</p>
 </div>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Curbside Social Co.</div>
-  <p class="footer-text">© 2026 Curbside Social Co. — San Antonio, TX</p>
+  <p class="footer-text">© 2026 Curbside Social Co. &middot; San Antonio, TX</p>
   <ul class="footer-links">
+    <li><a href="#work">Work</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#video">Video</a></li>
     <li><a href="#web">Web</a></li>
