@@ -30,12 +30,35 @@ panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closePanel)
 // ---- Hero video: switch on only when it can actually play ----
 const hero = document.getElementById('hero');
 const heroVideo = hero.querySelector('.hero-video');
-// Reveal the hero film once it can play (mobile included). Files are kept small
-// so this loads fast on cellular.
-heroVideo.addEventListener('canplay', () => {
-  hero.classList.remove('no-video');
-  heroVideo.play().catch(() => {});
-});
+// Bulletproof hero:
+// - The poster (a still of the film) shows instantly, so the hero is never empty
+//   even if the video is slow, blocked, or never plays.
+// - Phones get a lighter 720p file; desktop gets the full 1080p film.
+// - iPhone Low Power / Low Data Mode blocks autoplay; we retry play() on the
+//   first touch, scroll, or click, and whenever the tab comes back into view.
+// - If a file fails, try the other one; if both fail, fall back to the monogram.
+const heroSources = window.matchMedia('(max-width: 900px)').matches
+  ? [heroVideo.dataset.srcMobile, heroVideo.dataset.src]
+  : [heroVideo.dataset.src, heroVideo.dataset.srcMobile];
+let heroSourceIndex = 0;
+
+function playHero() { heroVideo.play().catch(() => {}); }
+
+function loadHeroSource() {
+  const src = heroSources[heroSourceIndex];
+  if (!src) { hero.classList.add('no-video'); return; }
+  heroVideo.src = src;
+  heroVideo.load();
+  playHero();
+}
+
+heroVideo.addEventListener('error', () => { heroSourceIndex++; loadHeroSource(); });
+heroVideo.addEventListener('canplay', playHero);
+['touchstart', 'scroll', 'click'].forEach(evt =>
+  window.addEventListener(evt, playHero, { once: true, passive: true }));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) playHero(); });
+
+loadHeroSource();
 
 // ---- Work frames: play in view, reveal once the first frame is ready ----
 // Mobile Safari won't load a preload="metadata" video past its metadata until
