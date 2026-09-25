@@ -638,6 +638,70 @@ section {
   border-color: var(--cream);
 }
 
+/* OFFERINGS */
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 60px;
+}
+.offer-card {
+  background: var(--surface);
+  padding: 44px 32px;
+  transition: background 0.2s;
+}
+.offer-card:hover, .offer-card.featured { background: var(--surface2); }
+.offer-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--gold-light);
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 18px;
+}
+.offer-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--cream);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.offer-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--cream-dark);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.offer-list { list-style: none; }
+.offer-list li {
+  font-size: 15px;
+  color: var(--cream-dark);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+}
+.offer-list li::before { content: '·'; color: var(--gold-light); flex-shrink: 0; }
+.offer-list li:last-child { border-bottom: none; }
+.offer-cta {
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.offer-cta p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--cream);
+}
+
 /* ABOUT */
 .about-strip {
   background: var(--surface);
@@ -770,6 +834,8 @@ footer {
   section { padding: 70px 20px; }
   .section-inner { padding: 0 20px; }
   .services-list { grid-template-columns: 1fr; }
+  .offer-grid { grid-template-columns: 1fr; }
+  .offer-card { padding: 36px 24px; }
   .video-packages { grid-template-columns: 1fr; }
   .video-pkg { padding: 44px 28px; }
   .web-pricing { grid-template-columns: repeat(2, 1fr); }
