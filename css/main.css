@@ -866,3 +866,6 @@ footer {
   .hero-actions { flex-direction: column; align-items: center; gap: 12px; }
   .cta-section { padding: 90px 24px; }
 }
+
+/* Trusted-by strip hidden for now (remove this rule to bring it back) */
+.trusted-strip { display: none !important; }
