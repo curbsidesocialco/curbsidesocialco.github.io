@@ -723,6 +723,7 @@ section {
   font-size: clamp(26px, 3vw, 38px);
   line-height: 1.4;
   color: var(--cream);
+  text-wrap: balance; /* even lines, no single word left hanging */
 }
 .about-quote em { color: var(--gold-light); font-style: normal; }
 .about-text { font-size: 16px; line-height: 1.8; color: var(--cream-dark); }
