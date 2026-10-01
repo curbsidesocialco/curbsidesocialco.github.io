@@ -1,0 +1,506 @@
+<title>Work With Curbside</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* Layout: one narrow column, dark editorial brand page; a tap-to-switch
+     audience block sits in the middle so one link speaks to each client. */
+  :root {
+    --black: #0a0a08;
+    --surface: #111110;
+    --surface2: #1a1a17;
+    --cream: #e8e0d0;
+    --cream-dark: #cfc7b6;
+    --gold: #b8974a;
+    --gold-light: #d4af6a;
+    --border: rgba(232,224,208,0.12);
+    --border-med: rgba(232,224,208,0.24);
+    --maxw: 680px;
+    color-scheme: dark;
+    --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --body: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --mark: 'UnifrakturMaguntia', 'Cormorant Garamond', serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  .page {
+    background: var(--black);
+    color: var(--cream);
+    font-family: var(--body);
+    font-weight: 300;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding-inline: 22px;
+  }
+
+  /* ---- top mark ---- */
+  .top { padding-block: 26px 10px; text-align: center; }
+  .mark {
+    font-family: var(--mark);
+    color: var(--gold-light);
+    font-size: 26px;
+    line-height: 1;
+    margin: 0;
+  }
+  .mark-sub {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cream-dark);
+    opacity: 0.7;
+    margin-top: 10px;
+  }
+
+  /* ---- hero ---- */
+  .hero { padding-block: 30px 20px; text-align: center; }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(38px, 11vw, 60px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+    color: var(--cream);
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero p {
+    font-size: clamp(16px, 4.2vw, 18px);
+    color: var(--cream-dark);
+    margin: 20px auto 0;
+    max-width: 36ch;
+  }
+
+  /* ---- buttons ---- */
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 26px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    padding: 14px 22px;
+    border-radius: 0;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid var(--gold);
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .btn-primary { background: var(--gold); color: var(--black); }
+  .btn-primary:hover { background: var(--gold-light); border-color: var(--gold-light); }
+  .btn-ghost { background: transparent; color: var(--cream); border-color: var(--border-med); }
+  .btn-ghost:hover { border-color: var(--gold-light); color: var(--gold-light); }
+
+  /* ---- divider ---- */
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--gold);
+    margin-block: 44px;
+  }
+  .rule::before, .rule::after {
+    content: "";
+    height: 1px;
+    background: var(--border);
+    flex: 1;
+  }
+  .rule span { font-size: 13px; letter-spacing: 4px; opacity: 0.8; }
+
+  /* ---- proof strip ---- */
+  .proof { text-align: center; }
+  .proof-lead {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(21px, 5.5vw, 27px);
+    color: var(--cream);
+    margin: 0 auto;
+    max-width: 24ch;
+    line-height: 1.25;
+  }
+  .proof-lead b { font-style: normal; font-weight: 600; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+  .proof-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 26px;
+    margin-top: 22px;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-dark);
+    opacity: 0.78;
+  }
+
+  /* ---- audience chooser ---- */
+  .chooser-head {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(26px, 7vw, 34px);
+    text-align: center;
+    margin: 0 0 6px;
+    color: var(--cream);
+  }
+  .chooser-sub {
+    text-align: center;
+    font-size: 14px;
+    color: var(--cream-dark);
+    opacity: 0.8;
+    margin: 0 0 22px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 26px;
+  }
+  .chip {
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    padding: 11px 18px;
+    background: var(--surface);
+    color: var(--cream-dark);
+    border: 1px solid var(--border-med);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .chip:hover { border-color: var(--gold-light); color: var(--cream); }
+  .chip[aria-selected="true"] {
+    background: var(--gold);
+    color: var(--black);
+    border-color: var(--gold);
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+    padding: 30px 26px;
+  }
+  .panel h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(27px, 7vw, 36px);
+    line-height: 1.05;
+    margin: 0 0 14px;
+    color: var(--cream);
+    text-wrap: balance;
+  }
+  .panel p { font-size: 16px; color: var(--cream-dark); margin: 0 0 16px; }
+  .panel .who {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    opacity: 0.85;
+    margin: 0 0 16px;
+  }
+  .panel .proof-note {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--cream);
+    border-left: 2px solid var(--gold);
+    padding-left: 14px;
+    margin: 0 0 22px;
+  }
+  .panel .proof-note b { font-style: normal; font-weight: 600; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+
+  /* ---- how it works ---- */
+  .how-head {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(26px, 7vw, 34px);
+    text-align: center;
+    margin: 0 0 28px;
+    color: var(--cream);
+  }
+  .steps { display: grid; gap: 16px; }
+  .step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    align-items: start;
+    padding: 20px 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .step-n {
+    font-family: var(--display);
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+  }
+  .step h4 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 21px;
+    margin: 0 0 4px;
+    color: var(--cream);
+  }
+  .step p { font-size: 15px; color: var(--cream-dark); margin: 0; }
+
+  /* ---- final cta ---- */
+  .final {
+    text-align: center;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+    padding: 40px 26px;
+  }
+  .final h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(30px, 8vw, 42px);
+    margin: 0 0 10px;
+    color: var(--cream);
+  }
+  .final p { font-size: 15px; color: var(--cream-dark); margin: 0 0 24px; }
+
+  .contact-line {
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--cream-dark);
+  }
+  .contact-line .num { color: var(--gold-light); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .copy-btn {
+    font-family: var(--body);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    background: transparent;
+    color: var(--cream-dark);
+    border: 1px solid var(--border-med);
+    padding: 5px 10px;
+    margin-left: 8px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  .copy-btn:hover { border-color: var(--gold-light); color: var(--gold-light); }
+
+  /* ---- footer ---- */
+  .foot {
+    text-align: center;
+    padding-block: 36px 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+  .foot .fmark { font-family: var(--mark); color: var(--gold-light); font-size: 19px; }
+  .foot .fline { font-size: 13px; color: var(--cream-dark); opacity: 0.75; margin-top: 12px; line-height: 1.9; }
+  .foot a { color: var(--cream-dark); text-decoration: none; border-bottom: 1px solid var(--border-med); }
+  .foot a:hover { color: var(--gold-light); }
+
+  /* gentle entrance from a visible resting state */
+  @media (prefers-reduced-motion: no-preference) {
+    .fade { animation: rise 0.6s ease both; }
+    @keyframes rise { from { opacity: 0.5; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  }
+
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+</style>
+
+<div class="page">
+  <div class="wrap">
+
+    <header class="top">
+      <p class="mark">Curbside Social</p>
+      <p class="mark-sub">San Antonio Video + Marketing</p>
+    </header>
+
+    <section class="hero fade">
+      <h1>Video that gets your business <em>booked</em>.</h1>
+      <p>I'm Rob. I shoot short-form video and photo for San Antonio restaurants, real estate pros, and local businesses, then get it posted so it actually brings people in.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+        <a class="btn btn-ghost" href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">Message on Instagram</a>
+      </div>
+    </section>
+
+    <div class="rule"><span>&#10022;</span></div>
+
+    <section class="proof">
+      <p class="proof-lead">A reel I shot for Kotka Y Chucho hit <b>50,000</b> views and sold the place out.</p>
+      <div class="proof-logos">
+        <span>Battalion</span>
+        <span>The Beal Group</span>
+        <span>Elite Glam Haus</span>
+        <span>Kotka Y Chucho</span>
+      </div>
+    </section>
+
+    <div class="rule"><span>&#10022;</span></div>
+
+    <section>
+      <h2 class="chooser-head">What do you do?</h2>
+      <p class="chooser-sub">Tap your world and see how I'd help.</p>
+
+      <div class="chips" role="tablist" aria-label="Who you are">
+        <button class="chip" role="tab" aria-selected="true" data-target="p-food">Food &amp; Restaurants</button>
+        <button class="chip" role="tab" aria-selected="false" data-target="p-service">Service Business</button>
+        <button class="chip" role="tab" aria-selected="false" data-target="p-realestate">Real Estate</button>
+        <button class="chip" role="tab" aria-selected="false" data-target="p-education">Education</button>
+      </div>
+
+      <div class="panel" id="p-food" role="tabpanel">
+        <p class="who">Restaurants &middot; Food trucks &middot; Bars &middot; Bakeries</p>
+        <h3>Fill more tables. Move more trucks.</h3>
+        <p>A good food reel does more than any flyer ever could. I shoot your food and your spot so it stops the scroll and gets people hungry enough to show up.</p>
+        <p class="proof-note">Kotka Y Chucho: <b>50,000</b> views and a sold-out day from one reel.</p>
+        <div class="cta-row" style="justify-content:flex-start">
+          <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+        </div>
+      </div>
+
+      <div class="panel" id="p-service" role="tabpanel" hidden>
+        <p class="who">Med spas &middot; Salons &middot; Trades &middot; Studios &middot; Local shops</p>
+        <h3>Give people a reason to pick you.</h3>
+        <p>When someone is deciding between you and the place down the street, video makes the call. I build content that shows what you do and makes new customers trust you fast.</p>
+        <p class="proof-note">Content for <b>Elite Glam Haus</b> and other San Antonio spots.</p>
+        <div class="cta-row" style="justify-content:flex-start">
+          <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+        </div>
+      </div>
+
+      <div class="panel" id="p-realestate" role="tabpanel" hidden>
+        <p class="who">Agents &middot; Lenders &middot; Investors &middot; Wholesalers &middot; Acquisitions</p>
+        <h3>Sell the property and the person.</h3>
+        <p>Listing walkthroughs, talking-head clips, and educational content for agents, lenders, investors, wholesalers, and acquisition teams. Look like the expert people want to work with, and keep your pipeline warm.</p>
+        <p class="proof-note">Reels for <b>The Beal Group</b>.</p>
+        <div class="cta-row" style="justify-content:flex-start">
+          <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+        </div>
+      </div>
+
+      <div class="panel" id="p-education" role="tabpanel" hidden>
+        <p class="who">Coaches &middot; Course creators &middot; Workshops &middot; Schools</p>
+        <h3>Make what you teach easy to watch.</h3>
+        <p>I turn your lessons, talks, and workshops into clear video people actually finish and share. Good for building an audience and filling seats.</p>
+        <p class="proof-note">Clear, watchable content built around <b>your</b> message.</p>
+        <div class="cta-row" style="justify-content:flex-start">
+          <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="rule"><span>&#10022;</span></div>
+
+    <section>
+      <h2 class="how-head">How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-n">1</div>
+          <div>
+            <h4>We talk</h4>
+            <p>A quick call about what you have coming up and what you want it to do.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n">2</div>
+          <div>
+            <h4>I shoot</h4>
+            <p>One session on location. I bring the gear and the eye, you just show up.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n">3</div>
+          <div>
+            <h4>You post</h4>
+            <p>Edited and sent back ready for the feed, fast, so it is working while it is fresh.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rule"><span>&#10022;</span></div>
+
+    <section class="final">
+      <h2>Let's make something.</h2>
+      <p>Based in San Antonio. Shooting all over South Texas.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+        <a class="btn btn-ghost" href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">Message on Instagram</a>
+      </div>
+      <p class="contact-line">
+        <span class="num" id="phone-text">210.883.7567</span>
+        <button class="copy-btn" data-copy="2108837567" aria-label="Copy phone number">Copy</button>
+      </p>
+      <p class="contact-line">
+        <span>robgalvan@gmail.com</span>
+        <button class="copy-btn" data-copy="robgalvan@gmail.com" aria-label="Copy email">Copy</button>
+      </p>
+    </section>
+
+    <footer class="foot">
+      <div class="fmark">Curbside Social</div>
+      <div class="fline">
+        Curbside Social Co. &middot; San Antonio, TX<br>
+        <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://curbsidesocial.co" target="_blank" rel="noopener">curbsidesocial.co</a>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<script>
+  // Audience chooser: one panel visible at a time.
+  (function () {
+    var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+    var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var target = chip.getAttribute('data-target');
+        chips.forEach(function (c) { c.setAttribute('aria-selected', c === chip ? 'true' : 'false'); });
+        panels.forEach(function (p) {
+          var show = p.id === target;
+          p.hidden = !show;
+          if (show) { p.classList.remove('fade'); void p.offsetWidth; p.classList.add('fade'); }
+        });
+      });
+    });
+
+    // Copy buttons for phone and email (reliable where tel: may not fire).
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var text = btn.getAttribute('data-copy');
+        var done = function () { var o = btn.textContent; btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = o; }, 1400); };
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done).catch(function () { fallback(text, done); });
+          } else { fallback(text, done); }
+        } catch (e) { fallback(text, done); }
+      });
+    });
+    function fallback(text, done) {
+      try {
+        var r = document.createRange(); var sel = window.getSelection();
+        var tmp = document.createElement('span'); tmp.textContent = text; document.body.appendChild(tmp);
+        r.selectNodeContents(tmp); sel.removeAllRanges(); sel.addRange(r);
+        document.execCommand && document.execCommand('copy');
+        sel.removeAllRanges(); document.body.removeChild(tmp); done();
+      } catch (e) { /* leave the visible number for manual copy */ }
+    }
+  })();
+</script>
