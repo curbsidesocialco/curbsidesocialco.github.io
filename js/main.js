@@ -30,6 +30,12 @@ panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closePanel)
 // ---- Hero video: switch on only when it can actually play ----
 const hero = document.getElementById('hero');
 const heroVideo = hero.querySelector('.hero-video');
+// iOS in-app browsers (Instagram, Facebook) only autoplay a muted video when
+// muted is set as a property in JS, not just as the attribute -- the same line
+// that makes the work reels play. Set it (and inline playback) before load/play.
+heroVideo.muted = true;
+heroVideo.playsInline = true;
+heroVideo.setAttribute('webkit-playsinline', '');
 // Bulletproof hero:
 // - The poster (a still of the film) shows instantly, so the hero is never empty
 //   even if the video is slow, blocked, or never plays.
@@ -42,7 +48,7 @@ const heroSources = window.matchMedia('(max-width: 900px)').matches
   : [heroVideo.dataset.src, heroVideo.dataset.srcMobile];
 let heroSourceIndex = 0;
 
-function playHero() { heroVideo.play().catch(() => {}); }
+function playHero() { heroVideo.muted = true; heroVideo.play().catch(() => {}); }
 
 function loadHeroSource() {
   const src = heroSources[heroSourceIndex];
