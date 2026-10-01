@@ -146,6 +146,8 @@
 .client-row:last-child { border-bottom: none; }
 .client-row-label { color: var(--text-2); }
 .client-row-val { font-weight: 500; }
+.client-row-val a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--border); }
+.client-row-val a:hover { border-bottom-color: currentColor; }
 .add-client {
   border: 1px dashed var(--border-med); display: flex; align-items: center;
   justify-content: center; min-height: 150px; cursor: pointer;

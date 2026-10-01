@@ -305,17 +305,24 @@
       <div class="card" id="client-form-card" style="display:none;">
         <div class="card-title" id="client-form-title">Add a client</div>
         <div class="form-grid">
-          <div class="field"><label>Business name</label><input type="text" id="client-business" placeholder="e.g. Rosella Coffee" /></div>
+          <div class="field"><label>First name</label><input type="text" id="client-first" placeholder="optional" /></div>
+          <div class="field"><label>Last name</label><input type="text" id="client-last" placeholder="optional" /></div>
+          <div class="field"><label>Business / company</label><input type="text" id="client-business" placeholder="e.g. Rosella Coffee" /></div>
           <div class="field">
             <label>Business type</label>
             <input type="text" id="client-type" list="industry-types" placeholder="pick or type, e.g. Med spa" />
           </div>
           <div class="field"><label>Neighborhood / area</label><input type="text" id="client-area" placeholder="e.g. Southtown, Pearl" /></div>
-          <div class="field"><label>Contact</label><input type="text" id="client-contact" placeholder="e.g. Instagram DM, email, phone" /></div>
+          <div class="field"><label>Phone</label><input type="tel" id="client-phone" placeholder="(210) 555-1234" /></div>
+          <div class="field"><label>Email</label><input type="email" id="client-email" placeholder="name@business.com" /></div>
+          <div class="field"><label>Website</label><input type="text" id="client-website" placeholder="business.com" /></div>
+          <div class="field"><label>Instagram / other contact</label><input type="text" id="client-contact" placeholder="e.g. @handle, prefers DM" /></div>
+          <div class="field"><label>How you met</label><input type="text" id="client-source" placeholder="e.g. open house, referral from Delila" /></div>
           <div class="field">
             <label>Status</label>
             <select id="client-status">
               <option value="lead">Lead</option>
+              <option value="contacted">Contacted</option>
               <option value="active">Active</option>
               <option value="past">Past client</option>
             </select>
@@ -334,6 +341,7 @@
         <select id="client-status-filter" onchange="filterClients()">
           <option value="">All statuses</option>
           <option value="lead">Leads</option>
+          <option value="contacted">Contacted</option>
           <option value="active">Active</option>
           <option value="past">Past</option>
         </select>

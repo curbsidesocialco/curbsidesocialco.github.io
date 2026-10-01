@@ -95,6 +95,17 @@ async function initDb() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `);
+    // Person-level contact fields (added after clients existed in prod). Business
+    // stays the company name; these are for the human Rob actually talks to.
+    await pool.query(`
+      ALTER TABLE clients
+      ADD COLUMN IF NOT EXISTS first_name TEXT,
+      ADD COLUMN IF NOT EXISTS last_name TEXT,
+      ADD COLUMN IF NOT EXISTS phone TEXT,
+      ADD COLUMN IF NOT EXISTS email TEXT,
+      ADD COLUMN IF NOT EXISTS website TEXT,
+      ADD COLUMN IF NOT EXISTS source TEXT
+    `);
     // Link outreach entries back to a client (added after clients exists).
     // ON DELETE SET NULL so deleting a client keeps its outreach history, just unlinked.
     await pool.query(`
@@ -322,14 +333,17 @@ app.delete('/api/log/:id', async (req, res) => {
 
 // ---- Create a client ----
 app.post('/api/clients', async (req, res) => {
-  const { business, type, area, contact, status, notes } = req.body;
+  const { business, type, area, contact, status, notes,
+          first_name, last_name, phone, email, website, source } = req.body;
   if (!business) return res.status(400).json({ error: 'Business name is required' });
 
   try {
     const result = await pool.query(
-      `INSERT INTO clients (business, type, area, contact, status, notes)
-       VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-      [business, type, area, contact, status || 'lead', notes]
+      `INSERT INTO clients (business, type, area, contact, status, notes,
+                            first_name, last_name, phone, email, website, source)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
+      [business, type, area, contact, status || 'lead', notes,
+       first_name, last_name, phone, email, website, source]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -377,14 +391,17 @@ app.get('/api/clients/:id', async (req, res) => {
 // ---- Update a client ----
 app.patch('/api/clients/:id', async (req, res) => {
   const { id } = req.params;
-  const { business, type, area, contact, status, notes } = req.body;
+  const { business, type, area, contact, status, notes,
+          first_name, last_name, phone, email, website, source } = req.body;
   if (!business) return res.status(400).json({ error: 'Business name is required' });
 
   try {
     const result = await pool.query(
-      `UPDATE clients SET business = $1, type = $2, area = $3, contact = $4, status = $5, notes = $6
-       WHERE id = $7 RETURNING *`,
-      [business, type, area, contact, status || 'lead', notes, id]
+      `UPDATE clients SET business = $1, type = $2, area = $3, contact = $4, status = $5, notes = $6,
+              first_name = $7, last_name = $8, phone = $9, email = $10, website = $11, source = $12
+       WHERE id = $13 RETURNING *`,
+      [business, type, area, contact, status || 'lead', notes,
+       first_name, last_name, phone, email, website, source, id]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -489,7 +506,7 @@ app.delete('/api/projects/:id', async (req, res) => {
 app.get('/api/overview', async (req, res) => {
   try {
     const [leads, active, collected, outstanding, recentOutreach, recentAudits, recentProjects, upcoming] = await Promise.all([
-      pool.query(`SELECT COUNT(*)::int AS n FROM clients WHERE status='lead'`),
+      pool.query(`SELECT COUNT(*)::int AS n FROM clients WHERE status IN ('lead','contacted')`),
       pool.query(`SELECT COUNT(*)::int AS n FROM clients WHERE status='active'`),
       pool.query(`SELECT COALESCE(SUM(amount),0) AS sum FROM projects WHERE paid=true`),
       pool.query(`SELECT COALESCE(SUM(amount),0) AS sum FROM projects WHERE paid=false`),

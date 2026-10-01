@@ -12,8 +12,8 @@ const CLIENT_PALETTE = [
   ['--purple-bg', '--purple-text']
 ];
 
-const STATUS_BADGE = { lead: 'badge-followup', active: 'badge-delivered', past: 'badge-sent' };
-const STATUS_LABEL = { lead: 'Lead', active: 'Active', past: 'Past client' };
+const STATUS_BADGE = { lead: 'badge-followup', contacted: 'badge-scheduled', active: 'badge-delivered', past: 'badge-sent' };
+const STATUS_LABEL = { lead: 'Lead', contacted: 'Contacted', active: 'Active', past: 'Past client' };
 
 // Outreach entry statuses (matches the map in outreach.js)
 const OUTREACH_STATUS_BADGE = {
@@ -33,6 +33,28 @@ function clientInitials(business) {
   if (!words.length) return '?';
   if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
   return (words[0][0] + words[1][0]).toUpperCase();
+}
+
+// The person's name when we have one, otherwise the business
+function clientPerson(c) {
+  return [c.first_name, c.last_name].filter(Boolean).join(' ');
+}
+function clientDisplayName(c) {
+  return clientPerson(c) || c.business;
+}
+
+// Tappable phone / email / website rows (call or email straight from the phone)
+function contactRows(c) {
+  const rows = [];
+  if (c.phone) rows.push(['Phone', `<a href="tel:${escapeHtml(c.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(c.phone)}</a>`]);
+  if (c.email) rows.push(['Email', `<a href="mailto:${escapeHtml(c.email)}">${escapeHtml(c.email)}</a>`]);
+  if (c.website) {
+    const href = /^https?:\/\//i.test(c.website) ? c.website : 'https://' + c.website;
+    rows.push(['Website', `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(c.website.replace(/^https?:\/\//i, ''))}</a>`]);
+  }
+  if (c.contact) rows.push(['Contact', escapeHtml(c.contact)]);
+  return rows.map(([label, val]) =>
+    `<div class="client-row"><span class="client-row-label">${label}</span><span class="client-row-val">${val}</span></div>`).join('');
 }
 
 function clientColor(business) {
@@ -59,7 +81,8 @@ function filterClients() {
   const status = (document.getElementById('client-status-filter') && document.getElementById('client-status-filter').value) || '';
   let list = clientsCache;
   if (status) list = list.filter(c => c.status === status);
-  if (q) list = list.filter(c => (`${c.business} ${c.type || ''} ${c.area || ''} ${c.notes || ''}`).toLowerCase().includes(q));
+  if (q) list = list.filter(c => [c.business, c.first_name, c.last_name, c.type, c.area, c.email, c.phone, c.source, c.notes]
+    .filter(Boolean).join(' ').toLowerCase().includes(q));
   renderClients(list);
 }
 
@@ -71,14 +94,15 @@ function renderClients(list) {
     const [bgVar, textVar] = clientColor(c.business);
     const badge = STATUS_BADGE[c.status] || 'badge-sent';
     const statusLabel = STATUS_LABEL[c.status] || (c.status || 'Lead');
-    const typeArea = [c.type, c.area].filter(Boolean).join(' / ');
+    const name = clientDisplayName(c);
+    const sub = [clientPerson(c) ? c.business : null, c.type, c.area].filter(Boolean).join(' / ');
     return `
       <div class="client-card">
         <div class="client-top client-top-link" onclick="openClient(${c.id})" title="Open client">
-          <div class="client-avatar" style="background:var(${bgVar});color:var(${textVar});">${escapeHtml(clientInitials(c.business))}</div>
-          <div><div class="client-name">${escapeHtml(c.business)}</div><div class="client-type">${escapeHtml(typeArea || 'Local business')}</div></div>
+          <div class="client-avatar" style="background:var(${bgVar});color:var(${textVar});">${escapeHtml(clientInitials(name))}</div>
+          <div><div class="client-name">${escapeHtml(name)}</div><div class="client-type">${escapeHtml(sub || 'Local business')}</div></div>
         </div>
-        ${c.contact ? `<div class="client-row"><span class="client-row-label">Contact</span><span class="client-row-val">${escapeHtml(c.contact)}</span></div>` : ''}
+        ${contactRows(c)}
         <div class="client-row"><span class="client-row-label">Status</span><span class="client-row-val"><span class="badge ${badge}">${escapeHtml(statusLabel)}</span></span></div>
         ${c.notes ? `<div class="client-row"><span class="client-row-label">Notes</span><span class="client-row-val">${escapeHtml(c.notes)}</span></div>` : ''}
         <div class="client-actions">
@@ -99,7 +123,13 @@ function renderClients(list) {
 function showClientForm(client) {
   editingClientId = client ? client.id : null;
   document.getElementById('client-form-title').textContent = client ? 'Edit client' : 'Add a client';
+  document.getElementById('client-first').value    = client ? (client.first_name || '') : '';
+  document.getElementById('client-last').value     = client ? (client.last_name || '') : '';
   document.getElementById('client-business').value = client ? (client.business || '') : '';
+  document.getElementById('client-phone').value    = client ? (client.phone || '') : '';
+  document.getElementById('client-email').value    = client ? (client.email || '') : '';
+  document.getElementById('client-website').value  = client ? (client.website || '') : '';
+  document.getElementById('client-source').value   = client ? (client.source || '') : '';
   document.getElementById('client-type').value     = client ? (client.type || '') : '';
   document.getElementById('client-area').value     = client ? (client.area || '') : '';
   document.getElementById('client-contact').value  = client ? (client.contact || '') : '';
@@ -109,7 +139,7 @@ function showClientForm(client) {
   const card = document.getElementById('client-form-card');
   card.style.display = 'block';
   card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  document.getElementById('client-business').focus();
+  document.getElementById('client-first').focus();
 }
 
 function editClient(id) {
@@ -154,7 +184,8 @@ function renderClientDetail(c) {
   const [bgVar, textVar] = clientColor(c.business);
   const badge = STATUS_BADGE[c.status] || 'badge-sent';
   const statusLabel = STATUS_LABEL[c.status] || (c.status || 'Lead');
-  const typeArea = [c.type, c.area].filter(Boolean).join(' / ');
+  const name = clientDisplayName(c);
+  const typeArea = [clientPerson(c) ? c.business : null, c.type, c.area].filter(Boolean).join(' / ');
   const outreach = c.outreach || [];
 
   const history = outreach.length ? outreach.map(o => {
@@ -218,11 +249,12 @@ function renderClientDetail(c) {
     </div>
     <div class="card">
       <div class="client-top">
-        <div class="client-avatar" style="background:var(${bgVar});color:var(${textVar});">${escapeHtml(clientInitials(c.business))}</div>
-        <div><div class="client-name" style="font-size:17px;">${escapeHtml(c.business)}</div><div class="client-type">${escapeHtml(typeArea || 'Local business')}</div></div>
+        <div class="client-avatar" style="background:var(${bgVar});color:var(${textVar});">${escapeHtml(clientInitials(name))}</div>
+        <div><div class="client-name" style="font-size:17px;">${escapeHtml(name)}</div><div class="client-type">${escapeHtml(typeArea || 'Local business')}</div></div>
       </div>
       <div class="client-row"><span class="client-row-label">Status</span><span class="client-row-val"><span class="badge ${badge}">${escapeHtml(statusLabel)}</span></span></div>
-      ${c.contact ? `<div class="client-row"><span class="client-row-label">Contact</span><span class="client-row-val">${escapeHtml(c.contact)}</span></div>` : ''}
+      ${contactRows(c)}
+      ${c.source ? `<div class="client-row"><span class="client-row-label">How you met</span><span class="client-row-val">${escapeHtml(c.source)}</span></div>` : ''}
       ${c.notes ? `<div class="client-row"><span class="client-row-label">Notes</span><span class="client-row-val">${escapeHtml(c.notes)}</span></div>` : ''}
       <div class="client-actions">
         <button onclick="editClient(${c.id})"><i class="ti ti-pencil"></i> Edit</button>
@@ -263,6 +295,12 @@ async function saveClient() {
 
   const payload = {
     business,
+    first_name: document.getElementById('client-first').value.trim(),
+    last_name:  document.getElementById('client-last').value.trim(),
+    phone:      document.getElementById('client-phone').value.trim(),
+    email:      document.getElementById('client-email').value.trim(),
+    website:    document.getElementById('client-website').value.trim(),
+    source:     document.getElementById('client-source').value.trim(),
     type:    document.getElementById('client-type').value,
     area:    document.getElementById('client-area').value.trim(),
     contact: document.getElementById('client-contact').value.trim(),
@@ -303,7 +341,7 @@ async function saveClient() {
 
 async function deleteClient(id) {
   const client = clientsCache.find(c => c.id === id);
-  const name = client ? client.business : 'this client';
+  const name = client ? clientDisplayName(client) : 'this client';
   if (!confirm(`Delete ${name}? This cannot be undone.`)) return;
   try {
     await fetch(`${API_URL}/api/clients/${id}`, { method: 'DELETE' });
