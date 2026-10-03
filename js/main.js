@@ -27,6 +27,55 @@ burger.addEventListener('click', () => {
 });
 panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closePanel));
 
+// ---- Cloudflare Stream (adaptive streaming) ----
+// Each video tag carries data-stream="<video id>" from the Cloudflare Stream
+// dashboard. With an id set, the video streams: it starts fast at a quality the
+// connection can handle and steps up, instead of stalling on one big MP4.
+// If streaming fails for any reason, the video falls back to the MP4 in assets/.
+// Leave STREAM_CUSTOMER or an id empty and that video just uses the MP4.
+const STREAM_CUSTOMER = ''; // e.g. 'customer-abc123xyz' (from any video's HLS link)
+const HLS_JS = 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.15/hls.light.min.js';
+
+function streamUrl(id) {
+  return STREAM_CUSTOMER && id
+    ? `https://${STREAM_CUSTOMER}.cloudflarestream.com/${id}/manifest/video.m3u8`
+    : null;
+}
+
+// Safari / iPhone play streams natively; other browsers need hls.js, which is
+// only downloaded when a stream is actually used.
+const nativeHls = document.createElement('video').canPlayType('application/vnd.apple.mpegurl') !== '';
+let hlsLoader = null;
+function loadHls() {
+  if (!hlsLoader) hlsLoader = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = HLS_JS;
+    s.onload = () => resolve(window.Hls);
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+  return hlsLoader;
+}
+
+// Attach a stream to a video. onFail runs once if it can't play.
+function playStream(video, url, onFail) {
+  let failed = false;
+  const fail = () => { if (!failed) { failed = true; onFail(); } };
+  if (nativeHls) {
+    video.addEventListener('error', fail, { once: true });
+    video.src = url;
+    video.load();
+    return;
+  }
+  loadHls().then(Hls => {
+    if (!Hls || !Hls.isSupported()) return fail();
+    const hls = new Hls({ capLevelToPlayerSize: true });
+    hls.on(Hls.Events.ERROR, (evt, data) => { if (data.fatal) { hls.destroy(); fail(); } });
+    hls.loadSource(url);
+    hls.attachMedia(video);
+  }).catch(fail);
+}
+
 // ---- Hero video: switch on only when it can actually play ----
 const hero = document.getElementById('hero');
 const heroVideo = hero.querySelector('.hero-video');
@@ -43,22 +92,38 @@ heroVideo.setAttribute('webkit-playsinline', '');
 // - iPhone Low Power / Low Data Mode blocks autoplay; we retry play() on the
 //   first touch, scroll, or click, and whenever the tab comes back into view.
 // - If a file fails, try the other one; if both fail, fall back to the monogram.
-const heroSources = window.matchMedia('(max-width: 900px)').matches
-  ? [heroVideo.dataset.srcMobile, heroVideo.dataset.src]
-  : [heroVideo.dataset.src, heroVideo.dataset.srcMobile];
+// - With a Cloudflare Stream id, the stream goes first and the MP4s are backups.
+const heroSources = [streamUrl(heroVideo.dataset.stream)].concat(
+  window.matchMedia('(max-width: 900px)').matches
+    ? [heroVideo.dataset.srcMobile, heroVideo.dataset.src]
+    : [heroVideo.dataset.src, heroVideo.dataset.srcMobile]
+).filter(Boolean);
 let heroSourceIndex = 0;
 
 function playHero() { heroVideo.muted = true; heroVideo.play().catch(() => {}); }
 
+// Move to the next source, once per failure (a stream can report the same
+// failure twice: once from hls.js and once from the video element).
+function heroFailed(index) {
+  if (index !== heroSourceIndex) return;
+  heroSourceIndex++;
+  loadHeroSource();
+}
+
 function loadHeroSource() {
   const src = heroSources[heroSourceIndex];
   if (!src) { hero.classList.add('no-video'); return; }
-  heroVideo.src = src;
-  heroVideo.load();
+  const index = heroSourceIndex;
+  if (src.endsWith('.m3u8')) {
+    playStream(heroVideo, src, () => heroFailed(index));
+  } else {
+    heroVideo.src = src;
+    heroVideo.load();
+  }
   playHero();
 }
 
-heroVideo.addEventListener('error', () => { heroSourceIndex++; loadHeroSource(); });
+heroVideo.addEventListener('error', () => heroFailed(heroSourceIndex));
 heroVideo.addEventListener('canplay', playHero);
 ['touchstart', 'scroll', 'click'].forEach(evt =>
   window.addEventListener(evt, playHero, { once: true, passive: true }));
@@ -76,6 +141,14 @@ document.querySelectorAll('.work-frame').forEach(frame => {
   if (!video) return;
   video.muted = true; // iOS needs muted set as a property, not just the attribute
   video.addEventListener('loadeddata', () => frame.classList.add('has-video'));
+  // Stream it when a Cloudflare Stream id is set; the MP4 is the backup
+  const url = streamUrl(video.dataset.stream);
+  const source = video.querySelector('source');
+  if (url && source) {
+    const mp4 = source.src;
+    source.remove();
+    playStream(video, url, () => { video.src = mp4; video.load(); });
+  }
 });
 
 const workObserver = new IntersectionObserver(entries => {
