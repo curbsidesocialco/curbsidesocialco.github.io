@@ -33,7 +33,7 @@ panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closePanel)
 // connection can handle and steps up, instead of stalling on one big MP4.
 // If streaming fails for any reason, the video falls back to the MP4 in assets/.
 // Leave STREAM_CUSTOMER or an id empty and that video just uses the MP4.
-const STREAM_CUSTOMER = ''; // e.g. 'customer-abc123xyz' (from any video's HLS link)
+const STREAM_CUSTOMER = 'customer-sq5pmgyxyshq79lc'; // from any video's HLS link in Cloudflare Stream
 const HLS_JS = 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.15/hls.light.min.js';
 
 function streamUrl(id) {
