@@ -141,6 +141,11 @@ document.querySelectorAll('.work-frame').forEach(frame => {
   if (!video) return;
   video.muted = true; // iOS needs muted set as a property, not just the attribute
   video.addEventListener('loadeddata', () => frame.classList.add('has-video'));
+  // If the clip is already on screen when it becomes playable (a stream can
+  // attach a moment after the page loads), start it then.
+  video.addEventListener('canplay', () => {
+    if (frame.dataset.inView) video.play().then(() => frame.classList.add('has-video')).catch(() => {});
+  });
   // Stream it when a Cloudflare Stream id is set; the MP4 is the backup
   const url = streamUrl(video.dataset.stream);
   const source = video.querySelector('source');
@@ -156,6 +161,7 @@ const workObserver = new IntersectionObserver(entries => {
     const frame = entry.target;
     const video = frame.querySelector('video');
     if (!video) return;
+    frame.dataset.inView = entry.isIntersecting ? '1' : '';
     if (entry.isIntersecting) {
       video.play().then(() => frame.classList.add('has-video')).catch(() => {});
     } else {
