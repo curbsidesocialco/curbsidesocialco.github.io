@@ -42,8 +42,12 @@ function streamUrl(id) {
     : null;
 }
 
-// Safari / iPhone play streams natively; other browsers need hls.js, which is
-// only downloaded when a stream is actually used.
+// Streams play through hls.js wherever it's supported (desktop browsers, and
+// iPhones on iOS 17.1+), because it lets us set a quality floor: start at 480p
+// and never drop below it, then climb to full HD as the signal allows. Where
+// hls.js isn't supported (older iPhones, some in-app browsers), the browser
+// plays the stream natively. hls.js only downloads when a stream is used.
+const MIN_QUALITY = 480; // shortest side in pixels: 480p for the hero, 480 wide for vertical reels
 const nativeHls = document.createElement('video').canPlayType('application/vnd.apple.mpegurl') !== '';
 let hlsLoader = null;
 function loadHls() {
@@ -61,19 +65,27 @@ function loadHls() {
 function playStream(video, url, onFail) {
   let failed = false;
   const fail = () => { if (!failed) { failed = true; onFail(); } };
-  if (nativeHls) {
+  const playNative = () => {
+    if (!nativeHls) return fail();
     video.addEventListener('error', fail, { once: true });
     video.src = url;
     video.load();
-    return;
-  }
+  };
   loadHls().then(Hls => {
-    if (!Hls || !Hls.isSupported()) return fail();
-    const hls = new Hls({ capLevelToPlayerSize: true });
+    if (!Hls || !Hls.isSupported()) return playNative();
+    const hls = new Hls();
+    hls.on(Hls.Events.MANIFEST_PARSED, (evt, data) => {
+      // Lowest level that meets the floor (levels are sorted low to high)
+      const floor = data.levels.findIndex(l => Math.min(l.width, l.height) >= MIN_QUALITY);
+      if (floor > 0) {
+        hls.startLevel = floor;
+        hls.config.minAutoBitrate = data.levels[floor].bitrate - 1;
+      }
+    });
     hls.on(Hls.Events.ERROR, (evt, data) => { if (data.fatal) { hls.destroy(); fail(); } });
     hls.loadSource(url);
     hls.attachMedia(video);
-  }).catch(fail);
+  }).catch(playNative);
 }
 
 // ---- Hero video: switch on only when it can actually play ----
