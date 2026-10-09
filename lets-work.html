@@ -6,7 +6,7 @@
 <title>Work With Curbside | Curbside Social Co.</title>
 <meta name="description" content="Short-form video and photo for San Antonio restaurants, real estate pros, and local businesses. Get a quote in 30 seconds." />
 <meta property="og:title" content="Work With Curbside Social Co." />
-<meta property="og:description" content="Video that gets your business booked. Get a quote in 30 seconds." />
+<meta property="og:description" content="Video that gets people to show up. Get a quote in 30 seconds." />
 <meta property="og:image" content="https://curbsidesocial.co/assets/og.jpg" />
 <meta property="og:url" content="https://curbsidesocial.co/lets-work" />
 <meta property="og:type" content="website" />
@@ -148,12 +148,57 @@
     line-height: 1.25;
   }
   .proof-lead b { font-style: normal; font-weight: 600; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+  /* Results row: number, client, what happened */
+  .results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 34px;
+  }
+  .result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 22px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+  }
+  .result-num {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(34px, 9vw, 46px);
+    line-height: 1;
+    color: var(--gold-light);
+    font-variant-numeric: tabular-nums;
+  }
+  .result-client {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream);
+    font-weight: 500;
+  }
+  .result-label { font-size: 13px; line-height: 1.4; color: var(--cream-dark); opacity: 0.85; }
+  @media (max-width: 480px) {
+    .results { grid-template-columns: 1fr; }
+    .result { padding: 18px 14px; }
+  }
+  .proof-label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cream-dark);
+    opacity: 0.7;
+    margin: 0;
+  }
   .proof-logos {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px 26px;
-    margin-top: 22px;
+    margin-top: 14px;
     font-size: 13px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -429,12 +474,12 @@
 
     <header class="top">
       <p class="mark">Curbside Social</p>
-      <p class="mark-sub">San Antonio Video + Marketing</p>
+      <p class="mark-sub">San Antonio Video + Photo</p>
     </header>
 
     <section class="hero fade">
-      <h1>Video that gets your business <em>booked</em>.</h1>
-      <p>I'm Rob. I shoot short-form video and photo for San Antonio restaurants, real estate pros, and local businesses, then get it posted so it actually brings people in.</p>
+      <h1>Video that gets people to <em>show up</em>.</h1>
+      <p>I'm Rob. I shoot video and photo for San Antonio restaurants, real estate pros, and local businesses. Edited fast and ready to post.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#quote">Get a quote</a>
         <a class="btn btn-ghost" href="sms:+12108837567">Text me</a>
@@ -445,12 +490,30 @@
     <div class="rule"><span>&#10022;</span></div>
 
     <section class="proof">
-      <p class="proof-lead">A reel I shot for Kotka Y Chucho hit <b>50,000</b> views and sold the place out.</p>
+      <div class="results">
+        <div class="result">
+          <span class="result-num">3M+</span>
+          <span class="result-client">Urban Poling</span>
+          <span class="result-label">views across reels</span>
+        </div>
+        <div class="result">
+          <span class="result-num">50K</span>
+          <span class="result-client">Kotka Y Chucho</span>
+          <span class="result-label">views on one reel, and the place sold out</span>
+        </div>
+        <div class="result">
+          <span class="result-num">38K</span>
+          <span class="result-client">Kaedama Battleship</span>
+          <span class="result-label">views</span>
+        </div>
+      </div>
+      <p class="proof-label">Trusted by</p>
       <div class="proof-logos">
         <span>Battalion</span>
         <span>The Beal Group</span>
         <span>Elite Glam Haus</span>
         <span>Kotka Y Chucho</span>
+        <span>Urban Poling</span>
       </div>
     </section>
 
@@ -458,7 +521,7 @@
 
     <section>
       <h2 class="chooser-head">What do you do?</h2>
-      <p class="chooser-sub">Tap your world and see how I'd help.</p>
+      <p class="chooser-sub">Pick yours. I'll show you what I'd shoot.</p>
 
       <div class="chips" role="tablist" aria-label="Who you are">
         <button class="chip" role="tab" aria-selected="true" data-target="p-food">Food &amp; Restaurants</button>
@@ -470,7 +533,7 @@
       <div class="panel" id="p-food" role="tabpanel">
         <p class="who">Restaurants &middot; Food trucks &middot; Bars &middot; Bakeries</p>
         <h3>Fill more tables. Move more trucks.</h3>
-        <p>A good food reel does more than any flyer ever could. I shoot your food and your spot so it stops the scroll and gets people hungry enough to show up.</p>
+        <p>Nobody finds a new spot off a flyer anymore. They find it on their phone. I shoot your food and your room so they get hungry and show up.</p>
         <p class="proof-note">Kotka Y Chucho: <b>50,000</b> views and a sold-out day from one reel.</p>
         <div class="cta-row" style="justify-content:flex-start">
           <a class="btn btn-primary" href="#quote" data-need="Social reels">Get a quote</a>
@@ -480,7 +543,7 @@
       <div class="panel" id="p-service" role="tabpanel" hidden>
         <p class="who">Med spas &middot; Salons &middot; Trades &middot; Studios &middot; Local shops</p>
         <h3>Give people a reason to pick you.</h3>
-        <p>When someone is deciding between you and the place down the street, video makes the call. I build content that shows what you do and makes new customers trust you fast.</p>
+        <p>When someone is choosing between you and the place down the street, video makes the call. I shoot your work and the people doing it, so new customers trust you before they walk in.</p>
         <p class="proof-note">Content for <b>Elite Glam Haus</b> and other San Antonio spots.</p>
         <div class="cta-row" style="justify-content:flex-start">
           <a class="btn btn-primary" href="#quote" data-need="Social reels">Get a quote</a>
@@ -489,8 +552,8 @@
 
       <div class="panel" id="p-realestate" role="tabpanel" hidden>
         <p class="who">Agents &middot; Lenders &middot; Investors &middot; Wholesalers &middot; Acquisitions</p>
-        <h3>Sell the property and the person.</h3>
-        <p>Listing walkthroughs, talking-head clips, and educational content for agents, lenders, investors, wholesalers, and acquisition teams. Look like the expert people want to work with, and keep your pipeline warm.</p>
+        <h3>More showings. More listings.</h3>
+        <p>Agents who show up on video get remembered. I shoot your listings, your open houses, and you talking to camera, so the next seller already knows your face.</p>
         <p class="proof-note">Reels for <b>The Beal Group</b>.</p>
         <div class="cta-row" style="justify-content:flex-start">
           <a class="btn btn-primary" href="#quote" data-need="Social reels">Get a quote</a>
@@ -500,8 +563,8 @@
       <div class="panel" id="p-education" role="tabpanel" hidden>
         <p class="who">Coaches &middot; Course creators &middot; Workshops &middot; Schools</p>
         <h3>Make what you teach easy to watch.</h3>
-        <p>I turn your lessons, talks, and workshops into clear video people actually finish and share. Good for building an audience and filling seats.</p>
-        <p class="proof-note">Clear, watchable content built around <b>your</b> message.</p>
+        <p>I turn your lessons, talks, and workshops into short, clear videos people finish and share. Good for building an audience and filling seats.</p>
+        <p class="proof-note">Shot and cut around <b>your</b> message, not a template.</p>
         <div class="cta-row" style="justify-content:flex-start">
           <a class="btn btn-primary" href="#quote" data-need="Not sure yet">Get a quote</a>
         </div>
@@ -524,14 +587,14 @@
           <div class="step-n">2</div>
           <div>
             <h4>I shoot</h4>
-            <p>One session on location. I bring the gear and the eye, you just show up.</p>
+            <p>One session on location. I bring the gear, you just show up.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-n">3</div>
           <div>
             <h4>You post</h4>
-            <p>Edited and sent back ready for the feed, fast, so it is working while it is fresh.</p>
+            <p>I edit it and send it back ready to post. Fast, while it's still fresh.</p>
           </div>
         </div>
       </div>
@@ -540,7 +603,7 @@
     <div class="rule"><span>&#10022;</span></div>
 
     <section class="final" id="quote">
-      <h2>Let's make something.</h2>
+      <h2>Let's shoot.</h2>
       <p>Tell me what you've got coming up. I'll get back to you within a day.</p>
 
       <form class="qform" id="qform" novalidate>

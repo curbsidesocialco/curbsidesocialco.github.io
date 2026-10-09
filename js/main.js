@@ -65,7 +65,18 @@ loadHeroSource();
 // Mobile Safari won't load a preload="metadata" video past its metadata until
 // play() is called, so canplay never fires and the clip stays hidden. Fix:
 // trigger play() when the frame scrolls in (kicks the load on mobile) and reveal
-// on loadeddata or a successful play. Genuinely-missing files stay on placeholder.
+// on loadeddata or a successful play.
+// Paid ad traffic lands here, so a clip that can't load hides its tile instead
+// of showing a placeholder, and the whole section hides if no clip loads.
+const workSection = document.getElementById('work');
+function workMissing(frame) {
+  frame.hidden = true;
+  if (![...workSection.querySelectorAll('.work-frame')].some(f => !f.hidden)) {
+    workSection.hidden = true;
+    const divider = workSection.nextElementSibling;
+    if (divider && divider.classList.contains('divider')) divider.hidden = true;
+  }
+}
 document.querySelectorAll('.work-frame').forEach(frame => {
   const video = frame.querySelector('video');
   if (!video) return;
@@ -82,7 +93,16 @@ document.querySelectorAll('.work-frame').forEach(frame => {
   if (url && source) {
     const mp4 = source.src;
     source.remove();
-    playStream(video, url, () => { video.src = mp4; video.load(); });
+    playStream(video, url, () => {
+      // Stream failed; if the MP4 backup fails too, the clip is missing
+      video.addEventListener('error', () => workMissing(frame), { once: true });
+      video.src = mp4;
+      video.load();
+    });
+  } else if (source) {
+    source.addEventListener('error', () => workMissing(frame), { once: true });
+  } else {
+    workMissing(frame);
   }
 });
 
@@ -134,6 +154,38 @@ if (trusted) {
     track.style.setProperty('--trusted-duration', `${Math.round(track.scrollWidth / 2 / 40)}s`);
     track.classList.add('is-moving');
   });
+}
+
+// ---- Stat strip (under Trusted by) ----
+// Only real numbers go here. An item renders only when it has a value, and the
+// strip only shows once 3 or more items have one. Fill in a value to add one.
+const STATS = [
+  { value: '3M+', label: 'views across Urban Poling reels' },
+  { value: '50K', label: 'views on one Kotka Y Chucho reel' },
+  { value: '38K', label: 'views for Kaedama Battleship' },
+  { value: '6+',  label: 'years behind the camera' },
+  { value: '',    label: 'restaurants shot' },
+  { value: '',    label: 'homes shot' },
+  { value: '',    label: 'reels delivered' },
+  { value: '',    label: 'days to turn around a reel' },
+  { value: '',    label: 'breakfast tacos eaten on set' },
+];
+const statStrip = document.getElementById('stats');
+const liveStats = STATS.filter(s => String(s.value).trim());
+if (statStrip && liveStats.length >= 3) {
+  liveStats.forEach(({ value, label }) => {
+    const item = document.createElement('div');
+    item.className = 'stat';
+    const num = document.createElement('span');
+    num.className = 'stat-num';
+    num.textContent = value;
+    const text = document.createElement('span');
+    text.className = 'stat-label';
+    text.textContent = label;
+    item.append(num, text);
+    statStrip.appendChild(item);
+  });
+  statStrip.hidden = false;
 }
 
 // ---- Scroll reveal ----
