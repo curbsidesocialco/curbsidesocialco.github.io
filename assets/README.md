@@ -19,11 +19,31 @@ branded placeholder (or stays hidden).
   Captions live in `index.html` (search for `work-caption`). Edit the four
   labels to match each clip (e.g. "Battalion · Brand film").
 
-## Trusted-by logos (strip stays hidden until at least one exists)
-- `logos/logo-1.png` … `logos/logo-6.png`
-  Client logos, transparent PNG (or SVG, rename accordingly in index.html),
-  roughly 240px wide. They render monochrome cream automatically; any color
-  logo is fine.
+## Portfolio page (/portfolio)
+Slots live in `portfolio.html`. Each is a `<figure class="pf-media">` with a
+`data-stream` (Cloudflare Stream Video ID, preferred) and/or `data-src` (MP4).
+Empty slots and empty sections hide themselves on the live page. To see every
+empty slot as a labeled placeholder, open `curbsidesocial.co/portfolio?preview`.
+- Sizzle reel: 16:9, 45 to 90 seconds, WITH sound. Right now it borrows the hero
+  cut. Upload the real one to Stream, paste its ID into the `#reel` slot, and
+  delete that slot's `data-poster` line.
+- Films (2): 16:9 full edits with sound. Upload to Stream and paste each ID into
+  `data-stream` (big files don't belong in git). Edit the client name and tags
+  under each one.
+- Reels (8): 9:16 verticals with sound. Slots 1 to 4 reuse the homepage work
+  clips. Slots 5 to 8 take a Stream ID or `assets/portfolio/reel-5.mp4` etc.
+  Edit the caption on each.
+
+## Brand logos (scrolling strip under the hero; hidden until at least one exists)
+- `logos/logo-1.png` … `logos/logo-8.png`
+  Client logos, roughly 400px wide. Use any number up to 8; empty slots are
+  skipped. The strip loops them automatically and turns every logo solid white,
+  so any color logo is fine.
+  The background MUST be transparent. A logo on a white or colored box turns
+  into a solid white rectangle. If a client only has a JPG, remove the
+  background first (remove.bg or Photoshop) and export as PNG.
+  Crop tight to the logo with no extra padding so they all look the same size.
+  For SVG logos, change the matching `.png` to `.svg` in index.html.
 
 ## Link preview
 - `og.jpg`: the image shown when the site is shared/texted.

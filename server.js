@@ -906,6 +906,81 @@ app.post('/api/audit', async (req, res) => {
   }
 });
 
+// ---- Public quote form (curbsidesocial.co/lets-work) ----
+// The one endpoint strangers can post to. A submission becomes a 'lead' client,
+// gets a "reply" task due today, and emails Rob. Light spam protection: a hidden
+// honeypot field bots fill in, a per-IP limit, and length caps on every field.
+const INQUIRY_NEEDS = ['Social reels', 'Cinematic film', 'Website', 'Photos', 'Not sure yet'];
+const inquiryHits = new Map(); // ip -> recent submission timestamps
+function inquiryLimited(ip) {
+  const hourAgo = Date.now() - 60 * 60 * 1000;
+  const recent = (inquiryHits.get(ip) || []).filter(t => t > hourAgo);
+  recent.push(Date.now());
+  inquiryHits.set(ip, recent);
+  return recent.length > 5;
+}
+const escapeHtml = s => String(s || '').replace(/[&<>"']/g, c =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const clip = (s, max) => String(s || '').trim().slice(0, max);
+
+app.post('/api/inquiry', async (req, res) => {
+  const body = req.body || {};
+  // Bots fill every field, people never see this one. Pretend it worked.
+  if (body.company_site) return res.json({ ok: true });
+
+  const ip = String(req.headers['x-forwarded-for'] || req.ip || '').split(',')[0].trim();
+  if (inquiryLimited(ip)) return res.status(429).json({ error: 'Too many messages. Text me instead.' });
+
+  // One-line fields go into the email subject, so no line breaks (header injection)
+  const line = (s, max) => clip(String(s || '').replace(/[\r\n]+/g, ' '), max);
+  const name = line(body.name, 100);
+  const reach = line(body.reach, 150);
+  const business = line(body.business, 120);
+  const need = INQUIRY_NEEDS.includes(body.need) ? body.need : 'Not sure yet';
+  const message = clip(body.message, 1500);
+  const source = clip(body.source, 40).replace(/[^\w\- ]/g, '') || 'lets-work page';
+  if (!name || reach.length < 3) return res.status(400).json({ error: 'Add your name and a phone number or email.' });
+
+  const isEmail = reach.includes('@');
+  const [first, ...rest] = name.split(/\s+/);
+  const notes = `Website inquiry. Wants: ${need}.` + (message ? `\n"${message}"` : '');
+
+  try {
+    const client = (await pool.query(
+      `INSERT INTO clients (business, contact, status, notes, first_name, last_name, phone, email, source)
+       VALUES ($1,$2,'lead',$3,$4,$5,$6,$7,$8) RETURNING id`,
+      [business || name, reach, notes, first, rest.join(' ') || null,
+       isEmail ? null : reach, isEmail ? reach : null, `Website form (${source})`]
+    )).rows[0];
+    // Due "today" in San Antonio time, not the server's UTC date
+    await pool.query(
+      `INSERT INTO tasks (title, due_date, client_id)
+       VALUES ($1, (NOW() AT TIME ZONE 'America/Chicago')::date, $2)`,
+      [`Reply to ${name} (website inquiry)`, client.id]
+    );
+
+    // The lead is saved either way; a failed email shouldn't fail the form
+    const row = (label, val) => val ? `<tr>
+      <td style="padding:10px 0;border-bottom:1px solid #f0efe9;color:#6b6b65;font-size:13px;width:110px;vertical-align:top;">${label}</td>
+      <td style="padding:10px 0;border-bottom:1px solid #f0efe9;font-size:15px;color:#1a1a18;">${escapeHtml(val).replace(/\n/g, '<br>')}</td>
+    </tr>` : '';
+    const inner = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      ${row('Name', name)}${row('Business', business)}${row('Reach them', reach)}
+      ${row('Wants', need)}${row('Message', message)}${row('From', source)}
+    </table>
+    <p style="margin:18px 0 0;font-size:13px;color:#6b6b65;">Saved as a lead with a reply task for today.
+    <a href="https://curbsidesocial.co/dashboard" style="color:#b8974a;">Open the dashboard</a></p>`;
+    sendEmail(process.env.GMAIL_USER, `New inquiry: ${name}${business ? ' from ' + business : ''}`,
+      emailShell('New inquiry', need, inner))
+      .catch(err => console.error('Inquiry email error:', err.message));
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Inquiry error:', err);
+    res.status(500).json({ error: 'Something broke on my end.' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

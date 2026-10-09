@@ -23,22 +23,32 @@
 <nav id="nav">
   <a href="#" class="nav-logo">Curbside Social Co.</a>
   <ul class="nav-links">
-    <li><a href="#work">Work</a></li>
+    <li class="nav-drop">
+      <a href="/portfolio" class="nav-drop-toggle" aria-haspopup="true">Portfolio</a>
+      <ul class="nav-drop-menu">
+        <li><a href="/portfolio#reel">Sizzle Reel</a></li>
+        <li><a href="/portfolio#films">Films</a></li>
+        <li><a href="/portfolio#reels">Reels</a></li>
+      </ul>
+    </li>
     <li><a href="#services">Services</a></li>
     <li><a href="#offerings">Offerings</a></li>
     <li><a href="#about">About</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Get a Quote</a>
+  <a href="/lets-work#quote" class="nav-cta">Get a Quote</a>
   <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
     <span></span><span></span>
   </button>
 </nav>
 <div class="nav-panel" id="nav-panel">
-  <a href="#work">Work</a>
+  <a href="/portfolio">Portfolio</a>
+  <a href="/portfolio#reel" class="nav-panel-sub">Sizzle Reel</a>
+  <a href="/portfolio#films" class="nav-panel-sub">Films</a>
+  <a href="/portfolio#reels" class="nav-panel-sub">Reels</a>
   <a href="#services">Services</a>
   <a href="#offerings">Offerings</a>
   <a href="#about">About</a>
-  <a href="#contact" class="nav-panel-cta">Get a Quote</a>
+  <a href="/lets-work#quote" class="nav-panel-cta">Get a Quote</a>
 </div>
 
 <!-- HERO -->
@@ -59,7 +69,7 @@
     </div>
     <p class="hero-tagline">Cinematic video and digital marketing for real brands, in real spaces.</p>
     <div class="hero-actions">
-      <a href="#work" class="btn-primary">See the Work</a>
+      <a href="/portfolio" class="btn-primary">See the Work</a>
       <a href="#contact" class="btn-secondary">Get in Touch</a>
     </div>
   </div>
@@ -71,14 +81,18 @@
 
 <!-- TRUSTED BY (hidden until logo files exist in assets/logos/) -->
 <div class="trusted-strip" id="trusted" hidden>
-  <span class="trusted-label">Trusted by</span>
-  <div class="trusted-logos">
-    <img src="assets/logos/logo-1.png" alt="" loading="lazy" />
-    <img src="assets/logos/logo-2.png" alt="" loading="lazy" />
-    <img src="assets/logos/logo-3.png" alt="" loading="lazy" />
-    <img src="assets/logos/logo-4.png" alt="" loading="lazy" />
-    <img src="assets/logos/logo-5.png" alt="" loading="lazy" />
-    <img src="assets/logos/logo-6.png" alt="" loading="lazy" />
+  <span class="trusted-label">Brands we've worked with</span>
+  <div class="trusted-marquee">
+    <div class="trusted-logos">
+      <img src="assets/logos/logo-1.png" alt="" />
+      <img src="assets/logos/logo-2.png" alt="" />
+      <img src="assets/logos/logo-3.png" alt="" />
+      <img src="assets/logos/logo-4.png" alt="" />
+      <img src="assets/logos/logo-5.png" alt="" />
+      <img src="assets/logos/logo-6.png" alt="" />
+      <img src="assets/logos/logo-7.png" alt="" />
+      <img src="assets/logos/logo-8.png" alt="" />
+    </div>
   </div>
 </div>
 
@@ -117,7 +131,7 @@
       <figcaption class="work-caption">Beauty</figcaption>
     </figure>
   </div>
-  <p class="work-more">More every week on <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a></p>
+  <p class="work-more"><a href="/portfolio">See the full portfolio</a> &nbsp;&middot;&nbsp; More every week on <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a></p>
 </section>
 
 <div class="divider"></div>
@@ -350,7 +364,8 @@
 <div class="cta-section reveal" id="contact">
   <h2 class="cta-title">Let's Work Together</h2>
   <p class="cta-sub">Tell us about your business and we'll put together a package that fits.</p>
-  <a href="mailto:robgalvan@gmail.com" class="btn-primary">Send an Email</a>
+  <a href="/lets-work#quote" class="btn-primary">Get a Quote</a>
+  <p class="cta-contact">Takes 30 seconds. Or <a href="mailto:robgalvan@gmail.com">email me</a> directly.</p>
   <p class="cta-contact">or DM us on Instagram <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a> &nbsp;&middot;&nbsp; San Antonio, TX &nbsp;&middot;&nbsp; 210.883.7567</p>
 </div>
 
@@ -359,13 +374,14 @@
   <div class="footer-logo">Curbside Social Co.</div>
   <p class="footer-text">© 2026 Curbside Social Co. &middot; San Antonio, TX</p>
   <ul class="footer-links">
-    <li><a href="#work">Work</a></li>
+    <li><a href="/portfolio">Portfolio</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#offerings">Offerings</a></li>
     <li><a href="dashboard/">Dashboard</a></li>
   </ul>
 </footer>
 
+<script src="js/site.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

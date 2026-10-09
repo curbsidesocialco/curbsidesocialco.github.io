@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio | Curbside Social Co., San Antonio Video Production</title>
+<meta name="description" content="Sizzle reel, brand films, and short-form reels by Curbside Social Co. Food, events, and local brands, shot on location in San Antonio." />
+<meta property="og:title" content="Portfolio | Curbside Social Co." />
+<meta property="og:description" content="Sizzle reel, brand films, and reels shot on location in San Antonio." />
+<meta property="og:image" content="https://curbsidesocial.co/assets/og.jpg" />
+<meta property="og:url" content="https://curbsidesocial.co/portfolio" />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a08'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23e8e0d0' text-anchor='middle'%3ECS%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://customer-sq5pmgyxyshq79lc.cloudflarestream.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/portfolio.css">
+</head>
+<body>
+
+<!--
+  HOW TO FILL THIS PAGE
+  Every video slot is a <figure class="pf-media"> with:
+    data-stream = the Cloudflare Stream Video ID (best: fast, adaptive)
+    data-src    = an MP4 in assets/ (used if there's no stream, or as backup)
+    data-poster = optional still to show before play (streams make their own)
+  A slot with neither a stream nor a working MP4 hides itself, and a section
+  with no slots left hides too, so the live page never shows empty boxes.
+  To see every empty slot as a labeled placeholder, open /portfolio?preview
+-->
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="nav-logo">Curbside Social Co.</a>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <a href="/portfolio" class="nav-drop-toggle" aria-haspopup="true" aria-current="page">Portfolio</a>
+      <ul class="nav-drop-menu">
+        <li><a href="#reel">Sizzle Reel</a></li>
+        <li><a href="#films">Films</a></li>
+        <li><a href="#reels">Reels</a></li>
+      </ul>
+    </li>
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#offerings">Offerings</a></li>
+    <li><a href="/#about">About</a></li>
+  </ul>
+  <a href="/lets-work#quote" class="nav-cta">Get a Quote</a>
+  <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span>
+  </button>
+</nav>
+<div class="nav-panel" id="nav-panel">
+  <a href="/portfolio">Portfolio</a>
+  <a href="#reel" class="nav-panel-sub">Sizzle Reel</a>
+  <a href="#films" class="nav-panel-sub">Films</a>
+  <a href="#reels" class="nav-panel-sub">Reels</a>
+  <a href="/#services">Services</a>
+  <a href="/#offerings">Offerings</a>
+  <a href="/#about">About</a>
+  <a href="/lets-work#quote" class="nav-panel-cta">Get a Quote</a>
+</div>
+
+<!-- INTRO -->
+<header class="pf-head">
+  <span class="section-eyebrow">Portfolio</span>
+  <h1 class="pf-title">The <em>Work</em></h1>
+  <p class="pf-lede">Food, events, and brand films, shot on location across San Antonio. Hit play, sound on.</p>
+  <div class="pf-jump" role="navigation" aria-label="Portfolio sections">
+    <a href="#reel">Sizzle Reel</a>
+    <a href="#films">Films</a>
+    <a href="#reels">Reels</a>
+  </div>
+</header>
+
+<!-- SIZZLE REEL -->
+<section id="reel" class="pf-section pf-wide">
+  <!-- TEMP: the hero cut stands in until the sizzle reel is edited.
+       When it's ready: upload to Cloudflare Stream, paste the Video ID below,
+       and drop the poster data-poster attribute (Stream makes its own). -->
+  <figure class="pf-media pf-landscape pf-feature"
+          data-stream="59a257df22e1c60b872c86114adce1f3"
+          data-src="assets/hero.mp4"
+          data-poster="assets/hero-poster.jpg"
+          data-label="Sizzle reel">
+    <video playsinline preload="none"></video>
+    <button class="pf-play" type="button" aria-label="Play the sizzle reel with sound">
+      <span class="pf-play-icon" aria-hidden="true"></span>
+      <span class="pf-play-text">Play the reel</span>
+    </button>
+  </figure>
+  <div class="pf-meta pf-meta-row">
+    <span class="pf-meta-title">Sizzle Reel</span>
+    <span class="pf-meta-tags">Food &middot; Events &middot; Brand films &middot; Sony FX3</span>
+  </div>
+</section>
+
+<!-- FILMS: full horizontal edits, start to finish -->
+<section id="films" class="pf-section pf-wide">
+  <div class="pf-section-head">
+    <span class="section-eyebrow">Start to Finish</span>
+    <h2 class="section-title">Films</h2>
+  </div>
+
+  <article class="pf-film">
+    <figure class="pf-media pf-landscape"
+            data-stream=""
+            data-src="assets/portfolio/film-1.mp4"
+            data-label="Film 1 (16:9 brand film)">
+      <video playsinline preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play film with sound">
+        <span class="pf-play-icon" aria-hidden="true"></span>
+      </button>
+    </figure>
+    <div class="pf-meta pf-meta-row">
+      <span class="pf-meta-title">Client Name</span>
+      <span class="pf-meta-tags">Brewery &middot; Brand film &middot; Sony FX3 &middot; 1:30</span>
+    </div>
+  </article>
+
+  <article class="pf-film">
+    <figure class="pf-media pf-landscape"
+            data-stream=""
+            data-src="assets/portfolio/film-2.mp4"
+            data-label="Film 2 (16:9 brand film)">
+      <video playsinline preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play film with sound">
+        <span class="pf-play-icon" aria-hidden="true"></span>
+      </button>
+    </figure>
+    <div class="pf-meta pf-meta-row">
+      <span class="pf-meta-title">Client Name</span>
+      <span class="pf-meta-tags">Restaurant &middot; Brand film &middot; Sony FX3 &middot; 0:45</span>
+    </div>
+  </article>
+</section>
+
+<!-- REELS: 8 vertical, tap to play, one at a time -->
+<section id="reels" class="pf-section">
+  <div class="pf-section-head">
+    <span class="section-eyebrow">Short Form</span>
+    <h2 class="section-title">Reels</h2>
+    <p class="section-body">Made for Instagram and TikTok. Tap one to play it with sound.</p>
+  </div>
+  <div class="pf-reels">
+    <figure class="pf-media pf-vertical" data-stream="21d3d51211e5b93a79de6d9eb3905848" data-src="assets/work-1.mp4" data-label="Reel 1">
+      <video playsinline loop preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play reel"><span class="pf-play-icon" aria-hidden="true"></span></button>
+      <button class="pf-mute" type="button" aria-label="Mute">Sound on</button>
+      <figcaption class="pf-caption">Restaurant</figcaption>
+    </figure>
+    <figure class="pf-media pf-vertical" data-stream="e4b5dfb579a1d299704af248bdcd46f8" data-src="assets/work-2.mp4" data-label="Reel 2">
+      <video playsinline loop preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play reel"><span class="pf-play-icon" aria-hidden="true"></span></button>
+      <button class="pf-mute" type="button" aria-label="Mute">Sound on</button>
+      <figcaption class="pf-caption">Beer commercial</figcaption>
+    </figure>
+    <figure class="pf-media pf-vertical" data-stream="cb0a31a5c89d35c4c040520be0c87e13" data-src="assets/work-3.mp4" data-label="Reel 3">
+      <video playsinline loop preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play reel"><span class="pf-play-icon" aria-hidden="true"></span></button>
+      <button class="pf-mute" type="button" aria-label="Mute">Sound on</button>
+      <figcaption class="pf-caption">Real estate</figcaption>
+    </figure>
+    <figure class="pf-media pf-vertical" data-stream="bae653e706f9b6c874faa1b27ad92fa6" data-src="assets/work-4.mp4" data-label="Reel 4">
+      <video playsinline loop preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play reel"><span class="pf-play-icon" aria-hidden="true"></span></button>
+      <button class="pf-mute" type="button" aria-label="Mute">Sound on</button>
+      <figcaption class="pf-caption">Beauty</figcaption>
+    </figure>
+    <figure class="pf-media pf-vertical" data-stream="" data-src="assets/portfolio/reel-5.mp4" data-label="Reel 5 (9:16)">
+      <video playsinline loop preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play reel"><span class="pf-play-icon" aria-hidden="true"></span></button>
+      <button class="pf-mute" type="button" aria-label="Mute">Sound on</button>
+      <figcaption class="pf-caption">Client &middot; Type</figcaption>
+    </figure>
+    <figure class="pf-media pf-vertical" data-stream="" data-src="assets/portfolio/reel-6.mp4" data-label="Reel 6 (9:16)">
+      <video playsinline loop preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play reel"><span class="pf-play-icon" aria-hidden="true"></span></button>
+      <button class="pf-mute" type="button" aria-label="Mute">Sound on</button>
+      <figcaption class="pf-caption">Client &middot; Type</figcaption>
+    </figure>
+    <figure class="pf-media pf-vertical" data-stream="" data-src="assets/portfolio/reel-7.mp4" data-label="Reel 7 (9:16)">
+      <video playsinline loop preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play reel"><span class="pf-play-icon" aria-hidden="true"></span></button>
+      <button class="pf-mute" type="button" aria-label="Mute">Sound on</button>
+      <figcaption class="pf-caption">Client &middot; Type</figcaption>
+    </figure>
+    <figure class="pf-media pf-vertical" data-stream="" data-src="assets/portfolio/reel-8.mp4" data-label="Reel 8 (9:16)">
+      <video playsinline loop preload="none"></video>
+      <button class="pf-play" type="button" aria-label="Play reel"><span class="pf-play-icon" aria-hidden="true"></span></button>
+      <button class="pf-mute" type="button" aria-label="Mute">Sound on</button>
+      <figcaption class="pf-caption">Client &middot; Type</figcaption>
+    </figure>
+  </div>
+  <p class="work-more">More every week on <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a></p>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA: every view ends at something Rob sells -->
+<section class="pf-cta">
+  <span class="section-eyebrow">Your Turn</span>
+  <h2 class="cta-title">Want your spot to look like this?</h2>
+  <div class="pf-packages">
+    <a class="pf-pkg" href="/lets-work?need=Social%20reels#quote">
+      <span class="pf-pkg-name">Social Package</span>
+      <span class="pf-pkg-price">$150</span>
+      <span class="pf-pkg-desc">3 reels for your dish, product, or event. One collab reel on my page, you keep two.</span>
+      <span class="pf-pkg-go">Book it</span>
+    </a>
+    <a class="pf-pkg" href="/lets-work?need=Cinematic%20film#quote">
+      <span class="pf-pkg-name">Cinematic Package</span>
+      <span class="pf-pkg-price">$500+</span>
+      <span class="pf-pkg-desc">A brand film shot on the Sony FX3. Built for spots that want to look high end.</span>
+      <span class="pf-pkg-go">Book it</span>
+    </a>
+  </div>
+  <p class="cta-contact">Not sure which? <a href="/lets-work#quote">Tell me what you need</a> or text 210.883.7567.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Curbside Social Co.</div>
+  <p class="footer-text">© 2026 Curbside Social Co. &middot; San Antonio, TX</p>
+  <ul class="footer-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/lets-work#quote">Get a Quote</a></li>
+  </ul>
+</footer>
+
+<script src="js/site.js"></script>
+<script src="js/portfolio.js"></script>
+</body>
+</html>

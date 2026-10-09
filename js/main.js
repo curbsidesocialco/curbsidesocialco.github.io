@@ -3,90 +3,8 @@
 // in their placeholder state and only switch on when a video actually loads,
 // so the site looks intentional before Rob drops the files into assets/.
 
-// ---- Nav: scroll tint ----
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.style.background = window.scrollY > 60
-    ? 'rgba(10,10,8,0.97)'
-    : 'linear-gradient(to bottom, rgba(10,10,8,0.95), transparent)';
-});
-
-// ---- Nav: mobile burger ----
-const burger = document.getElementById('nav-burger');
-const panel = document.getElementById('nav-panel');
-function closePanel() {
-  burger.classList.remove('open');
-  panel.classList.remove('open');
-  burger.setAttribute('aria-expanded', 'false');
-}
-burger.addEventListener('click', () => {
-  const open = !panel.classList.contains('open');
-  burger.classList.toggle('open', open);
-  panel.classList.toggle('open', open);
-  burger.setAttribute('aria-expanded', String(open));
-});
-panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closePanel));
-
-// ---- Cloudflare Stream (adaptive streaming) ----
-// Each video tag carries data-stream="<video id>" from the Cloudflare Stream
-// dashboard. With an id set, the video streams: it starts fast at a quality the
-// connection can handle and steps up, instead of stalling on one big MP4.
-// If streaming fails for any reason, the video falls back to the MP4 in assets/.
-// Leave STREAM_CUSTOMER or an id empty and that video just uses the MP4.
-const STREAM_CUSTOMER = 'customer-sq5pmgyxyshq79lc'; // from any video's HLS link in Cloudflare Stream
-const HLS_JS = 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.15/hls.light.min.js';
-
-function streamUrl(id) {
-  return STREAM_CUSTOMER && id
-    ? `https://${STREAM_CUSTOMER}.cloudflarestream.com/${id}/manifest/video.m3u8`
-    : null;
-}
-
-// Streams play through hls.js wherever it's supported (desktop browsers, and
-// iPhones on iOS 17.1+), because it lets us set a quality floor: start at 480p
-// and never drop below it, then climb to full HD as the signal allows. Where
-// hls.js isn't supported (older iPhones, some in-app browsers), the browser
-// plays the stream natively. hls.js only downloads when a stream is used.
-const MIN_QUALITY = 480; // shortest side in pixels: 480p for the hero, 480 wide for vertical reels
-const nativeHls = document.createElement('video').canPlayType('application/vnd.apple.mpegurl') !== '';
-let hlsLoader = null;
-function loadHls() {
-  if (!hlsLoader) hlsLoader = new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = HLS_JS;
-    s.onload = () => resolve(window.Hls);
-    s.onerror = reject;
-    document.head.appendChild(s);
-  });
-  return hlsLoader;
-}
-
-// Attach a stream to a video. onFail runs once if it can't play.
-function playStream(video, url, onFail) {
-  let failed = false;
-  const fail = () => { if (!failed) { failed = true; onFail(); } };
-  const playNative = () => {
-    if (!nativeHls) return fail();
-    video.addEventListener('error', fail, { once: true });
-    video.src = url;
-    video.load();
-  };
-  loadHls().then(Hls => {
-    if (!Hls || !Hls.isSupported()) return playNative();
-    const hls = new Hls();
-    hls.on(Hls.Events.MANIFEST_PARSED, (evt, data) => {
-      // Lowest level that meets the floor (levels are sorted low to high)
-      const floor = data.levels.findIndex(l => Math.min(l.width, l.height) >= MIN_QUALITY);
-      if (floor > 0) {
-        hls.startLevel = floor;
-        hls.config.minAutoBitrate = data.levels[floor].bitrate - 1;
-      }
-    });
-    hls.on(Hls.Events.ERROR, (evt, data) => { if (data.fatal) { hls.destroy(); fail(); } });
-    hls.loadSource(url);
-    hls.attachMedia(video);
-  }).catch(playNative);
-}
+// Nav and the Cloudflare Stream helpers (streamUrl, playStream) live in
+// js/site.js, which loads first.
 
 // ---- Hero video: switch on only when it can actually play ----
 const hero = document.getElementById('hero');
@@ -183,12 +101,38 @@ const workObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.25 });
 document.querySelectorAll('.work-frame').forEach(f => workObserver.observe(f));
 
-// ---- Trusted-by strip: show only if at least one logo file exists ----
+// ---- Trusted-by strip: show only if at least one logo file exists, then loop it ----
 const trusted = document.getElementById('trusted');
 if (trusted) {
-  trusted.querySelectorAll('img').forEach(img => {
-    img.addEventListener('load', () => { trusted.hidden = false; });
-    img.addEventListener('error', () => { img.remove(); });
+  const track = trusted.querySelector('.trusted-logos');
+  const imgs = [...track.querySelectorAll('img')];
+  // Wait until every slot has either loaded or 404'd, so we know the real set
+  Promise.all(imgs.map(img => img.complete
+    ? Promise.resolve()
+    : new Promise(done => { img.addEventListener('load', done); img.addEventListener('error', done); })
+  )).then(() => {
+    imgs.forEach(img => { if (!img.naturalWidth) img.remove(); });
+    const logos = [...track.querySelectorAll('img')];
+    if (!logos.length) return;
+    trusted.hidden = false;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!track.scrollWidth) return; // strip not rendered, nothing to measure
+
+    // Repeat the set until one copy is wider than any screen (so no gap shows
+    // even when the window is resized), then double it for the -50% loop
+    const minWidth = Math.max(window.screen.width, window.innerWidth);
+    let guard = 0;
+    while (track.scrollWidth < minWidth && guard++ < 20) {
+      logos.forEach(img => track.appendChild(img.cloneNode()));
+    }
+    [...track.children].forEach(img => {
+      const copy = img.cloneNode();
+      copy.setAttribute('aria-hidden', 'true');
+      track.appendChild(copy);
+    });
+    // Constant speed (about 40px per second) no matter how many logos there are
+    track.style.setProperty('--trusted-duration', `${Math.round(track.scrollWidth / 2 / 40)}s`);
+    track.classList.add('is-moving');
   });
 }
 

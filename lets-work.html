@@ -1,4 +1,16 @@
-<title>Work With Curbside</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Work With Curbside | Curbside Social Co.</title>
+<meta name="description" content="Short-form video and photo for San Antonio restaurants, real estate pros, and local businesses. Get a quote in 30 seconds." />
+<meta property="og:title" content="Work With Curbside Social Co." />
+<meta property="og:description" content="Video that gets your business booked. Get a quote in 30 seconds." />
+<meta property="og:image" content="https://curbsidesocial.co/assets/og.jpg" />
+<meta property="og:url" content="https://curbsidesocial.co/lets-work" />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a08'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23e8e0d0' text-anchor='middle'%3ECS%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -318,7 +330,80 @@
   }
 
   a:focus-visible, button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+
+  html, body { margin: 0; background: var(--black); }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  .see-work {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream-dark);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-med);
+    padding-bottom: 4px;
+  }
+  .see-work:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+  /* ---- quote form ---- */
+  #quote { scroll-margin-top: 16px; }
+  .qform { text-align: left; display: grid; gap: 18px; margin-top: 8px; }
+  .qfield { display: grid; gap: 7px; }
+  .qlabel {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream-dark);
+  }
+  .qlabel .opt { text-transform: none; letter-spacing: 0; opacity: 0.6; }
+  .qinput {
+    width: 100%;
+    font-family: var(--body);
+    font-size: 16px; /* 16px stops iPhones from zooming in on focus */
+    font-weight: 400;
+    color: var(--cream);
+    background: var(--black);
+    border: 1px solid var(--border-med);
+    border-radius: 0;
+    padding: 13px 14px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .qinput::placeholder { color: rgba(207,199,182,0.45); }
+  .qinput:focus { outline: none; border-color: var(--gold-light); }
+  textarea.qinput { min-height: 92px; resize: vertical; }
+  .qneeds { display: flex; flex-wrap: wrap; gap: 8px; border: 0; padding: 0; margin: 0; }
+  .qneeds legend { margin-bottom: 8px; padding: 0; }
+  .qneed { position: relative; }
+  .qneed input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .qneed span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 14px;
+    background: var(--black);
+    color: var(--cream-dark);
+    border: 1px solid var(--border-med);
+    transition: all 0.15s;
+  }
+  .qneed input:checked + span { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .qneed input:focus-visible + span { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+  .qtrap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .qsubmit { width: 100%; font-size: 16px; padding: 16px 22px; }
+  .qsubmit[disabled] { opacity: 0.6; cursor: wait; }
+  .qerror { color: #e3a27a; font-size: 14px; margin: 0; }
+  .qerror a { color: inherit; }
+  .qdone { text-align: center; padding: 10px 0; }
+  .qdone h3 { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 7vw, 36px); margin: 0 0 10px; color: var(--cream); }
+  .qdone p { font-size: 15px; color: var(--cream-dark); margin: 0 0 8px; }
+  .or-talk { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .or-talk .lbl { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-dark); opacity: 0.75; margin: 0; }
+  .or-talk .cta-row { margin-top: 14px; }
 </style>
+</head>
+<body>
 
 <div class="page">
   <div class="wrap">
@@ -332,9 +417,10 @@
       <h1>Video that gets your business <em>booked</em>.</h1>
       <p>I'm Rob. I shoot short-form video and photo for San Antonio restaurants, real estate pros, and local businesses, then get it posted so it actually brings people in.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
-        <a class="btn btn-ghost" href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">Message on Instagram</a>
+        <a class="btn btn-primary" href="#quote">Get a quote</a>
+        <a class="btn btn-ghost" href="sms:+12108837567">Text me</a>
       </div>
+      <a class="see-work" href="/portfolio">See the work &rarr;</a>
     </section>
 
     <div class="rule"><span>&#10022;</span></div>
@@ -368,7 +454,7 @@
         <p>A good food reel does more than any flyer ever could. I shoot your food and your spot so it stops the scroll and gets people hungry enough to show up.</p>
         <p class="proof-note">Kotka Y Chucho: <b>50,000</b> views and a sold-out day from one reel.</p>
         <div class="cta-row" style="justify-content:flex-start">
-          <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+          <a class="btn btn-primary" href="#quote" data-need="Social reels">Get a quote</a>
         </div>
       </div>
 
@@ -378,7 +464,7 @@
         <p>When someone is deciding between you and the place down the street, video makes the call. I build content that shows what you do and makes new customers trust you fast.</p>
         <p class="proof-note">Content for <b>Elite Glam Haus</b> and other San Antonio spots.</p>
         <div class="cta-row" style="justify-content:flex-start">
-          <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+          <a class="btn btn-primary" href="#quote" data-need="Social reels">Get a quote</a>
         </div>
       </div>
 
@@ -388,7 +474,7 @@
         <p>Listing walkthroughs, talking-head clips, and educational content for agents, lenders, investors, wholesalers, and acquisition teams. Look like the expert people want to work with, and keep your pipeline warm.</p>
         <p class="proof-note">Reels for <b>The Beal Group</b>.</p>
         <div class="cta-row" style="justify-content:flex-start">
-          <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+          <a class="btn btn-primary" href="#quote" data-need="Social reels">Get a quote</a>
         </div>
       </div>
 
@@ -398,7 +484,7 @@
         <p>I turn your lessons, talks, and workshops into clear video people actually finish and share. Good for building an audience and filling seats.</p>
         <p class="proof-note">Clear, watchable content built around <b>your</b> message.</p>
         <div class="cta-row" style="justify-content:flex-start">
-          <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
+          <a class="btn btn-primary" href="#quote" data-need="Not sure yet">Get a quote</a>
         </div>
       </div>
     </section>
@@ -434,21 +520,62 @@
 
     <div class="rule"><span>&#10022;</span></div>
 
-    <section class="final">
+    <section class="final" id="quote">
       <h2>Let's make something.</h2>
-      <p>Based in San Antonio. Shooting all over South Texas.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="tel:+12108837567">Call or text 210.883.7567</a>
-        <a class="btn btn-ghost" href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">Message on Instagram</a>
+      <p>Tell me what you've got coming up. I'll get back to you within a day.</p>
+
+      <form class="qform" id="qform" novalidate>
+        <div class="qfield">
+          <label class="qlabel" for="q-name">Your name</label>
+          <input class="qinput" id="q-name" name="name" autocomplete="name" required maxlength="100" placeholder="First and last">
+        </div>
+        <div class="qfield">
+          <label class="qlabel" for="q-business">Business <span class="opt">(optional)</span></label>
+          <input class="qinput" id="q-business" name="business" autocomplete="organization" maxlength="120" placeholder="Where would I be shooting?">
+        </div>
+        <fieldset class="qneeds">
+          <legend class="qlabel">What do you need?</legend>
+          <label class="qneed"><input type="radio" name="need" value="Social reels"><span>Social reels &middot; $150</span></label>
+          <label class="qneed"><input type="radio" name="need" value="Cinematic film"><span>Cinematic film &middot; $500+</span></label>
+          <label class="qneed"><input type="radio" name="need" value="Photos"><span>Photos</span></label>
+          <label class="qneed"><input type="radio" name="need" value="Website"><span>Website</span></label>
+          <label class="qneed"><input type="radio" name="need" value="Not sure yet" checked><span>Not sure yet</span></label>
+        </fieldset>
+        <div class="qfield">
+          <label class="qlabel" for="q-reach">Best way to reach you</label>
+          <input class="qinput" id="q-reach" name="reach" required maxlength="150" placeholder="Phone number or email">
+        </div>
+        <div class="qfield">
+          <label class="qlabel" for="q-message">Anything else? <span class="opt">(optional)</span></label>
+          <textarea class="qinput" id="q-message" name="message" maxlength="1500" placeholder="An event, a new menu, a date you have in mind..."></textarea>
+        </div>
+        <!-- Honeypot: hidden from people, bots fill it in and get ignored -->
+        <div class="qtrap" aria-hidden="true">
+          <label for="q-site">Leave this empty</label>
+          <input id="q-site" name="company_site" tabindex="-1" autocomplete="off">
+        </div>
+        <p class="qerror" id="q-error" role="alert" hidden></p>
+        <button class="btn btn-primary qsubmit" type="submit" id="q-submit">Send it</button>
+      </form>
+
+      <div class="qdone" id="q-done" hidden>
+        <h3>Got it, <span id="q-done-name">thanks</span>.</h3>
+        <p>I'll reach out within a day.</p>
+        <p>Need me sooner? Text <a href="sms:+12108837567" style="color:var(--gold-light)">210.883.7567</a>.</p>
+        <a class="see-work" href="/portfolio">See the work while you wait &rarr;</a>
       </div>
-      <p class="contact-line">
-        <span class="num" id="phone-text">210.883.7567</span>
-        <button class="copy-btn" data-copy="2108837567" aria-label="Copy phone number">Copy</button>
-      </p>
-      <p class="contact-line">
-        <span>robgalvan@gmail.com</span>
-        <button class="copy-btn" data-copy="robgalvan@gmail.com" aria-label="Copy email">Copy</button>
-      </p>
+
+      <div class="or-talk">
+        <p class="lbl">Rather talk?</p>
+        <div class="cta-row">
+          <a class="btn btn-ghost" href="tel:+12108837567">Call or text 210.883.7567</a>
+          <a class="btn btn-ghost" href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">Message on Instagram</a>
+        </div>
+        <p class="contact-line">
+          <span>robgalvan@gmail.com</span>
+          <button class="copy-btn" data-copy="robgalvan@gmail.com" aria-label="Copy email">Copy</button>
+        </p>
+      </div>
     </section>
 
     <footer class="foot">
@@ -503,4 +630,66 @@
       } catch (e) { /* leave the visible number for manual copy */ }
     }
   })();
+  // Quote form: posts to the backend, which saves a lead in the dashboard,
+  // adds a "reply" task, and emails Rob. Falls back to text/email if it fails.
+  (function () {
+    var API = 'https://api-production-eab8a.up.railway.app';
+    var params = new URLSearchParams(location.search);
+    var form = document.getElementById('qform');
+    var errorEl = document.getElementById('q-error');
+    var submit = document.getElementById('q-submit');
+    var fields = form.elements;
+
+    function pickNeed(need) {
+      var radio = form.querySelector('input[name="need"][value="' + need + '"]');
+      if (radio) radio.checked = true;
+    }
+    // Links like /lets-work?need=Social%20reels#quote arrive with the package picked
+    if (params.get('need')) pickNeed(params.get('need'));
+    document.querySelectorAll('a[data-need]').forEach(function (a) {
+      a.addEventListener('click', function () { pickNeed(a.getAttribute('data-need')); });
+    });
+
+    function showError(html) { errorEl.innerHTML = html; errorEl.hidden = false; }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errorEl.hidden = true;
+      var data = {
+        name: fields.name.value.trim(),
+        business: fields.business.value.trim(),
+        need: (form.querySelector('input[name="need"]:checked') || {}).value,
+        reach: fields.reach.value.trim(),
+        message: fields.message.value.trim(),
+        company_site: fields.company_site.value,
+        // Tag where they came from: /lets-work?src=story shows up as "story" in the dashboard
+        source: params.get('src') || 'lets-work page'
+      };
+      if (!data.name) { showError('Add your name so I know who I\'m talking to.'); fields.name.focus(); return; }
+      if (data.reach.length < 7) { showError('Add a phone number or email so I can get back to you.'); fields.reach.focus(); return; }
+
+      submit.disabled = true;
+      submit.textContent = 'Sending...';
+      fetch(API + '/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (body) {
+          if (!r.ok) throw new Error(body.error || 'Failed');
+        });
+      }).then(function () {
+        document.getElementById('q-done-name').textContent = data.name.split(' ')[0];
+        form.hidden = true;
+        document.getElementById('q-done').hidden = false;
+        document.getElementById('quote').scrollIntoView({ block: 'start' });
+      }).catch(function () {
+        submit.disabled = false;
+        submit.textContent = 'Send it';
+        showError('That didn\'t go through. Text me at <a href="sms:+12108837567">210.883.7567</a> or email <a href="mailto:robgalvan@gmail.com">robgalvan@gmail.com</a> instead.');
+      });
+    });
+  })();
 </script>
+</body>
+</html>

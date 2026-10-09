@@ -61,6 +61,44 @@ nav {
   transition: color 0.2s;
 }
 .nav-links a:hover { color: var(--cream); }
+.nav-links a[aria-current="page"] { color: var(--gold-light); }
+
+/* Portfolio dropdown: hover or keyboard focus on desktop, tap (.open) on touch */
+.nav-drop { position: relative; }
+.nav-drop-toggle::after {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 5px;
+  margin-left: 8px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: translateY(-3px) rotate(45deg);
+}
+.nav-drop-menu {
+  position: absolute;
+  top: 100%;
+  left: -18px;
+  list-style: none;
+  min-width: 180px;
+  padding: 22px 0 10px; /* top padding bridges the gap so hover doesn't drop */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+}
+.nav-drop-menu::before {
+  content: '';
+  position: absolute;
+  inset: 12px 0 0;
+  background: rgba(10,10,8,0.97);
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--gold);
+  z-index: -1;
+}
+.nav-drop:hover .nav-drop-menu,
+.nav-drop:focus-within .nav-drop-menu,
+.nav-drop.open .nav-drop-menu { opacity: 1; visibility: visible; transform: none; }
+.nav-drop-menu a { display: block; padding: 9px 18px; }
 .nav-cta {
   font-size: 12px;
   letter-spacing: 0.12em;
@@ -112,6 +150,16 @@ nav {
 }
 .nav-panel a:last-child { border-bottom: none; }
 .nav-panel-cta { color: var(--gold-light) !important; }
+.nav-panel a.nav-panel-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cream-dark);
+  padding: 9px 0 9px 18px;
+  border-bottom: none;
+}
+.nav-panel a.nav-panel-sub + a:not(.nav-panel-sub) { border-top: 1px solid var(--border); }
 
 /* HERO */
 .hero {
@@ -276,11 +324,10 @@ nav {
 /* TRUSTED BY */
 .trusted-strip {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  padding: 36px 40px;
+  gap: 22px;
+  padding: 32px 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   background: var(--surface);
@@ -292,15 +339,31 @@ nav {
   color: var(--cream-dark);
   opacity: 0.7;
 }
-.trusted-logos { display: flex; align-items: center; gap: 44px; flex-wrap: wrap; justify-content: center; }
+/* Edge fade so logos drift in and out instead of hard-cutting at the sides */
+.trusted-marquee {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+/* JS repeats the logo set so the track is two identical halves; sliding
+   it by -50% lands exactly where it started, which makes the loop seamless */
+.trusted-logos { display: flex; align-items: center; width: max-content; }
+.trusted-logos.is-moving { animation: trusted-scroll var(--trusted-duration, 40s) linear infinite; }
+.trusted-marquee:hover .trusted-logos { animation-play-state: paused; }
+@keyframes trusted-scroll { to { transform: translateX(-50%); } }
 .trusted-logos img {
-  height: 28px;
+  height: 34px;
   width: auto;
-  filter: grayscale(1) brightness(2.4) sepia(0.25);
-  opacity: 0.55;
+  max-width: 160px;
+  object-fit: contain;
+  margin: 0 32px;
+  /* Any logo, any colors, renders as a flat white mark */
+  filter: brightness(0) invert(1);
+  opacity: 0.6;
   transition: opacity 0.2s;
 }
-.trusted-logos img:hover { opacity: 0.9; }
+.trusted-logos img:hover { opacity: 1; }
 
 /* SECTIONS */
 section {
@@ -815,6 +878,9 @@ footer {
   .hero-eyebrow, .hero-title, .hero-subtitle, .hero-divider,
   .hero-tagline, .hero-actions, .hero-scroll { animation: none; }
   .scroll-line { animation: none; }
+  .trusted-logos.is-moving { animation: none; }
+  .trusted-logos { flex-wrap: wrap; justify-content: center; width: auto; row-gap: 20px; }
+  .trusted-marquee { -webkit-mask-image: none; mask-image: none; }
 }
 
 /* ANIMATIONS */
@@ -843,8 +909,8 @@ footer {
   .about-inner { grid-template-columns: 1fr; gap: 40px; }
   footer { flex-direction: column; gap: 20px; text-align: center; }
   .footer-links { justify-content: center; }
-  .trusted-strip { gap: 24px; padding: 28px 20px; }
-  .trusted-logos { gap: 28px; }
+  .trusted-strip { gap: 18px; padding: 26px 0; }
+  .trusted-logos img { height: 28px; margin: 0 22px; }
   .work-row {
     display: flex;
     overflow-x: auto;
@@ -867,6 +933,3 @@ footer {
   .hero-actions { flex-direction: column; align-items: center; gap: 12px; }
   .cta-section { padding: 90px 24px; }
 }
-
-/* Trusted-by strip hidden for now (remove this rule to bring it back) */
-.trusted-strip { display: none !important; }
