@@ -160,15 +160,13 @@ if (trusted) {
 // Only real numbers go here. An item renders only when it has a value, and the
 // strip only shows once 3 or more items have one. Fill in a value to add one.
 const STATS = [
-  { value: '3M+', label: 'views across Urban Poling reels' },
-  { value: '50K', label: 'views on one Kotka Y Chucho reel' },
-  { value: '38K', label: 'views for Kaedama Battleship' },
-  { value: '6+',  label: 'years behind the camera' },
-  { value: '',    label: 'restaurants shot' },
-  { value: '',    label: 'homes shot' },
-  { value: '',    label: 'reels delivered' },
-  { value: '',    label: 'days to turn around a reel' },
-  { value: '',    label: 'breakfast tacos eaten on set' },
+  { value: '6M+',  label: 'views across my reels' },
+  { value: '200+', label: 'reels delivered' },
+  { value: '30+',  label: 'local spots shot for' },
+  { value: '7+',   label: 'years behind the camera' },
+  // Ideas for later, add a real number to show one:
+  { value: '',     label: 'days to turn around a reel' },
+  { value: '',     label: 'breakfast tacos eaten on set' },
 ];
 const statStrip = document.getElementById('stats');
 const liveStats = STATS.filter(s => String(s.value).trim());
