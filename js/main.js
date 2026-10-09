@@ -112,7 +112,7 @@ if (trusted) {
     : new Promise(done => { img.addEventListener('load', done); img.addEventListener('error', done); })
   )).then(() => {
     imgs.forEach(img => { if (!img.naturalWidth) img.remove(); });
-    const logos = [...track.querySelectorAll('img')];
+    const logos = [...track.children]; // text names + logos that loaded
     if (!logos.length) return;
     trusted.hidden = false;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -123,10 +123,10 @@ if (trusted) {
     const minWidth = Math.max(window.screen.width, window.innerWidth);
     let guard = 0;
     while (track.scrollWidth < minWidth && guard++ < 20) {
-      logos.forEach(img => track.appendChild(img.cloneNode()));
+      logos.forEach(item => track.appendChild(item.cloneNode(true)));
     }
-    [...track.children].forEach(img => {
-      const copy = img.cloneNode();
+    [...track.children].forEach(item => {
+      const copy = item.cloneNode(true);
       copy.setAttribute('aria-hidden', 'true');
       track.appendChild(copy);
     });

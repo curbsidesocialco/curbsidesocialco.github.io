@@ -364,6 +364,29 @@ nav {
   transition: opacity 0.2s;
 }
 .trusted-logos img:hover { opacity: 1; }
+/* Text wordmarks for brands without a logo file, with a gold star between each */
+.trusted-name {
+  position: relative;
+  padding: 0 34px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--cream);
+  opacity: 0.7;
+}
+.trusted-name::after {
+  content: '\2726';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  color: var(--gold);
+}
+.trusted-strip[hidden] { display: none; }
 
 /* SECTIONS */
 section {
@@ -911,6 +934,7 @@ footer {
   .footer-links { justify-content: center; }
   .trusted-strip { gap: 18px; padding: 26px 0; }
   .trusted-logos img { height: 28px; margin: 0 22px; }
+  .trusted-name { font-size: 18px; padding: 0 24px; }
   .work-row {
     display: flex;
     overflow-x: auto;
