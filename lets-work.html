@@ -374,12 +374,19 @@
   .qinput::placeholder { color: rgba(207,199,182,0.45); }
   .qinput:focus { outline: none; border-color: var(--gold-light); }
   textarea.qinput { min-height: 92px; resize: vertical; }
-  .qneeds { display: flex; flex-wrap: wrap; gap: 8px; border: 0; padding: 0; margin: 0; }
+  /* Even 2-column grid; the 5th option ("Not sure yet") spans the full row */
+  .qneeds { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border: 0; padding: 0; margin: 0; min-width: 0; }
+  .qneed:last-of-type { grid-column: 1 / -1; }
   .qneeds legend { margin-bottom: 8px; padding: 0; }
   .qneed { position: relative; }
   .qneed input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .qneed { display: flex; }
   .qneed span {
-    display: inline-block;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     font-size: 14px;
     font-weight: 500;
     padding: 10px 14px;
@@ -400,7 +407,19 @@
   .qdone p { font-size: 15px; color: var(--cream-dark); margin: 0 0 8px; }
   .or-talk { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--border); }
   .or-talk .lbl { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-dark); opacity: 0.75; margin: 0; }
-  .or-talk .cta-row { margin-top: 14px; }
+  /* Contact options: equal-width stacked buttons, email on its own line */
+  .or-talk .cta-row { margin-top: 14px; flex-direction: column; align-items: stretch; gap: 10px; }
+  .or-talk .contact-line { margin-top: 18px; }
+
+  /* Audience chips: even 2x2 grid instead of a ragged wrap */
+  .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* Phones: the form card was a box inside a box; give the fields room */
+  @media (max-width: 480px) {
+    .final { padding: 34px 18px; margin-inline: -6px; }
+    .panel { padding: 26px 20px; }
+    .qneed span { font-size: 13px; padding: 11px 8px; }
+  }
 </style>
 </head>
 <body>
