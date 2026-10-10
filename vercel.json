@@ -30,14 +30,34 @@
   ],
   "redirects": [
     {
+      "source": "/portfolio",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/portfolio.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/lets-work",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/lets-work.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
       "source": "/start",
-      "destination": "/lets-work",
-      "permanent": true
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/start.html",
-      "destination": "/lets-work",
-      "permanent": true
+      "destination": "/",
+      "permanent": false
     }
   ]
 }

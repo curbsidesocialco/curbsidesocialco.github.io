@@ -23,6 +23,7 @@
 <nav id="nav">
   <a href="#" class="nav-logo">Curbside Social Co.</a>
   <ul class="nav-links">
+    <!-- HIDDEN for now (portfolio not ready). Restore: uncomment.
     <li class="nav-drop">
       <a href="/portfolio" class="nav-drop-toggle" aria-haspopup="true">Portfolio</a>
       <ul class="nav-drop-menu">
@@ -31,24 +32,27 @@
         <li><a href="/portfolio#reels">Reels</a></li>
       </ul>
     </li>
+    -->
     <li><a href="#services">Services</a></li>
     <li><a href="#offerings">Offerings</a></li>
     <li><a href="#about">About</a></li>
   </ul>
-  <a href="/lets-work#quote" class="nav-cta">Get a quote</a>
+  <a href="#contact" class="nav-cta">Get a quote</a>
   <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
     <span></span><span></span>
   </button>
 </nav>
 <div class="nav-panel" id="nav-panel">
+  <!-- HIDDEN for now (portfolio not ready). Restore: uncomment.
   <a href="/portfolio">Portfolio</a>
   <a href="/portfolio#reel" class="nav-panel-sub">Sizzle Reel</a>
   <a href="/portfolio#films" class="nav-panel-sub">Films</a>
   <a href="/portfolio#reels" class="nav-panel-sub">Reels</a>
+  -->
   <a href="#services">Services</a>
   <a href="#offerings">Offerings</a>
   <a href="#about">About</a>
-  <a href="/lets-work#quote" class="nav-panel-cta">Get a quote</a>
+  <a href="#contact" class="nav-panel-cta">Get a quote</a>
 </div>
 
 <!-- HERO -->
@@ -71,7 +75,7 @@
     <p class="hero-tagline">I'm Rob. I shoot video and photo for San Antonio restaurants, real estate pros, and local businesses. On location, start to finish.</p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">Let's shoot</a>
-      <a href="/portfolio" class="btn-secondary">See the work</a>
+      <!-- HIDDEN for now: <a href="/portfolio" class="btn-secondary">See the work</a> -->
     </div>
   </div>
   <div class="hero-scroll" aria-hidden="true">
@@ -115,7 +119,7 @@
 <div class="stat-strip" id="stats" hidden></div>
 
 <!-- WORK (a tile hides if its clip won't load; the section hides if none do) -->
-<section id="work" class="reveal">
+<section id="work" class="reveal" hidden><!-- HIDDEN for now. Restore: remove "hidden" here and on the divider below -->
   <span class="section-eyebrow">Recent Work</span>
   <h2 class="section-title">Shot on Location</h2>
   <p class="section-body">Here's some of what I've shot around town.</p>
@@ -152,7 +156,7 @@
   <p class="work-more"><a href="/portfolio">See the full portfolio</a> &nbsp;&middot;&nbsp; More every week on <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a></p>
 </section>
 
-<div class="divider"></div>
+<div class="divider" hidden></div>
 
 <!-- SERVICES -->
 <section id="services" class="reveal">
@@ -382,8 +386,7 @@
 <div class="cta-section reveal" id="contact">
   <h2 class="cta-title">Let's Work Together</h2>
   <p class="cta-sub">Tell me about your business and I'll put together a package that fits.</p>
-  <a href="/lets-work#quote" class="btn-primary">Get a quote</a>
-  <p class="cta-contact">Takes 30 seconds. Or <a href="mailto:robgalvan@gmail.com">email me</a> directly.</p>
+  <a href="mailto:robgalvan@gmail.com?subject=Video%20quote" class="btn-primary">Get a quote</a>
   <p class="cta-contact">or DM me on Instagram <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a> &nbsp;&middot;&nbsp; San Antonio, TX &nbsp;&middot;&nbsp; 210.883.7567</p>
 </div>
 
@@ -392,7 +395,7 @@
   <div class="footer-logo">Curbside Social Co.</div>
   <p class="footer-text">© 2026 Curbside Social Co. &middot; San Antonio, TX</p>
   <ul class="footer-links">
-    <li><a href="/portfolio">Portfolio</a></li>
+    <!-- HIDDEN for now: <li><a href="/portfolio">Portfolio</a></li> -->
     <li><a href="#services">Services</a></li>
     <li><a href="#offerings">Offerings</a></li>
     <li><a href="dashboard/">Dashboard</a></li>
