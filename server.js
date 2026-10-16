@@ -906,11 +906,18 @@ app.post('/api/audit', async (req, res) => {
   }
 });
 
-// ---- Public quote form (curbsidesocial.co/lets-work) ----
+// ---- Public lead forms (curbsidesocial.co/start questionnaire, /lets-work quote form) ----
 // The one endpoint strangers can post to. A submission becomes a 'lead' client,
 // gets a "reply" task due today, and emails Rob. Light spam protection: a hidden
 // honeypot field bots fill in, a per-IP limit, and length caps on every field.
-const INQUIRY_NEEDS = ['Social reels', 'Cinematic film', 'Website', 'Photos', 'Not sure yet'];
+// Multiple-choice answers are checked against these lists so the dashboard only
+// ever shows options the form actually offers.
+const INQUIRY_NEEDS = ['Social reels', 'Cinematic film', 'Ongoing content', 'Website', 'Photos', 'Not sure yet'];
+const INQUIRY_GOALS = ['More customers', 'Get my name out there', 'Launching something', 'Something else'];
+const INQUIRY_TIMELINES = ['ASAP', 'In 1 to 3 months', 'Just exploring'];
+const INQUIRY_BUDGETS = ['$150 to $500', '$500 to $1,500', '$1,500 to $3,000', '$3,000+', 'Not sure yet'];
+const INQUIRY_HEARD = ['Instagram', 'TikTok', 'Friend or referral', 'Google', 'Other'];
+const pick = (list, val) => list.includes(val) ? val : null;
 const inquiryHits = new Map(); // ip -> recent submission timestamps
 function inquiryLimited(ip) {
   const hourAgo = Date.now() - 60 * 60 * 1000;
@@ -922,6 +929,31 @@ function inquiryLimited(ip) {
 const escapeHtml = s => String(s || '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const clip = (s, max) => String(s || '').trim().slice(0, max);
+const EMAIL_RE = /^[^\s@<>,;]+@[^\s@<>,;]+\.[a-z]{2,}$/i;
+
+// "What to expect" note sent to the lead right after the questionnaire. Fixed
+// copy plus their first name only (letters only, so the form can't be used to
+// send someone else a link from Rob's Gmail).
+function leadConfirmEmail(first) {
+  const hi = first ? `Hey ${first},` : 'Hey,';
+  const p = t => `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1a1a18;">${t}</p>`;
+  return `<div style="background:#f5f4f0;padding:24px 12px;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e6e3da;">
+      <tr><td style="background:#0a0a08;padding:24px 28px;">
+        <div style="color:#b8974a;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;">Curbside Social Co.</div>
+        <div style="color:#e8e0d0;font-size:22px;font-weight:bold;margin-top:6px;">Got your answers</div>
+      </td></tr>
+      <tr><td style="padding:22px 28px;">
+        ${p(hi)}
+        ${p('Thanks for filling that out. I read every one myself.')}
+        ${p('If you booked a call, here is what to expect. It is 15 minutes. We talk about what you have coming up, what you want the video to do, and which package fits. No pitch deck, no pressure.')}
+        ${p('To get the most out of it, have one or two videos in mind that you like (yours or anyone\'s), and a date if you have one.')}
+        ${p('If you didn\'t grab a time, no problem. I\'ll reach out within a day, or you can text me at <a href="sms:+12108837567" style="color:#b8974a;">210.883.7567</a>.')}
+        ${p('Rob<br><span style="color:#6b6b65;font-size:13px;">Curbside Social Co. &middot; San Antonio &middot; <a href="https://instagram.com/cssocialtx" style="color:#b8974a;">@cssocialtx</a></span>')}
+      </td></tr>
+    </table>
+  </div>`;
+}
 
 app.post('/api/inquiry', async (req, res) => {
   const body = req.body || {};
@@ -934,23 +966,35 @@ app.post('/api/inquiry', async (req, res) => {
   // One-line fields go into the email subject, so no line breaks (header injection)
   const line = (s, max) => clip(String(s || '').replace(/[\r\n]+/g, ' '), max);
   const name = line(body.name, 100);
-  const reach = line(body.reach, 150);
   const business = line(body.business, 120);
-  const need = INQUIRY_NEEDS.includes(body.need) ? body.need : 'Not sure yet';
+  // The questionnaire sends email + phone separately; the older quote form sends one "reach" field
+  const emailIn = line(body.email, 150);
+  const email = EMAIL_RE.test(emailIn) ? emailIn : null;
+  const phone = line(body.phone, 40) || null;
+  const reach = line(body.reach, 150) || email || phone || '';
+  const need = pick(INQUIRY_NEEDS, body.need) || 'Not sure yet';
+  const goal = pick(INQUIRY_GOALS, body.goal);
+  const timeline = pick(INQUIRY_TIMELINES, body.timeline);
+  const budget = pick(INQUIRY_BUDGETS, body.budget);
+  const heard = pick(INQUIRY_HEARD, body.heard);
   const message = clip(body.message, 1500);
   const source = clip(body.source, 40).replace(/[^\w\- ]/g, '') || 'lets-work page';
   if (!name || reach.length < 3) return res.status(400).json({ error: 'Add your name and a phone number or email.' });
+  if (emailIn && !email) return res.status(400).json({ error: 'That email doesn\'t look right.' });
 
   const isEmail = reach.includes('@');
   const [first, ...rest] = name.split(/\s+/);
-  const notes = `Website inquiry. Wants: ${need}.` + (message ? `\n"${message}"` : '');
+  const answers = [
+    ['Wants', need], ['Goal', goal], ['Timeline', timeline], ['Budget', budget], ['Heard via', heard]
+  ].filter(([, v]) => v);
+  const notes = `Website inquiry. ${answers.map(([k, v]) => `${k}: ${v}.`).join(' ')}` + (message ? `\n"${message}"` : '');
 
   try {
     const client = (await pool.query(
       `INSERT INTO clients (business, contact, status, notes, first_name, last_name, phone, email, source)
        VALUES ($1,$2,'lead',$3,$4,$5,$6,$7,$8) RETURNING id`,
       [business || name, reach, notes, first, rest.join(' ') || null,
-       isEmail ? null : reach, isEmail ? reach : null, `Website form (${source})`]
+       phone || (isEmail ? null : reach), email || (isEmail ? reach : null), `Website form (${source})`]
     )).rows[0];
     // Due "today" in San Antonio time, not the server's UTC date
     await pool.query(
@@ -965,14 +1009,21 @@ app.post('/api/inquiry', async (req, res) => {
       <td style="padding:10px 0;border-bottom:1px solid #f0efe9;font-size:15px;color:#1a1a18;">${escapeHtml(val).replace(/\n/g, '<br>')}</td>
     </tr>` : '';
     const inner = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      ${row('Name', name)}${row('Business', business)}${row('Reach them', reach)}
-      ${row('Wants', need)}${row('Message', message)}${row('From', source)}
+      ${row('Name', name)}${row('Business', business)}
+      ${email || phone ? row('Email', email) + row('Phone', phone) : row('Reach them', reach)}
+      ${answers.map(([k, v]) => row(k, v)).join('')}${row('Message', message)}${row('From', source)}
     </table>
     <p style="margin:18px 0 0;font-size:13px;color:#6b6b65;">Saved as a lead with a reply task for today.
     <a href="https://curbsidesocial.co/dashboard" style="color:#b8974a;">Open the dashboard</a></p>`;
+    const sub = [need, budget].filter(Boolean).join(' · ');
     sendEmail(process.env.GMAIL_USER, `New inquiry: ${name}${business ? ' from ' + business : ''}`,
-      emailShell('New inquiry', need, inner))
+      emailShell('New inquiry', sub, inner))
       .catch(err => console.error('Inquiry email error:', err.message));
+    if (email) {
+      const safeFirst = (first || '').replace(/[^A-Za-zÀ-ſ'-]/g, '').slice(0, 30);
+      sendEmail(email, 'Got your answers (Curbside Social Co.)', leadConfirmEmail(safeFirst))
+        .catch(err => console.error('Lead confirm email error:', err.message));
+    }
 
     res.json({ ok: true });
   } catch (err) {

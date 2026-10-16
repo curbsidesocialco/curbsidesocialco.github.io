@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Start Your Project | Curbside Social Co.</title>
+<meta name="description" content="Video that gets people to show up. Answer a few quick questions and book a 15 minute call with Rob." />
+<meta property="og:title" content="Start Your Project with Curbside Social Co." />
+<meta property="og:description" content="Video that gets people to show up. Takes about a minute." />
+<meta property="og:image" content="https://curbsidesocial.co/assets/og.jpg" />
+<meta property="og:url" content="https://curbsidesocial.co/start" />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a08'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23e8e0d0' text-anchor='middle'%3ECS%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* The link-in-bio funnel: landing -> questionnaire -> book a call.
+     One page, three screens, so nothing reloads between taps and nobody
+     waits on a page load inside the Instagram browser. No nav on purpose:
+     every screen has exactly one next step. */
+  :root {
+    --black: #0a0a08;
+    --surface: #111110;
+    --cream: #e8e0d0;
+    --cream-dark: #cfc7b6;
+    --gold: #b8974a;
+    --gold-light: #d4af6a;
+    --border: rgba(232,224,208,0.12);
+    --border-med: rgba(232,224,208,0.24);
+    --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --body: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --mark: 'UnifrakturMaguntia', 'Cormorant Garamond', serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--black); }
+  body {
+    color: var(--cream);
+    font-family: var(--body);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  [hidden] { display: none !important; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+
+  .wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 0 22px;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+  }
+  .mark { font-family: var(--mark); color: var(--gold-light); font-size: 24px; line-height: 1; margin: 0; }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cream-dark);
+    opacity: 0.7;
+    margin: 0;
+  }
+
+  /* ---- buttons ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    padding: 16px 24px;
+    border: 1px solid var(--gold);
+    border-radius: 0;
+    background: var(--gold);
+    color: var(--black);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+  }
+  .btn:hover { background: var(--gold-light); border-color: var(--gold-light); }
+  .btn[disabled] { opacity: 0.6; cursor: wait; }
+  .btn-big { width: 100%; font-size: 18px; padding: 20px 24px; }
+  .btn-ghost { background: transparent; color: var(--cream); border-color: var(--border-med); }
+  .btn-ghost:hover { background: transparent; border-color: var(--gold-light); color: var(--gold-light); }
+  .link {
+    color: var(--cream-dark);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-med);
+    padding-bottom: 2px;
+  }
+  .link:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+  /* ---- screen 1: landing ---- */
+  .land { text-align: center; padding-block: 28px 36px; }
+  .land .eyebrow { margin-top: 10px; }
+  .land h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(42px, 12vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    margin: 44px 0 0;
+    text-wrap: balance;
+  }
+  .land h1 em { font-style: italic; color: var(--gold-light); }
+  .land .sub { font-size: clamp(16px, 4.3vw, 18px); color: var(--cream-dark); margin: 18px auto 0; max-width: 34ch; }
+  .results { display: grid; gap: 10px; margin: 34px 0; text-align: left; }
+  .result {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--gold);
+  }
+  .result-num {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 1;
+    color: var(--gold-light);
+    font-variant-numeric: tabular-nums;
+  }
+  .result-client { display: block; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; }
+  .result-label { display: block; font-size: 14px; line-height: 1.35; color: var(--cream-dark); }
+  .land .time { font-size: 13px; color: var(--cream-dark); opacity: 0.8; margin: 12px 0 0; }
+  .land .backup { font-size: 14px; color: var(--cream-dark); margin: 30px 0 0; }
+  .land .backup b { color: var(--gold-light); font-weight: 500; letter-spacing: 0.06em; }
+
+  /* ---- screen 2: questionnaire ---- */
+  .quiz { padding-block: 18px 32px; }
+  .quiz-top { display: flex; align-items: center; gap: 14px; }
+  .back {
+    flex: none;
+    width: 40px; height: 40px;
+    display: grid; place-items: center;
+    background: transparent;
+    border: 1px solid var(--border-med);
+    color: var(--cream);
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .back:hover { border-color: var(--gold-light); color: var(--gold-light); }
+  .back[aria-disabled="true"] { visibility: hidden; }
+  .bar { flex: 1; height: 3px; background: var(--border); overflow: hidden; }
+  .bar span { display: block; height: 100%; width: 0; background: var(--gold); transition: width 0.3s ease; }
+  .count { flex: none; font-size: 13px; color: var(--cream-dark); font-variant-numeric: tabular-nums; min-width: 3.2em; text-align: right; }
+
+  .q { padding-top: 46px; }
+  .q h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(32px, 9vw, 42px);
+    line-height: 1.08;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  .q h2:focus { outline: none; }
+  .q .hint { font-size: 15px; color: var(--cream-dark); margin: 0 0 26px; }
+  .fields { display: grid; gap: 14px; }
+  .field { display: grid; gap: 7px; }
+  .label { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-dark); }
+  .label .opt { text-transform: none; letter-spacing: 0; opacity: 0.6; }
+  .input {
+    width: 100%;
+    font-family: var(--body);
+    font-size: 17px; /* 16px+ stops iPhones zooming in on focus */
+    font-weight: 400;
+    color: var(--cream);
+    background: var(--surface);
+    border: 1px solid var(--border-med);
+    border-radius: 0;
+    padding: 15px 16px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .input::placeholder { color: rgba(207,199,182,0.45); }
+  .input:focus { outline: none; border-color: var(--gold-light); }
+  textarea.input { min-height: 110px; resize: vertical; }
+
+  /* Tap-to-answer choices: one tap picks and moves on */
+  .choices { display: grid; gap: 10px; }
+  .choice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    font-family: var(--body);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--cream);
+    background: var(--surface);
+    border: 1px solid var(--border-med);
+    padding: 17px 18px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .choice small { font-size: 13px; color: var(--cream-dark); opacity: 0.85; }
+  .choice:hover { border-color: var(--gold-light); }
+  .choice[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--black); }
+  .choice[aria-pressed="true"] small { color: var(--black); opacity: 0.75; }
+  .choices.small { grid-template-columns: 1fr 1fr; }
+  .choices.small .choice { font-size: 15px; padding: 13px 14px; justify-content: center; text-align: center; }
+
+  .next { margin-top: 26px; width: 100%; }
+  .error { color: #e3a27a; font-size: 14px; margin: 14px 0 0; }
+  .error a { color: inherit; }
+  .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  /* ---- screen 3: book the call ---- */
+  .done { padding-block: 28px 40px; }
+  .done-head { text-align: center; padding-top: 30px; }
+  .done-head h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(34px, 10vw, 46px);
+    line-height: 1.05;
+    margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .done-head p { font-size: 16px; color: var(--cream-dark); margin: 0 auto; max-width: 34ch; }
+  .cal { margin: 26px -22px 0; min-height: 700px; background: var(--black); }
+  .cal-fallback { margin-top: 26px; text-align: center; display: grid; gap: 10px; }
+  .expect {
+    margin-top: 30px;
+    padding: 24px 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+  }
+  .expect h3 { font-family: var(--display); font-weight: 600; font-size: 24px; margin: 0 0 12px; }
+  .expect ul { margin: 0; padding-left: 18px; color: var(--cream-dark); font-size: 15px; display: grid; gap: 8px; }
+  .done-foot { text-align: center; font-size: 14px; color: var(--cream-dark); margin-top: 26px; }
+  .done-foot a { color: var(--gold-light); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .enter { animation: enter 0.35s ease both; }
+    @keyframes enter { from { opacity: 0.4; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ Screen 1: landing (the link in bio) ============ -->
+<main class="wrap land enter" id="s-land">
+  <p class="mark">Curbside Social</p>
+  <p class="eyebrow">San Antonio Video + Photo</p>
+
+  <h1>Video that gets people to <em>show up</em>.</h1>
+  <p class="sub">I'm Rob. I shoot reels and brand films for San Antonio businesses. Tell me what you've got coming up and let's get you on camera.</p>
+
+  <div class="results">
+    <div class="result">
+      <span class="result-num">50K</span>
+      <span><span class="result-client">Kotka Y Chucho</span><span class="result-label">views on one reel, and the place sold out</span></span>
+    </div>
+    <div class="result">
+      <span class="result-num">3M+</span>
+      <span><span class="result-client">Urban Poling</span><span class="result-label">views across reels</span></span>
+    </div>
+    <div class="result">
+      <span class="result-num">38K</span>
+      <span><span class="result-client">Kaedama Battleship</span><span class="result-label">views</span></span>
+    </div>
+  </div>
+
+  <button class="btn btn-big" type="button" id="start-btn">Start your project</button>
+  <p class="time">7 quick questions. About a minute.</p>
+
+  <p class="backup">Rather DM? Send <b>GROW</b> to <a class="link" href="https://ig.me/m/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a></p>
+</main>
+
+<!-- ============ Screen 2: questionnaire, one question per screen ============ -->
+<main class="wrap quiz" id="s-quiz" hidden>
+  <div class="quiz-top">
+    <button class="back" type="button" id="q-back" aria-label="Previous question">&larr;</button>
+    <div class="bar" aria-hidden="true"><span id="q-bar"></span></div>
+    <span class="count" id="q-count" aria-live="polite"></span>
+  </div>
+
+  <form id="qform" novalidate>
+    <section class="q" data-step="1">
+      <h2 tabindex="-1">First, who am I talking to?</h2>
+      <p class="hint">Your name and the business or brand.</p>
+      <div class="fields">
+        <div class="field">
+          <label class="label" for="f-name">Your name</label>
+          <input class="input" id="f-name" name="name" autocomplete="name" maxlength="100" placeholder="First and last">
+        </div>
+        <div class="field">
+          <label class="label" for="f-business">Business or brand <span class="opt">(optional)</span></label>
+          <input class="input" id="f-business" name="business" autocomplete="organization" maxlength="120" placeholder="What's it called?">
+        </div>
+      </div>
+    </section>
+
+    <section class="q" data-step="2" hidden>
+      <h2 tabindex="-1">Where can I reach you?</h2>
+      <p class="hint">I'll only use this to talk about your project.</p>
+      <div class="fields">
+        <div class="field">
+          <label class="label" for="f-email">Email</label>
+          <input class="input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="150" placeholder="you@business.com">
+        </div>
+        <div class="field">
+          <label class="label" for="f-phone">Phone</label>
+          <input class="input" id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="40" placeholder="210 555 0123">
+        </div>
+      </div>
+    </section>
+
+    <section class="q" data-step="3" data-field="need" hidden>
+      <h2 tabindex="-1">What do you need?</h2>
+      <p class="hint">Pick the closest one. We can mix and match on the call.</p>
+      <div class="choices">
+        <button type="button" class="choice" data-value="Social reels">Social reels <small>from $150</small></button>
+        <button type="button" class="choice" data-value="Cinematic film">Cinematic brand film <small>from $500</small></button>
+        <button type="button" class="choice" data-value="Ongoing content">Ongoing content every month</button>
+        <button type="button" class="choice" data-value="Website">A website <small>from $500</small></button>
+        <button type="button" class="choice" data-value="Photos">Photos</button>
+        <button type="button" class="choice" data-value="Not sure yet">Not sure yet</button>
+      </div>
+    </section>
+
+    <section class="q" data-step="4" data-field="goal" hidden>
+      <h2 tabindex="-1">What's the goal?</h2>
+      <p class="hint">What do you want the video to do for you?</p>
+      <div class="choices">
+        <button type="button" class="choice" data-value="More customers">More customers through the door</button>
+        <button type="button" class="choice" data-value="Get my name out there">Get my name out there</button>
+        <button type="button" class="choice" data-value="Launching something">Launching something new</button>
+        <button type="button" class="choice" data-value="Something else">Something else</button>
+      </div>
+    </section>
+
+    <section class="q" data-step="5" data-field="timeline" hidden>
+      <h2 tabindex="-1">When do you want to start?</h2>
+      <p class="hint">No wrong answer here.</p>
+      <div class="choices">
+        <button type="button" class="choice" data-value="ASAP">ASAP</button>
+        <button type="button" class="choice" data-value="In 1 to 3 months">In the next 1 to 3 months</button>
+        <button type="button" class="choice" data-value="Just exploring">Just exploring for now</button>
+      </div>
+    </section>
+
+    <section class="q" data-step="6" data-field="budget" hidden>
+      <h2 tabindex="-1">What budget are you working with?</h2>
+      <p class="hint">Reels start at $150 for 3. This helps me suggest the right package.</p>
+      <div class="choices">
+        <button type="button" class="choice" data-value="$150 to $500">$150 to $500</button>
+        <button type="button" class="choice" data-value="$500 to $1,500">$500 to $1,500</button>
+        <button type="button" class="choice" data-value="$1,500 to $3,000">$1,500 to $3,000</button>
+        <button type="button" class="choice" data-value="$3,000+">$3,000+</button>
+        <button type="button" class="choice" data-value="Not sure yet">Not sure yet</button>
+      </div>
+    </section>
+
+    <section class="q" data-step="7" data-field="heard" data-optional hidden>
+      <h2 tabindex="-1">Anything I should know?</h2>
+      <p class="hint">An event, a new menu, a date you have in mind. Totally optional.</p>
+      <div class="fields">
+        <div class="field">
+          <label class="label" for="f-message">Your notes <span class="opt">(optional)</span></label>
+          <textarea class="input" id="f-message" name="message" maxlength="1500" placeholder="We're opening a second location in March..."></textarea>
+        </div>
+        <div class="field">
+          <span class="label">How'd you hear about me? <span class="opt">(optional)</span></span>
+          <div class="choices small">
+            <button type="button" class="choice" data-value="Instagram">Instagram</button>
+            <button type="button" class="choice" data-value="TikTok">TikTok</button>
+            <button type="button" class="choice" data-value="Friend or referral">A friend</button>
+            <button type="button" class="choice" data-value="Google">Google</button>
+            <button type="button" class="choice" data-value="Other">Other</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Honeypot: hidden from people, bots fill it in and get ignored -->
+    <div class="trap" aria-hidden="true">
+      <label for="f-site">Leave this empty</label>
+      <input id="f-site" name="company_site" tabindex="-1" autocomplete="off">
+    </div>
+
+    <p class="error" id="q-error" role="alert" hidden></p>
+    <button class="btn next" type="submit" id="q-next">Next</button>
+  </form>
+</main>
+
+<!-- ============ Screen 3: book the call while it's fresh ============ -->
+<main class="wrap done" id="s-done" hidden>
+  <p class="mark" style="text-align:center">Curbside Social</p>
+
+  <div class="done-head enter">
+    <h2 id="done-title" tabindex="-1">Got it, <span id="done-name">thanks</span>.</h2>
+    <p id="done-sub">Last step: grab a 15 minute call so we can talk it through.</p>
+  </div>
+
+  <div class="cal" id="cal" hidden></div>
+
+  <div class="cal-fallback" id="cal-fallback" hidden>
+    <p style="margin:0;color:var(--cream-dark)">I'll text or email you within a day to set up a quick call. Want to talk sooner?</p>
+    <a class="btn" href="sms:+12108837567">Text me at 210.883.7567</a>
+  </div>
+
+  <div class="expect">
+    <h3>What to expect on the call</h3>
+    <ul>
+      <li>15 minutes, on the phone. No pitch deck, no pressure.</li>
+      <li>We talk about what you have coming up and what you want the video to do.</li>
+      <li>I'll tell you which package fits and what it costs, right there.</li>
+      <li>Bring one or two videos you like (yours or anyone's). It helps a lot.</li>
+    </ul>
+  </div>
+
+  <p class="done-foot">Questions before then? Text <a href="sms:+12108837567">210.883.7567</a> or DM <a href="https://ig.me/m/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a>.</p>
+</main>
+
+<script>
+(function () {
+  // ---- Settings ----
+  var API = 'https://api-production-eab8a.up.railway.app';
+  // Paste your Calendly event link here (e.g. https://calendly.com/curbsidesocial/15min).
+  // Left empty, the last screen shows a "text me" button instead of the calendar.
+  var CALENDLY_URL = '';
+
+  var params = new URLSearchParams(location.search);
+  // Tag where people came from: /start?src=reel shows up as "reel" in the dashboard
+  var source = params.get('src') || 'link in bio';
+
+  var land = document.getElementById('s-land');
+  var quiz = document.getElementById('s-quiz');
+  var done = document.getElementById('s-done');
+  var form = document.getElementById('qform');
+  var steps = Array.prototype.slice.call(form.querySelectorAll('.q'));
+  var total = steps.length;
+  var nextBtn = document.getElementById('q-next');
+  var backBtn = document.getElementById('q-back');
+  var errorEl = document.getElementById('q-error');
+  var answers = {};
+  var current = 0; // 0 = landing, 1..total = questions
+  var sending = false;
+
+  function showScreen(el) {
+    [land, quiz, done].forEach(function (s) { s.hidden = s !== el; });
+    window.scrollTo(0, 0);
+  }
+
+  function setError(html) {
+    errorEl.innerHTML = html || '';
+    errorEl.hidden = !html;
+  }
+
+  function go(n, fromHistory) {
+    setError('');
+    if (n === 0) { current = 0; showScreen(land); return; }
+    current = n;
+    showScreen(quiz);
+    steps.forEach(function (s, i) {
+      var show = i === n - 1;
+      s.hidden = !show;
+      if (show) { s.classList.remove('enter'); void s.offsetWidth; s.classList.add('enter'); }
+    });
+    document.getElementById('q-bar').style.width = Math.round((n - 1) / total * 100) + '%';
+    document.getElementById('q-count').textContent = n + ' of ' + total;
+    backBtn.setAttribute('aria-disabled', 'false');
+
+    var step = steps[n - 1];
+    var isChoiceStep = step.hasAttribute('data-field') && !step.querySelector('.input');
+    // Tap-to-answer steps move on by themselves; only show Next when it's needed
+    nextBtn.hidden = isChoiceStep && !answers[step.getAttribute('data-field')];
+    nextBtn.textContent = n === total ? 'Send it' : 'Next';
+
+    var input = step.querySelector('.input');
+    // Don't pop the keyboard on choice steps; move focus to the question instead
+    if (input && window.matchMedia('(hover: hover)').matches) input.focus();
+    else step.querySelector('h2').focus({ preventScroll: true });
+
+    // Phone back gesture should go back one question, not leave the page
+    if (!fromHistory) history.pushState({ step: n }, '');
+  }
+
+  window.addEventListener('popstate', function (e) {
+    if (!done.hidden) return; // after sending, stay on the booking screen
+    go((e.state && e.state.step) || 0, true);
+  });
+
+  document.getElementById('start-btn').addEventListener('click', function () { go(1); });
+  backBtn.addEventListener('click', function () { history.back(); });
+
+  // Choices: one tap picks it. Required choice steps advance on their own.
+  form.querySelectorAll('.choices').forEach(function (group) {
+    var step = group.closest('.q');
+    var field = step.getAttribute('data-field');
+    group.addEventListener('click', function (e) {
+      var btn = e.target.closest('.choice');
+      if (!btn) return;
+      var value = btn.getAttribute('data-value');
+      // Optional choices toggle off if tapped again
+      var turnOff = step.hasAttribute('data-optional') && answers[field] === value;
+      answers[field] = turnOff ? '' : value;
+      group.querySelectorAll('.choice').forEach(function (c) {
+        c.setAttribute('aria-pressed', !turnOff && c === btn ? 'true' : 'false');
+      });
+      if (!step.hasAttribute('data-optional')) setTimeout(function () { go(current + 1); }, 220);
+    });
+  });
+
+  function validate(n) {
+    var f = form.elements;
+    if (n === 1 && !f.name.value.trim()) {
+      setError('Add your name so I know who I\'m talking to.'); f.name.focus(); return false;
+    }
+    if (n === 2) {
+      if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(f.email.value.trim())) {
+        setError('That email doesn\'t look right.'); f.email.focus(); return false;
+      }
+      if (f.phone.value.replace(/\D/g, '').length < 10) {
+        setError('Add a phone number with area code.'); f.phone.focus(); return false;
+      }
+    }
+    return true;
+  }
+
+  // Enter key and the Next button both land here
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validate(current)) return;
+    if (current < total) go(current + 1);
+    else send();
+  });
+
+  function send() {
+    if (sending) return;
+    sending = true;
+    var f = form.elements;
+    var data = {
+      name: f.name.value.trim(),
+      business: f.business.value.trim(),
+      email: f.email.value.trim(),
+      phone: f.phone.value.trim(),
+      need: answers.need,
+      goal: answers.goal,
+      timeline: answers.timeline,
+      budget: answers.budget,
+      heard: answers.heard || '',
+      message: f.message.value.trim(),
+      company_site: f.company_site.value,
+      source: source
+    };
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Sending...';
+    fetch(API + '/api/inquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (body) {
+        if (!r.ok) throw new Error(body.error || 'Failed');
+      });
+    }).then(function () {
+      document.getElementById('q-bar').style.width = '100%';
+      showDone(data);
+    }).catch(function () {
+      sending = false;
+      nextBtn.disabled = false;
+      nextBtn.textContent = 'Send it';
+      setError('That didn\'t go through. Text me at <a href="sms:+12108837567">210.883.7567</a> or email <a href="mailto:robgalvan@gmail.com">robgalvan@gmail.com</a> instead.');
+    });
+  }
+
+  function showDone(data) {
+    document.getElementById('done-name').textContent = data.name.split(/\s+/)[0];
+    showScreen(done);
+    document.getElementById('done-title').focus({ preventScroll: true });
+    if (!CALENDLY_URL) { showFallback(); return; }
+
+    // Calendly inline embed, prefilled so they don't type their name and email twice
+    var cal = document.getElementById('cal');
+    cal.hidden = false;
+    var script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    script.onload = function () {
+      window.Calendly.initInlineWidget({
+        url: CALENDLY_URL + (CALENDLY_URL.indexOf('?') < 0 ? '?' : '&') +
+          'hide_gdpr_banner=1&background_color=111110&text_color=e8e0d0&primary_color=b8974a',
+        parentElement: cal,
+        prefill: { name: data.name, email: data.email }
+      });
+    };
+    script.onerror = function () {
+      cal.hidden = true;
+      showFallback();
+    };
+    document.body.appendChild(script);
+  }
+
+  function showFallback() {
+    document.getElementById('done-sub').textContent = 'Your answers are in. I read every one myself.';
+    document.getElementById('cal-fallback').hidden = false;
+  }
+
+  // Calendly tells the page when a call gets booked; swap the header to a confirmation
+  window.addEventListener('message', function (e) {
+    if (e.origin !== 'https://calendly.com' || !e.data || e.data.event !== 'calendly.event_scheduled') return;
+    document.getElementById('done-title').textContent = 'You\'re booked.';
+    document.getElementById('done-sub').textContent = 'The invite is in your email. Talk soon.';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>

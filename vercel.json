@@ -9,6 +9,10 @@
       "destination": "/lets-work.html"
     },
     {
+      "source": "/start",
+      "destination": "/start.html"
+    },
+    {
       "source": "/dashboard",
       "destination": "/dashboard/index.html"
     },
@@ -41,22 +45,12 @@
     },
     {
       "source": "/lets-work",
-      "destination": "/",
+      "destination": "/start",
       "permanent": false
     },
     {
       "source": "/lets-work.html",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/start",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/start.html",
-      "destination": "/",
+      "destination": "/start",
       "permanent": false
     }
   ]
