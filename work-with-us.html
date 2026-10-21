@@ -261,7 +261,8 @@
     text-wrap: balance;
   }
   .done-head p { font-size: 16px; color: var(--cream-dark); margin: 0 auto; max-width: 34ch; }
-  .cal { margin: 26px -22px 0; min-height: 700px; background: var(--black); }
+  /* Calendly's iframe fills its parent, so the parent needs a fixed height */
+  .cal { margin: 26px -22px 0; height: 760px; background: var(--black); }
   .cal-fallback { margin-top: 26px; text-align: center; display: grid; gap: 10px; }
   .expect {
     margin-top: 30px;
@@ -474,7 +475,7 @@
   var API = 'https://api-production-eab8a.up.railway.app';
   // Paste your Calendly event link here (e.g. https://calendly.com/curbsidesocial/15min).
   // Left empty, the last screen shows a "text me" button instead of the calendar.
-  var CALENDLY_URL = '';
+  var CALENDLY_URL = 'https://calendly.com/curbsidesocialco/discovery-call';
 
   var params = new URLSearchParams(location.search);
   // Tag where people came from: /work-with-us?src=reel shows up as "reel" in the dashboard
@@ -645,10 +646,11 @@
     script.async = true;
     script.onload = function () {
       window.Calendly.initInlineWidget({
+        // name/email ride along as URL params, which Calendly reads to fill its form
         url: CALENDLY_URL + (CALENDLY_URL.indexOf('?') < 0 ? '?' : '&') +
-          'hide_gdpr_banner=1&background_color=111110&text_color=e8e0d0&primary_color=b8974a',
-        parentElement: cal,
-        prefill: { name: data.name, email: data.email }
+          'hide_gdpr_banner=1&background_color=111110&text_color=e8e0d0&primary_color=b8974a' +
+          '&name=' + encodeURIComponent(data.name) + '&email=' + encodeURIComponent(data.email),
+        parentElement: cal
       });
     };
     script.onerror = function () {
