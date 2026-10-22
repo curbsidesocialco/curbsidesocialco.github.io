@@ -13,6 +13,10 @@
       "destination": "/work-with-us.html"
     },
     {
+      "source": "/meta-ads",
+      "destination": "/meta-ads.html"
+    },
+    {
       "source": "/dashboard",
       "destination": "/dashboard/index.html"
     },

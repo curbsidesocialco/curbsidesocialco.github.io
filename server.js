@@ -912,7 +912,7 @@ app.post('/api/audit', async (req, res) => {
 // honeypot field bots fill in, a per-IP limit, and length caps on every field.
 // Multiple-choice answers are checked against these lists so the dashboard only
 // ever shows options the form actually offers.
-const INQUIRY_NEEDS = ['Social reels', 'Cinematic film', 'Ongoing content', 'Website', 'Photos', 'Not sure yet'];
+const INQUIRY_NEEDS = ['Social reels', 'Cinematic film', 'Ongoing content', 'Meta ads', 'Website', 'Photos', 'Not sure yet'];
 const INQUIRY_GOALS = ['More customers', 'Get my name out there', 'Launching something', 'Something else'];
 const INQUIRY_TIMELINES = ['ASAP', 'In 1 to 3 months', 'Just exploring'];
 const INQUIRY_BUDGETS = ['$150 to $500', '$500 to $1,500', '$1,500 to $3,000', '$3,000+', 'Not sure yet'];

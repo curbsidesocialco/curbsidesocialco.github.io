@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Meta Ads, Explained | Curbside Social Co., San Antonio</title>
+<meta name="description" content="What Facebook and Instagram ads really cost, where your money goes, and what to expect month by month. A straight guide for San Antonio small business owners." />
+<meta property="og:title" content="Meta Ads, Explained | Curbside Social Co." />
+<meta property="og:description" content="What ads really cost and what to expect. No jargon, nothing hidden." />
+<meta property="og:image" content="https://curbsidesocial.co/assets/og.jpg" />
+<meta property="og:url" content="https://curbsidesocial.co/meta-ads" />
+<meta property="og:type" content="article" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a08'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23e8e0d0' text-anchor='middle'%3ECS%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+  /* Guide page: same site chrome as the homepage, laid out to be read top to
+     bottom. Wins and plain talk, never scare tactics. */
+  .guide-hero {
+    padding: 160px 40px 70px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .guide-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(42px, 6.2vw, 74px);
+    line-height: 1.02;
+    color: var(--cream);
+    max-width: 15ch;
+    text-wrap: balance;
+  }
+  .guide-hero h1 em { font-style: italic; color: var(--gold-light); }
+  .guide-hero p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    line-height: 1.6;
+    color: var(--cream-dark);
+    max-width: 600px;
+    margin-top: 24px;
+  }
+  .toc { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+  .toc a {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream-dark);
+    text-decoration: none;
+    border: 1px solid var(--border-med);
+    padding: 9px 14px;
+  }
+  .toc a:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+  /* Where the money goes */
+  .money-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 50px;
+  }
+  .money-card { background: var(--black); padding: 34px 28px; display: flex; flex-direction: column; gap: 10px; }
+  .money-to { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-light); }
+  .money-name { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 26px; color: var(--cream); line-height: 1.15; }
+  .money-desc { font-size: 15px; line-height: 1.65; color: var(--cream-dark); }
+  .callout {
+    margin-top: 28px;
+    padding: 20px 24px;
+    border-left: 2px solid var(--gold);
+    background: var(--surface);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--cream);
+  }
+
+  /* Budget tiers */
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 50px;
+  }
+  .tier {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--border-med);
+    padding: 34px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+  .tier.mid { border-top-color: var(--gold); background: var(--surface2); }
+  .tier-label { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-light); }
+  .tier-range {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(34px, 3.6vw, 44px);
+    line-height: 1.05;
+    color: var(--cream);
+    margin-top: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .tier-per { font-size: 13px; color: var(--cream-dark); margin-top: 4px; }
+  .tier-desc { font-size: 15px; line-height: 1.65; color: var(--cream-dark); margin-top: 18px; }
+  .tier-good {
+    margin-top: auto;
+    padding-top: 18px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.7;
+    color: var(--cream);
+    opacity: 0.85;
+  }
+  .tier-good b { color: var(--gold-light); font-weight: 500; }
+  .tier-desc + .tier-good { border-top: 1px solid var(--border); margin-top: 22px; }
+  .fine { margin-top: 22px; font-size: 14px; color: var(--cream-dark); opacity: 0.85; max-width: 680px; line-height: 1.7; }
+
+  /* Month by month */
+  .months { margin-top: 50px; display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .month { background: var(--black); display: grid; grid-template-columns: 180px 1fr; gap: 28px; padding: 30px 28px; align-items: start; }
+  .month-when { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 28px; color: var(--gold-light); line-height: 1.1; }
+  .month-when small { display: block; font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-dark); margin-top: 6px; }
+  .month h3 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 24px; color: var(--cream); margin-bottom: 6px; }
+  .month p { font-size: 15px; line-height: 1.7; color: var(--cream-dark); }
+
+  /* Straight talk */
+  .truths { margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .truth { padding: 26px 26px 24px; border: 1px solid var(--border); background: var(--surface); }
+  .truth h3 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 22px; line-height: 1.2; color: var(--cream); margin-bottom: 8px; }
+  .truth p { font-size: 15px; line-height: 1.65; color: var(--cream-dark); }
+
+  /* FAQ */
+  .faq { margin-top: 40px; border-top: 1px solid var(--border); }
+  .faq details { border-bottom: 1px solid var(--border); }
+  .faq summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    padding: 22px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--cream);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: '+'; font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 26px; color: var(--gold-light); flex-shrink: 0; transition: transform 0.2s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq summary:hover { color: var(--gold-light); }
+  .faq summary:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 4px; }
+  .faq .answer { padding: 0 0 24px; font-size: 16px; line-height: 1.75; color: var(--cream-dark); max-width: 720px; }
+  .faq .answer p + p { margin-top: 12px; }
+
+  /* What I do */
+  .ido { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 10px; }
+  .ido-list { list-style: none; display: grid; gap: 0; border-top: 1px solid var(--border); }
+  .ido-list li { padding: 16px 0; border-bottom: 1px solid var(--border); font-size: 16px; color: var(--cream); display: flex; gap: 14px; }
+  .ido-list li span { color: var(--gold-light); font-family: 'Cormorant Garamond', serif; font-size: 15px; letter-spacing: 0.1em; padding-top: 2px; }
+
+  @media (max-width: 900px) {
+    .guide-hero { padding: 120px 20px 50px; }
+    .money-grid, .tiers { grid-template-columns: 1fr; }
+    .truths { grid-template-columns: 1fr; }
+    .month { grid-template-columns: 1fr; gap: 10px; padding: 26px 22px; }
+    .ido { grid-template-columns: 1fr; gap: 30px; }
+  }
+  @media (max-width: 560px) {
+    .guide-hero p { font-size: 19px; }
+    .money-card, .tier { padding: 28px 22px; }
+    .faq summary { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV (same as the homepage, links point back to its sections) -->
+<nav id="nav">
+  <a href="/" class="nav-logo">Curbside Social Co.</a>
+  <ul class="nav-links">
+    <li><a href="/#work">Work</a></li>
+    <li><a href="/#shoot">What I Shoot</a></li>
+    <li><a href="/meta-ads" aria-current="page">Meta Ads</a></li>
+    <li><a href="/#video">Pricing</a></li>
+    <li><a href="/#about">About</a></li>
+  </ul>
+  <a href="/work-with-us?src=ads" class="nav-cta">Work with us</a>
+  <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span>
+  </button>
+</nav>
+<div class="nav-panel" id="nav-panel">
+  <a href="/#work">Work</a>
+  <a href="/#shoot">What I Shoot</a>
+  <a href="/meta-ads">Meta Ads</a>
+  <a href="/#video">Pricing</a>
+  <a href="/#about">About</a>
+  <a href="/work-with-us?src=ads" class="nav-panel-cta">Work with us</a>
+</div>
+
+<header class="guide-hero">
+  <span class="section-eyebrow">Meta Ads, Explained</span>
+  <h1>What ads really cost, and <em>what to expect.</em></h1>
+  <p>Most business owners never get a straight answer about Facebook and Instagram ads. Here's how they actually work, what to budget, and how long it takes. No jargon, nothing hidden.</p>
+  <div class="toc" role="navigation" aria-label="On this page">
+    <a href="#money">Where the money goes</a>
+    <a href="#budget">What to budget</a>
+    <a href="#timeline">Month by month</a>
+    <a href="#straight">Straight talk</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</header>
+
+<div class="divider"></div>
+
+<!-- WHERE THE MONEY GOES -->
+<section id="money">
+  <span class="section-eyebrow">Where the Money Goes</span>
+  <h2 class="section-title">Running ads has three costs</h2>
+  <p class="section-body">A lot of people get one number and never see what's inside it. Here's the breakdown you should always get.</p>
+  <div class="money-grid">
+    <div class="money-card">
+      <span class="money-to">Paid to Meta</span>
+      <div class="money-name">Ad spend</div>
+      <p class="money-desc">The money Meta charges to show your ad. It's billed straight to your card, in your own ad account, so you see every dollar. None of it goes to me.</p>
+    </div>
+    <div class="money-card">
+      <span class="money-to">The creative</span>
+      <div class="money-name">The ads themselves</div>
+      <p class="money-desc">The videos and photos people actually see. This is the biggest reason an ad works or doesn't. I shoot and edit these for your business, not from a template.</p>
+    </div>
+    <div class="money-card">
+      <span class="money-to">The work</span>
+      <div class="money-name">Running the ads</div>
+      <p class="money-desc">Setting up campaigns, picking who sees them, testing, and moving money to what's working. I handle this for a monthly fee, quoted on our call.</p>
+    </div>
+  </div>
+  <p class="callout">If someone quotes you one number for "ads," ask how much of it actually goes to Meta.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- BUDGET TIERS -->
+<section id="budget">
+  <span class="section-eyebrow">What to Budget</span>
+  <h2 class="section-title">How much to spend on ads</h2>
+  <p class="section-body">This is ad spend only, the part paid to Meta each month. Pick the level that fits where your business is right now.</p>
+  <div class="tiers">
+    <div class="tier">
+      <span class="tier-label">Small business</span>
+      <div class="tier-range">$200 to $500</div>
+      <span class="tier-per">per month to Meta</span>
+      <p class="tier-desc">Get on the map. Enough to reach people nearby, test a couple of ads, and promote a special or an event.</p>
+      <p class="tier-good"><b>Good for:</b> one location, a first try at ads, a new menu or opening</p>
+    </div>
+    <div class="tier mid">
+      <span class="tier-label">Serious</span>
+      <div class="tier-range">$500 to $2,000</div>
+      <span class="tier-per">per month to Meta</span>
+      <p class="tier-desc">Steady growth. Room to test several ads at once, keep the winners running, and build a steady flow of new customers.</p>
+      <p class="tier-good"><b>Good for:</b> businesses ready to grow, listings, booking services</p>
+    </div>
+    <div class="tier">
+      <span class="tier-label">Aggressive</span>
+      <div class="tier-range">$2,000 to $5,000</div>
+      <span class="tier-per">per month to Meta</span>
+      <p class="tier-desc">Go big. Faster learning, more reach, and enough budget to stand out in busy markets.</p>
+      <p class="tier-good"><b>Good for:</b> launches, multiple locations, real estate, med spas</p>
+    </div>
+  </div>
+  <p class="fine">These are general ranges, not promises. Your offer, your area, and the ad itself matter as much as the budget. A great ad on a small budget usually beats a weak ad on a big one.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- MONTH BY MONTH -->
+<section id="timeline">
+  <span class="section-eyebrow">Month by Month</span>
+  <h2 class="section-title">Ads take a few months to work</h2>
+  <p class="section-body">This is the part most people don't hear upfront. The first month is not the payoff month. Here's how it actually goes.</p>
+  <div class="months">
+    <div class="month">
+      <div class="month-when">Month 1<small>Gathering data</small></div>
+      <div>
+        <h3>Meta is learning who your customers are</h3>
+        <p>We launch a few different ads and let them run. Results bounce around, and that's normal. Every view, click, and message is data. Shutting ads off in week one is the most common mistake.</p>
+      </div>
+    </div>
+    <div class="month">
+      <div class="month-when">Month 2<small>More data, first lessons</small></div>
+      <div>
+        <h3>Patterns start to show up</h3>
+        <p>With more data, we can see which ads people stop for and which ones they scroll past. We cut what isn't working, make new versions of what is, and keep learning.</p>
+      </div>
+    </div>
+    <div class="month">
+      <div class="month-when">Month 3<small>Seeing what works</small></div>
+      <div>
+        <h3>You know what's working</h3>
+        <p>By now there's a clear picture of which ads, offers, and audiences bring in customers. More budget goes behind the winners. This is the fair point to judge whether ads are paying off.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STRAIGHT TALK -->
+<section id="straight">
+  <span class="section-eyebrow">Straight Talk</span>
+  <h2 class="section-title">Things nobody tells you</h2>
+  <p class="section-body">You deserve to know this before you spend a dollar, whoever you end up working with.</p>
+  <div class="truths">
+    <div class="truth">
+      <h3>Your ad account should be yours</h3>
+      <p>Ads should run in your own Meta account, on your own page. If they run in someone else's account and you leave, all that learning leaves with them. I set everything up in yours.</p>
+    </div>
+    <div class="truth">
+      <h3>Nobody can guarantee results</h3>
+      <p>Be careful with anyone who promises a set number of leads or a dollar return. Good ads are tested and improved. They aren't guaranteed.</p>
+    </div>
+    <div class="truth">
+      <h3>The video matters more than the targeting</h3>
+      <p>Meta is very good at finding the right people now. What it can't do is make a boring ad interesting. The ad itself is where most of the results come from.</p>
+    </div>
+    <div class="truth">
+      <h3>Boosting a post isn't the same as running ads</h3>
+      <p>The Boost button is fine for a quick push. Real campaigns let you test different ads, track what happens after the click, and spend smarter.</p>
+    </div>
+    <div class="truth">
+      <h3>You should get a simple report</h3>
+      <p>What you spent, what it brought in, and what's changing next. In plain English, not a 20 page export.</p>
+    </div>
+    <div class="truth">
+      <h3>Ads don't replace your page</h3>
+      <p>People check your Instagram before they buy. Ads bring them in, and your regular content is what convinces them. The two work together.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section id="faq">
+  <span class="section-eyebrow">FAQ</span>
+  <h2 class="section-title">Common questions</h2>
+  <div class="faq">
+    <details>
+      <summary>Do I need a big budget to start?</summary>
+      <div class="answer"><p>No. $200 to $500 a month can work for a local spot with a clear offer, like a new menu item, an event, or a first-time discount. Start small, learn what works, then grow it.</p></div>
+    </details>
+    <details>
+      <summary>How long until I see results?</summary>
+      <div class="answer"><p>You'll see views and clicks right away. Knowing what actually brings in customers takes about three months. Month one is data, month two is more data and first lessons, and by month three you know what works.</p></div>
+    </details>
+    <details>
+      <summary>Facebook or Instagram?</summary>
+      <div class="answer"><p>Both. They run from the same place, Meta Ads Manager, and one campaign can show on both. Meta puts your ad wherever your customers are spending time, and we can adjust from there.</p></div>
+    </details>
+    <details>
+      <summary>Can't I just boost my posts?</summary>
+      <div class="answer"><p>You can, and it's fine for a quick push. But boosting skips most of what makes ads work: testing different versions, choosing a clear goal like messages or bookings, and tracking what happens after someone taps.</p></div>
+    </details>
+    <details>
+      <summary>What do you need from me?</summary>
+      <div class="answer"><p>Access to your Facebook page and Instagram, a card on file in your Meta ad account for ad spend, and something worth promoting. I'll walk you through the setup on a call. It takes about 15 minutes.</p></div>
+    </details>
+    <details>
+      <summary>Do you need my card or bank info?</summary>
+      <div class="answer">
+        <p>No. Your card goes into your own Meta ad account, and Meta bills you directly. I never see it.</p>
+        <p>You give my business partner access from your Meta business settings. That lets me run campaigns without touching billing. You can set a monthly spending cap so ads can never go over your budget, and you can remove my access anytime with one click.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What does it cost to have you run my ads?</summary>
+      <div class="answer"><p>It depends on your budget and how many ads we're running. I'll give you a real number on our call. Your ad spend is always separate and always goes straight to Meta.</p></div>
+    </details>
+    <details>
+      <summary>Are ads right for my business?</summary>
+      <div class="answer">
+        <p>Ads work best when you have a clear offer and can handle more customers. Restaurants with a special or event, agents with a listing, salons and med spas with open booking times, and events selling tickets are all great fits.</p>
+        <p>If you're not sure, that's what the call is for. If ads aren't the right move yet, I'll tell you.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHAT I DO -->
+<section id="ido">
+  <div class="ido">
+    <div>
+      <span class="section-eyebrow">Where I Come In</span>
+      <h2 class="section-title">I make the ads and run them</h2>
+      <p class="section-body">Most ad people hire someone else for the video. I shoot it myself, here in San Antonio, so your ads look like your business and not a stock photo.</p>
+    </div>
+    <ul class="ido-list">
+      <li><span>01</span>Shoot and edit video ads for your business</li>
+      <li><span>02</span>Set up campaigns in your own Meta account</li>
+      <li><span>03</span>Test a few versions to find what works</li>
+      <li><span>04</span>Move budget to the winners</li>
+      <li><span>05</span>Send you a simple monthly report</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="contact">
+  <h2 class="cta-title">Want to talk about ads?</h2>
+  <p class="cta-sub">Answer a few quick questions, then grab a 15 minute call. I'll tell you honestly if ads make sense for you right now.</p>
+  <a href="/work-with-us?src=ads" class="btn-primary">Work with us</a>
+  <p class="cta-contact">or DM me on Instagram <a href="https://instagram.com/cssocialtx" target="_blank" rel="noopener">@cssocialtx</a> &nbsp;&middot;&nbsp; San Antonio, TX &nbsp;&middot;&nbsp; 210.883.7567</p>
+</div>
+
+<footer>
+  <div class="footer-logo">Curbside Social Co.</div>
+  <p class="footer-text">© 2026 Curbside Social Co. &middot; San Antonio, TX</p>
+  <ul class="footer-links">
+    <li><a href="/#work">Work</a></li>
+    <li><a href="/meta-ads">Meta Ads</a></li>
+    <li><a href="/#video">Pricing</a></li>
+  </ul>
+</footer>
+
+<script src="/js/site.js"></script>
+</body>
+</html>

@@ -1170,3 +1170,5 @@ footer {
   .result-card { display: grid; grid-template-columns: auto 1fr; column-gap: 20px; row-gap: 4px; padding: 22px 20px; align-items: center; }
   .result-num { grid-row: span 2; font-size: 46px; min-width: 2.4em; }
 }
+.service-link { color: var(--gold-light); text-decoration: none; border-bottom: 1px solid rgba(212,175,106,0.4); white-space: nowrap; }
+.service-link:hover { border-color: var(--gold-light); }
