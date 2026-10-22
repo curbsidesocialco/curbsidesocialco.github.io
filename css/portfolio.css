@@ -9,7 +9,7 @@
   padding: 150px 40px 48px;
 }
 .pf-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--display);
   font-weight: 600;
   font-size: clamp(56px, 10vw, 120px);
   line-height: 0.95;
@@ -18,7 +18,7 @@
 }
 .pf-title em { font-style: italic; font-weight: 400; color: var(--gold-light); }
 .pf-lede {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--display);
   font-size: 22px;
   color: var(--cream-dark);
   margin-top: 22px;
@@ -117,7 +117,7 @@
   position: absolute;
   top: 12px; right: 12px;
   z-index: 2;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--body);
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -162,7 +162,7 @@
   padding: 12px;
 }
 .pf-placeholder em {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--display);
   font-style: italic;
   font-size: 17px;
   color: var(--cream-dark);
@@ -179,7 +179,7 @@
   padding-top: 18px;
 }
 .pf-meta-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--display);
   font-weight: 600;
   font-size: 28px;
   color: var(--cream);
@@ -224,7 +224,7 @@
 }
 .pf-pkg:hover { border-color: var(--gold); transform: translateY(-3px); }
 .pf-pkg-name { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-light); }
-.pf-pkg-price { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 48px; line-height: 1; color: var(--cream); }
+.pf-pkg-price { font-family: var(--display); font-weight: 600; font-size: 48px; line-height: 1; color: var(--cream); }
 .pf-pkg-desc { font-size: 15px; line-height: 1.6; color: var(--cream-dark); flex: 1; }
 .pf-pkg-go {
   margin-top: 10px;

@@ -4,11 +4,21 @@
 
 // ---- Nav: scroll tint ----
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.style.background = window.scrollY > 60
-    ? 'rgba(10,10,8,0.97)'
-    : 'linear-gradient(to bottom, rgba(10,10,8,0.95), transparent)';
-});
+// The glass gets a little more solid once you scroll past the hero
+const tintNav = () => nav.classList.toggle('scrolled', window.scrollY > 60);
+window.addEventListener('scroll', tintNav, { passive: true });
+tintNav();
+
+// ---- Cards: soft spotlight that follows the cursor (CSS reads --mx/--my) ----
+if (window.matchMedia('(hover: hover)').matches) {
+  document.addEventListener('pointermove', e => {
+    const card = e.target.closest && e.target.closest('.result-card, .shoot-card, .service-item, .offer-card, .video-pkg, .web-tier, .money-card, .tier, .truth');
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    card.style.setProperty('--my', `${e.clientY - r.top}px`);
+  }, { passive: true });
+}
 
 // ---- Nav: mobile burger ----
 const burger = document.getElementById('nav-burger');
